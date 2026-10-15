@@ -1,0 +1,24 @@
+﻿== 2026-10-15T13:59:48 subredes de departamentos (autorizado por Diego)
+[
+  "10.0.0.0/16",
+  "10.10.1.0/26"
+]
+{
+  "n": "Arquitectos",
+  "r": "10.10.1.0/27"
+}
+{
+  "n": "Ingenieros",
+  "r": "10.10.1.32/28"
+}
+{
+  "n": "TI",
+  "r": "10.10.1.48/29"
+}
+-- verificacion
+Firewall    10.0.0.16/28
+Servidores  10.0.0.32/28
+DMZ         10.0.0.0/28
+Arquitectos 10.10.1.0/27
+Ingenieros  10.10.1.32/28
+TI          10.10.1.48/29
