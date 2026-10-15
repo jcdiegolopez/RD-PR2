@@ -1,0 +1,7 @@
+﻿Thu Oct 15 18:53:18 UTC 2026
+fw-vpn
+net.ipv4.ip_forward = 0
+net.ipv4.ip_forward = 1
+net.ipv4.ip_forward=1
+net.ipv4.ip_forward = 1
+net.ipv4.ip_forward=1

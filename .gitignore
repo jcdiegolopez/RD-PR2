@@ -1,0 +1,4 @@
+*.pem
+*_key
+id_*
+llave_*

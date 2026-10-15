@@ -1,0 +1,27 @@
+﻿Thu Oct 15 18:51:03 UTC 2026
+srv-planos
+lo               UNKNOWN        127.0.0.1/8 
+eth0             UP             10.0.0.36/28 metric 100 
+PING 10.0.0.36 (10.0.0.36) 56(84) bytes of data.
+64 bytes from 10.0.0.36: icmp_seq=1 ttl=64 time=0.017 ms
+64 bytes from 10.0.0.36: icmp_seq=2 ttl=64 time=0.038 ms
+64 bytes from 10.0.0.36: icmp_seq=3 ttl=64 time=0.040 ms
+64 bytes from 10.0.0.36: icmp_seq=4 ttl=64 time=0.038 ms
+
+--- 10.0.0.36 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3103ms
+rtt min/avg/max/mdev = 0.017/0.033/0.040/0.009 ms
+--- rerun con comillas corregidas
+Thu Oct 15 18:51:20 UTC 2026
+srv-render
+lo               UNKNOWN        127.0.0.1/8 
+eth0             UP             10.0.0.37/28 metric 100 
+PING 10.0.0.36 (10.0.0.36) 56(84) bytes of data.
+64 bytes from 10.0.0.36: icmp_seq=1 ttl=64 time=0.311 ms
+64 bytes from 10.0.0.36: icmp_seq=2 ttl=64 time=0.452 ms
+64 bytes from 10.0.0.36: icmp_seq=3 ttl=64 time=0.413 ms
+64 bytes from 10.0.0.36: icmp_seq=4 ttl=64 time=0.478 ms
+
+--- 10.0.0.36 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3053ms
+rtt min/avg/max/mdev = 0.311/0.413/0.478/0.063 ms

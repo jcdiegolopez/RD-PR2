@@ -1,0 +1,4 @@
+﻿Thu Oct 15 18:50:39 UTC 2026
+fw-vpn
+lo               UNKNOWN        127.0.0.1/8 
+eth0             UP             10.0.0.20/28 metric 100 

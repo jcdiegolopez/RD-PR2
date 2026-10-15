@@ -1,0 +1,43 @@
+﻿== 2026-10-15T13:40:29 cambios autorizados por Diego
+-- 1. IP estatica fw-vpn434
+Ip         Metodo
+---------  --------
+10.0.0.20  Static
+-- 2. Allow-SSH-Admin solo desde <IP-ADMIN>/32
+{
+  "accion": "Allow",
+  "origen": "<IP-ADMIN>/32",
+  "origenes": [],
+  "puerto": "22",
+  "regla": "Allow-SSH-Admin"
+}
+-- 3. borrar reglas temporales
+-- verificacion
+Ip         Metodo
+---------  --------
+10.0.0.20  Static
+[nsg-firewall]
+Regla              Prio    Puerto    Origen
+-----------------  ------  --------  -----------------
+Allow-OpenVPN      100     1194      Internet
+Allow-SSH-Admin    110     22        <IP-ADMIN>/32
+Allow-DNS-NTP      120
+Allow-ICMP         130     *
+Allow-Retorno-VPN  140     *         10.0.0.0/16
+Deny-Resto         4000    *         *
+[nsg-dmz]
+Regla              Prio    Puerto    Origen
+-----------------  ------  --------  --------
+Allow-HTTP         100     80        Internet
+Allow-HTTPS        110     443       Internet
+Allow-SSH-Interno  120     22
+Allow-ICMP         130     *
+Deny-Resto         4000    *         *
+[nsg-servidores]
+Regla             Prio    Puerto    Origen
+----------------  ------  --------  --------
+Allow-SSH         100     22
+Allow-ICMP        110     *
+Allow-SMB-Planos  120     445
+Allow-LDAP        130
+Deny-Resto        4000    *         *

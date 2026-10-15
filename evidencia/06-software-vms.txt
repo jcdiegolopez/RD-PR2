@@ -1,0 +1,159 @@
+﻿===== fw-vpn
+fw-vpn
+OS: Ubuntu 24.04.4 LTS
+--- paquetes instalados (relevantes)
+bind9-dnsutils 1:9.18.39-0ubuntu0.24.04.7
+bind9-host 1:9.18.39-0ubuntu0.24.04.7
+bind9-libs:amd64 1:9.18.39-0ubuntu0.24.04.7
+chrony 4.5-1ubuntu4.2
+iptables 1.8.10-3ubuntu2
+nftables 1.0.9-1ubuntu0.1
+--- servicios (estado)
+openvpn: active=inactive enabled=not-found
+ssh : bash: line 1: ﻿date: command not found
+At line:17 char:11
++ $script | ssh -i C:\Windows\System32\redes_key -o IdentitiesOnly=yes  ...
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (bash: line 1: ﻿date: command not found:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+openvpn-server@server: active=inactive enabled=not-found
+nftables: active=inactive enabled=disabled
+named: active=inactive enabled=not-found
+bind9: active=inactive enabled=not-found
+chrony: active=active enabled=enabled
+slapd: active=inactive enabled=not-found
+smbd: active=inactive enabled=not-found
+nmbd: active=inactive enabled=not-found
+nginx: active=inactive enabled=not-found
+apache2: active=inactive enabled=not-found
+--- puertos escuchando
+Netid State  Recv-Q Send-Q  Local Address:Port Peer Address:PortProcess
+udp   UNCONN 0      0           127.0.0.1:323       0.0.0.0:*          
+udp   UNCONN 0      0          127.0.0.54:53        0.0.0.0:*          
+udp   UNCONN 0      0       127.0.0.53%lo:53        0.0.0.0:*          
+udp   UNCONN 0      0      10.0.0.20%eth0:68        0.0.0.0:*          
+udp   UNCONN 0      0               [::1]:323          [::]:*          
+tcp   LISTEN 0      4096          0.0.0.0:22        0.0.0.0:*          
+tcp   LISTEN 0      4096       127.0.0.54:53        0.0.0.0:*          
+tcp   LISTEN 0      4096    127.0.0.53%lo:53        0.0.0.0:*          
+tcp   LISTEN 0      4096             [::]:22           [::]:*          
+--- nftables
+# Warning: table ip security is managed by iptables-nft, do not touch!
+table ip security {
+	chain OUTPUT {
+		type filter hook output priority 150; policy accept;
+		ip daddr 168.63.129.16 tcp dport 53 counter packets 0 bytes 0 accept
+		ip daddr 168.63.129.16 ip protocol tcp skuid 0 counter packets 25608 bytes 6612582 accept
+		ip daddr 168.63.129.16 ip protocol tcp ct state invalid,new counter packets 0 bytes 0 drop
+	}
+}
+--- blender
+blender: no instalado
+--- ip_forward
+sysctl: cannot stat /proc/sys/net/ipv4/ip_forward
+: No such file or directory
+===== srv-planos
+srv-planos
+OS: Ubuntu 22.04.5 LTS
+--- paquetes instalados (relevantes)
+bind9-dnsutils 1:9.18.39-0ubuntu0.22.04.6
+bind9-host 1:9.18.39-0ubuntu0.22.04.6
+bind9-libs:amd64 1:9.18.39-0ubuntu0.22.04.6
+chrony 4.2-2ubuntu2.1
+iptables 1.8.7-1ubuntu5.2
+nftables 1.0.2-1ubuntu3.1
+--- servicios (estado)
+openvpn: active=inactive enabled=
+openvpn-server@server: active=inactive enabled=
+nftables: active=inactive enabled=disabled
+named: active=inactive enabled=
+bind9: active=inactive enabled=
+chrony: active=active enabled=enabled
+slapd: active=inactive enabled=
+smbd: active=inactive enabled=
+nmbd: active=inactive enabled=
+nginx: active=inactive enabled=
+ssh : bash: line 1: ﻿date: command not found
+At line:19 char:11
++ $script | ssh -A -i "$HOME\.ssh\llave_compa" -o ConnectTimeout=10 -o  ...
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (bash: line 1: ﻿date: command not found:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+apache2: active=inactive enabled=
+--- puertos escuchando
+Netid State  Recv-Q Send-Q  Local Address:Port Peer Address:PortProcess
+udp   UNCONN 0      0           127.0.0.1:323       0.0.0.0:*          
+udp   UNCONN 0      0       127.0.0.53%lo:53        0.0.0.0:*          
+udp   UNCONN 0      0      10.0.0.36%eth0:68        0.0.0.0:*          
+udp   UNCONN 0      0               [::1]:323          [::]:*          
+tcp   LISTEN 0      4096    127.0.0.53%lo:53        0.0.0.0:*          
+tcp   LISTEN 0      128           0.0.0.0:22        0.0.0.0:*          
+tcp   LISTEN 0      128              [::]:22           [::]:*          
+--- nftables
+table ip security {
+	chain OUTPUT {
+		type filter hook output priority 150; policy accept;
+		meta l4proto tcp ip daddr 168.63.129.16 tcp dport 53 counter packets 0 bytes 0 accept
+		meta l4proto tcp ip daddr 168.63.129.16 skuid 0 counter packets 14710 bytes 4077745 accept
+		meta l4proto tcp ip daddr 168.63.129.16 ct state invalid,new counter packets 0 bytes 0 drop
+	}
+}
+--- blender
+blender: no instalado
+--- ip_forward
+sysctl: cannot stat /proc/sys/net/ipv4/ip_forward
+: No such file or directory
+===== srv-render
+srv-render
+OS: Ubuntu 22.04.5 LTS
+--- paquetes instalados (relevantes)
+bind9-dnsutils 1:9.18.39-0ubuntu0.22.04.6
+bind9-host 1:9.18.39-0ubuntu0.22.04.6
+bind9-libs:amd64 1:9.18.39-0ubuntu0.22.04.6
+chrony 4.2-2ubuntu2.1
+iptables 1.8.7-1ubuntu5.2
+nftables 1.0.2-1ubuntu3.1
+--- servicios (estado)
+openvpn: active=inactive enabled=
+openvpn-server@server: active=inactive enabled=
+nftables: active=inactive enabled=disabled
+named: active=inactive enabled=
+bind9: active=inactive enabled=
+chrony: active=active enabled=enabled
+slapd: active=inactive enabled=
+smbd: active=inactive enabled=
+ssh : bash: line 1: ﻿date: command not found
+At line:21 char:11
++ $script | ssh -A -i "$HOME\.ssh\llave_compa" -o ConnectTimeout=10 -o  ...
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (bash: line 1: ﻿date: command not found:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+nmbd: active=inactive enabled=
+nginx: active=inactive enabled=
+apache2: active=inactive enabled=
+--- puertos escuchando
+Netid State  Recv-Q Send-Q  Local Address:Port Peer Address:PortProcess
+udp   UNCONN 0      0           127.0.0.1:323       0.0.0.0:*          
+udp   UNCONN 0      0       127.0.0.53%lo:53        0.0.0.0:*          
+udp   UNCONN 0      0      10.0.0.37%eth0:68        0.0.0.0:*          
+udp   UNCONN 0      0               [::1]:323          [::]:*          
+tcp   LISTEN 0      128           0.0.0.0:22        0.0.0.0:*          
+tcp   LISTEN 0      4096    127.0.0.53%lo:53        0.0.0.0:*          
+tcp   LISTEN 0      128              [::]:22           [::]:*          
+--- nftables
+table ip security {
+	chain OUTPUT {
+		type filter hook output priority 150; policy accept;
+		meta l4proto tcp ip daddr 168.63.129.16 tcp dport 53 counter packets 0 bytes 0 accept
+		meta l4proto tcp ip daddr 168.63.129.16 skuid 0 counter packets 14709 bytes 4084659 accept
+		meta l4proto tcp ip daddr 168.63.129.16 ct state invalid,new counter packets 0 bytes 0 drop
+	}
+}
+--- blender
+blender: no instalado
+--- ip_forward
+sysctl: cannot stat /proc/sys/net/ipv4/ip_forward
+: No such file or directory

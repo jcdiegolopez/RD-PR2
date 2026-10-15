@@ -1,0 +1,156 @@
+﻿
+
+### vnet
+Vnet           Rango        Region
+-------------  -----------  --------------
+vnet-proyecto  10.0.0.0/16  northcentralus
+
+
+### subnets
+Subred      Nsg
+----------  -----------------------------------------------------------------------------------------------------------------------------------------------------
+Firewall    /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/networkSecurityGroups/nsg-firewall
+Servidores  /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/networkSecurityGroups/nsg-servidores
+DMZ         /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/networkSecurityGroups/nsg-dmz
+
+
+### vms
+Vm          Tam                Estado      IpPriv     IpPub           So                            Ver
+----------  -----------------  ----------  ---------  --------------  ----------------------------  --------------
+fw-vpn      Standard_B2ats_v2  VM running  10.0.0.20  <IP-PUBLICA-FW-VPN>  ubuntu-24_04-lts              server
+srv-planos  Standard_B2ats_v2  VM running  10.0.0.36                  0001-com-ubuntu-server-jammy  22_04-lts-gen2
+srv-render  Standard_B2ats_v2  VM running  10.0.0.37                  0001-com-ubuntu-server-jammy  22_04-lts-gen2
+
+
+### nics
+Nic              Fwd    Ip         Metodo    Subred                                                                                                                                                             Pip
+---------------  -----  ---------  --------  -----------------------------------------------------------------------------------------------------------------------------------------------------------------  --------------------------------------------------------------------------------------------------------------------------------------------
+fw-vpn434        True   10.0.0.20  Dynamic   /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/virtualNetworks/vnet-proyecto/subnets/Firewall    /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/publicIPAddresses/fw-vpn-ip
+srv-planosVMNic  False  10.0.0.36  Static    /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/virtualNetworks/vnet-proyecto/subnets/Servidores
+srv-renderVMNic  False  10.0.0.37  Static    /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/virtualNetworks/vnet-proyecto/subnets/Servidores
+
+
+### public-ips
+Nombre     Ip              Sku       Asociada
+---------  --------------  --------  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+fw-vpn-ip  <IP-PUBLICA-FW-VPN>  Standard  /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/networkInterfaces/fw-vpn434/ipConfigurations/ipconfig1
+
+
+### route-tables
+
+
+
+### nsgs
+Nsg             Loc
+--------------  --------------
+nsg-dmz         northcentralus
+nsg-firewall    northcentralus
+nsg-servidores  northcentralus
+
+
+### asgs
+
+
+
+### resources
+N                                                     T                                        Loc
+----------------------------------------------------  ---------------------------------------  --------------
+vnet-proyecto                                         Microsoft.Network/virtualNetworks        northcentralus
+nsg-firewall                                          Microsoft.Network/networkSecurityGroups  northcentralus
+nsg-dmz                                               Microsoft.Network/networkSecurityGroups  northcentralus
+nsg-servidores                                        Microsoft.Network/networkSecurityGroups  northcentralus
+fw-vpn-ip                                             Microsoft.Network/publicIPAddresses      northcentralus
+fw-vpn                                                Microsoft.Compute/virtualMachines        northcentralus
+fw-vpn434                                             Microsoft.Network/networkInterfaces      northcentralus
+fw-vpn_disk1_400784d51d46412f808807921ac1b652         Microsoft.Compute/disks                  northcentralus
+srv-renderVMNic                                       Microsoft.Network/networkInterfaces      northcentralus
+srv-render                                            Microsoft.Compute/virtualMachines        northcentralus
+srv-render_OsDisk_1_81639bfd94fa429f9b013bef0b44e574  Microsoft.Compute/disks                  northcentralus
+srv-planosVMNic                                       Microsoft.Network/networkInterfaces      northcentralus
+srv-planos                                            Microsoft.Compute/virtualMachines        northcentralus
+srv-planos_OsDisk_1_94a209e1ae1f4f3cbf4493cb600de69a  Microsoft.Compute/disks                  northcentralus
+
+
+### reglas de nsg-dmz
+Regla               Prio    Dir      Accion    Proto    Puerto    Origen    Destino
+------------------  ------  -------  --------  -------  --------  --------  ---------
+Allow-HTTP          100     Inbound  Allow     Tcp      80        Internet  *
+Allow-HTTPS         110     Inbound  Allow     Tcp      443       Internet  *
+Allow-SSH-Interno   120     Inbound  Allow     Tcp      22                  *
+Allow-SSH-Temporal  125     Inbound  Allow     Tcp      22        Internet  *
+Allow-ICMP          130     Inbound  Allow     Icmp     *                   *
+Deny-Resto          4000    Inbound  Deny      *        *         *         *
+
+
+### reglas de nsg-firewall
+Regla              Prio    Dir      Accion    Proto    Puerto    Origen       Destino
+-----------------  ------  -------  --------  -------  --------  -----------  ------------
+Allow-OpenVPN      100     Inbound  Allow     Udp      1194      Internet     *
+Allow-SSH-Admin    110     Inbound  Allow     Tcp      22        Internet     *
+Allow-DNS-NTP      120     Inbound  Allow     *                               *
+Allow-ICMP         130     Inbound  Allow     Icmp     *                      *
+Allow-Retorno-VPN  140     Inbound  Allow     *        *         10.0.0.0/16  10.10.0.0/16
+Deny-Resto         4000    Inbound  Deny      *        *         *            *
+
+
+### reglas de nsg-servidores
+Regla             Prio    Dir      Accion    Proto    Puerto    Destino    Origen
+----------------  ------  -------  --------  -------  --------  ---------  ---------------
+Allow-SSH         100     Inbound  Allow     Tcp      22        *
+Allow-ICMP        110     Inbound  Allow     Icmp     *         *
+Allow-SMB-Planos  120     Inbound  Allow     Tcp      445       *
+Allow-LDAP        130     Inbound  Allow     Tcp                *
+Deny-Resto        4000    Inbound  Deny      *        *         *          *
+ssh-temporal      105     Inbound  Allow     Tcp      22        *          <IP-TEMPORAL-ANTERIOR>
+
+
+### subnets (rangos)
+az.cmd : 'join' is not recognized as an internal or external command,
+At line:2 char:50
++ ... s)"; $t += (& $az network vnet subnet list -g $RG --vnet-name vnet-pr ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ('join' is not r...ternal command,:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+operable program or batch file.
+
+
+### nsg-servidores origenes
+az.cmd : 'join' is not recognized as an internal or external command,
+At line:3 char:47
++ ... es"; $t += (& $az network nsg rule list -g $RG --nsg-name nsg-servido ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ('join' is not r...ternal command,:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+operable program or batch file.
+
+
+### subnets (rangos)
+Firewall    10.0.0.16/28  rt=
+Servidores  10.0.0.32/28  rt=
+DMZ         10.0.0.0/28  rt=
+
+### nsg-servidores detalle
+Allow-SSH         prio=100 Allow Tcp src=[10.0.0.0/16,10.10.0.0/16] dst=[*] port=[22] srcASG= dstASG=
+Allow-ICMP        prio=110 Allow Icmp src=[10.0.0.0/16,10.10.0.0/16] dst=[*] port=[*] srcASG= dstASG=
+Allow-SMB-Planos  prio=120 Allow Tcp src=[10.10.1.0/27,10.10.1.32/28,10.10.1.48/29] dst=[*] port=[445] srcASG= dstASG=
+Allow-LDAP        prio=130 Allow Tcp src=[10.0.0.16/28,10.0.0.32/28] dst=[*] port=[389,636] srcASG= dstASG=
+Deny-Resto        prio=4000 Deny * src=[*] dst=[*] port=[*] srcASG= dstASG=
+ssh-temporal      prio=105 Allow Tcp src=[<IP-TEMPORAL-ANTERIOR>] dst=[*] port=[22] srcASG= dstASG=
+
+### nsg-dmz detalle
+Allow-HTTP         prio=100 Tcp src=[Internet] port=[80]
+Allow-HTTPS        prio=110 Tcp src=[Internet] port=[443]
+Allow-SSH-Interno  prio=120 Tcp src=[10.0.0.0/16,10.10.0.0/16] port=[22]
+Allow-SSH-Temporal prio=125 Tcp src=[Internet] port=[22]
+Allow-ICMP         prio=130 Icmp src=[10.0.0.0/16,10.10.0.0/16] port=[*]
+Deny-Resto         prio=4000 * src=[*] port=[*]
+
+### nsg-firewall detalle
+Allow-OpenVPN      prio=100 Udp src=[Internet] port=[1194]
+Allow-SSH-Admin    prio=110 Tcp src=[Internet] port=[22]
+Allow-DNS-NTP      prio=120 * src=[10.0.0.0/16,10.10.0.0/16] port=[53,123]
+Allow-ICMP         prio=130 Icmp src=[10.0.0.0/16,10.10.0.0/16] port=[*]
+Allow-Retorno-VPN  prio=140 * src=[10.0.0.0/16] port=[*]
+Deny-Resto         prio=4000 * src=[*] port=[*]

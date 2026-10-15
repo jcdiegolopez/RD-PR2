@@ -1,0 +1,53 @@
+﻿
+
+### vms
+Vm          Tam                Estado      IpPriv     IpPub
+----------  -----------------  ----------  ---------  --------------
+fw-vpn      Standard_B2ats_v2  VM running  10.0.0.20  <IP-PUBLICA-FW-VPN>
+srv-planos  Standard_B2ats_v2  VM running  10.0.0.36
+srv-render  Standard_B2ats_v2  VM running  10.0.0.37
+
+
+### nics
+Nic              Fwd    Ip         Metodo
+---------------  -----  ---------  --------
+fw-vpn434        True   10.0.0.20  Static
+srv-planosVMNic  False  10.0.0.36  Static
+srv-renderVMNic  False  10.0.0.37  Static
+
+
+### public-ips
+N          Ip
+---------  --------------
+fw-vpn-ip  <IP-PUBLICA-FW-VPN>
+
+
+### route-tables
+
+
+
+### asg
+
+
+
+### nsg-firewall
+Allow-OpenVPN      prio=100 Allow Udp src=[Internet] port=[1194]
+Allow-SSH-Admin    prio=110 Allow Tcp src=[<IP-ADMIN>/32] port=[22]
+Allow-DNS-NTP      prio=120 Allow * src=[10.0.0.0/16,10.10.0.0/16] port=[53,123]
+Allow-ICMP         prio=130 Allow Icmp src=[10.0.0.0/16,10.10.0.0/16] port=[*]
+Allow-Retorno-VPN  prio=140 Allow * src=[10.0.0.0/16] port=[*]
+Deny-Resto         prio=4000 Deny * src=[*] port=[*]
+
+### nsg-dmz
+Allow-HTTP         prio=100 Allow Tcp src=[Internet] port=[80]
+Allow-HTTPS        prio=110 Allow Tcp src=[Internet] port=[443]
+Allow-SSH-Interno  prio=120 Allow Tcp src=[10.0.0.0/16,10.10.0.0/16] port=[22]
+Allow-ICMP         prio=130 Allow Icmp src=[10.0.0.0/16,10.10.0.0/16] port=[*]
+Deny-Resto         prio=4000 Deny * src=[*] port=[*]
+
+### nsg-servidores
+Allow-SSH          prio=100 Allow Tcp src=[10.0.0.0/16,10.10.0.0/16] port=[22]
+Allow-ICMP         prio=110 Allow Icmp src=[10.0.0.0/16,10.10.0.0/16] port=[*]
+Allow-SMB-Planos   prio=120 Allow Tcp src=[10.10.1.0/27,10.10.1.32/28,10.10.1.48/29] port=[445]
+Allow-LDAP         prio=130 Allow Tcp src=[10.0.0.16/28,10.0.0.32/28] port=[389,636]
+Deny-Resto         prio=4000 Deny * src=[*] port=[*]
