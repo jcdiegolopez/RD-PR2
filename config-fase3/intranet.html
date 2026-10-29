@@ -1,41 +1,502 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-grupo="<!--# echo var="grupo" default="desconocido" -->">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Intranet Terranova</title>
+<link rel="preload" href="archivo.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; background: #f3f5f9; color: #0e1a2b; }
-  header { background: #0e1a2b; color: #f3f5f9; padding: 24px 32px; }
-  header p { color: #a9b8cc; margin: 4px 0 0; }
-  main { max-width: 900px; margin: 32px auto; padding: 0 16px; }
-  .card { background: #fff; border: 1px solid #dce2ea; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
-  h2 { margin-top: 0; }
-  table { border-collapse: collapse; width: 100%; }
-  th, td { text-align: left; padding: 8px; border-bottom: 1px solid #dce2ea; }
-  footer { text-align: center; color: #5a6878; font-size: 14px; padding: 24px; }
+@font-face {
+  font-family: "Archivo";
+  src: url("archivo.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+
+:root {
+  --papel: #eef0ec;
+  --papel-hondo: #e3e7e1;
+  --tinta: #13302a;
+  --tinta-suave: #4a5d57;
+  --linea: #13302a;
+  --linea-tenue: #b9c3bd;
+  --si: #2f8a57;
+  --si-texto: #1e6a40;
+  --no: #c4362b;
+  --reserva: #b8860f; /* más oscuro que #d9a21f para que la celda se distinga del papel (2.8:1) */
+  --grupo: #13302a;
+  --grupo-fondo: #dfe6e2;
+  color-scheme: light;
+}
+html[data-grupo="arquitectos"] { --grupo: #1e4f8f; --grupo-fondo: #dde6f1; }
+html[data-grupo="ingenieros"]  { --grupo: #9a4a17; --grupo-fondo: #f2e3d8; }
+html[data-grupo="ti"]          { --grupo: #5a3d8a; --grupo-fondo: #e7e1f0; }
+html[data-grupo="visitantes"]  { --grupo: #55605b; --grupo-fondo: #e4e7e5; }
+
+* { box-sizing: border-box; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+html { background: var(--papel); scrollbar-color: var(--tinta-suave) var(--papel-hondo); }
+body {
+  margin: 0;
+  font-family: "Archivo", system-ui, sans-serif;
+  font-stretch: 100%;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--tinta);
+  background: var(--papel);
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--grupo); color: var(--papel); }
+a { color: inherit; text-underline-offset: 0.2em; }
+:focus-visible { outline: 2px solid var(--grupo); outline-offset: 2px; }
+
+.hoja { max-width: 88rem; margin: 0 auto; padding: 0 clamp(1rem, 3vw, 2.5rem); }
+
+/* Encabezado */
+.barra {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--linea);
+}
+.marca { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; }
+.marca svg { width: 30px; height: 30px; flex: none; }
+.marca b { font-stretch: 75%; font-weight: 800; font-size: 1.35rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.marca span { font-stretch: 75%; font-size: 1.35rem; font-weight: 400; color: var(--tinta-suave); text-transform: uppercase; letter-spacing: 0.06em; }
+.reloj { text-align: right; font-size: 0.875rem; line-height: 1.3; color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
+.reloj time { display: block; color: var(--tinta); font-weight: 600; font-size: 1rem; }
+
+/* Ficha de conexión + cuadro */
+.portada {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 4vw, 4rem); padding: clamp(2rem, 4vw, 3.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--linea);
+}
+.conexion h1 {
+  margin: 0 0 0.75rem;
+  font-stretch: 68%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(3rem, 7.2vw, 6rem); line-height: 0.9; letter-spacing: -0.01em;
+  color: var(--grupo);
+}
+.conexion .lema { margin: 0 0 1.75rem; max-width: 34ch; font-size: 1.125rem; line-height: 1.45; }
+.solo { display: none; }
+html[data-grupo="arquitectos"] .solo.arquitectos,
+html[data-grupo="ingenieros"]  .solo.ingenieros,
+html[data-grupo="ti"]          .solo.ti,
+html[data-grupo="visitantes"]  .solo.visitantes,
+html[data-grupo="interna"]     .solo.interna,
+html[data-grupo="desconocido"] .solo.desconocido { display: revert; }
+
+.ficha { width: 100%; border-collapse: collapse; font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
+.ficha th, .ficha td { padding: 0.55rem 0; border-top: 1px solid var(--linea-tenue); vertical-align: baseline; }
+.ficha tr:last-child th, .ficha tr:last-child td { border-bottom: 1px solid var(--linea-tenue); }
+.ficha th { text-align: left; font-weight: 400; color: var(--tinta-suave); padding-right: 1rem; white-space: nowrap; }
+.ficha td { text-align: right; font-weight: 600; }
+
+.cuadro-caja h2, .seccion h2 {
+  margin: 0 0 0.35rem; font-stretch: 75%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.05; letter-spacing: 0.01em;
+}
+.nota { margin: 0 0 1.25rem; color: var(--tinta-suave); max-width: 62ch; }
+
+.cuadro { width: 100%; border-collapse: collapse; font-size: 0.875rem; font-variant-numeric: tabular-nums; table-layout: fixed; }
+.cuadro th, .cuadro td { border: 1px solid var(--linea); padding: 0; }
+.cuadro thead th {
+  padding: 0.6rem 0.5rem; text-align: left; vertical-align: bottom; font-weight: 400; line-height: 1.25;
+  background: var(--papel-hondo);
+}
+.cuadro thead th b { display: block; font-weight: 700; text-transform: uppercase; font-stretch: 85%; letter-spacing: 0.02em; }
+.cuadro thead th:first-child { width: 22%; background: transparent; border-top-color: transparent; border-left-color: transparent; }
+.cuadro tbody th { padding: 0.75rem 0.6rem; text-align: left; font-weight: 700; text-transform: uppercase; font-stretch: 85%; letter-spacing: 0.02em; }
+.cuadro tbody th small { display: block; font-weight: 400; text-transform: none; font-stretch: 100%; letter-spacing: 0; color: var(--tinta-suave); font-size: 0.875rem; }
+.tuyo { display: none; color: var(--grupo); }
+html[data-grupo="arquitectos"] tr.f-arquitectos,
+html[data-grupo="ingenieros"]  tr.f-ingenieros,
+html[data-grupo="ti"]          tr.f-ti,
+html[data-grupo="visitantes"]  tr.f-visitantes { background: var(--grupo-fondo); }
+html[data-grupo="arquitectos"] tr.f-arquitectos .tuyo,
+html[data-grupo="ingenieros"]  tr.f-ingenieros .tuyo,
+html[data-grupo="ti"]          tr.f-ti .tuyo,
+html[data-grupo="visitantes"]  tr.f-visitantes .tuyo { display: inline; }
+html[data-grupo="arquitectos"] tr.f-arquitectos th,
+html[data-grupo="ingenieros"]  tr.f-ingenieros th,
+html[data-grupo="ti"]          tr.f-ti th,
+html[data-grupo="visitantes"]  tr.f-visitantes th { color: var(--grupo); }
+
+.celda {
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  width: 100%; min-height: 3.6rem; padding: 0.5rem 0.25rem; margin: 0;
+  border: 0; background: transparent; font: inherit; color: inherit; cursor: help;
+}
+.celda:hover, .celda:focus-visible, .celda[aria-pressed="true"] { background: rgba(19, 48, 42, 0.07); }
+.celda:focus-visible { outline-offset: -3px; }
+.si-marca { width: 0.9rem; height: 0.9rem; background: var(--si); flex: none; }
+.si-texto { font-weight: 700; color: var(--si-texto); }
+.sello {
+  display: inline-block; padding: 0.3rem 0.5rem; line-height: 1; border: 1px solid var(--no); color: var(--no);
+  font-weight: 800; font-stretch: 75%; text-transform: uppercase; letter-spacing: 0.08em;
+  transform: rotate(-5deg);
+}
+.sello .c { display: none; }
+.lectura {
+  margin-top: 0.85rem; padding: 0.75rem 0.9rem; border: 1px solid var(--linea-tenue);
+  font-size: 0.875rem; line-height: 1.5; min-height: 4.5rem; background: var(--papel);
+}
+.lectura b { font-weight: 700; }
+.lectura code { font-family: ui-monospace, "Cascadia Mono", Menlo, monospace; font-size: 0.8125rem; color: var(--tinta); background: var(--papel-hondo); padding: 0.05rem 0.3rem; }
+.hacia-ti { margin: 0.85rem 0 0; font-size: 0.875rem; color: var(--tinta-suave); }
+.hacia-ti b { color: var(--tinta); }
+
+/* Proyectos */
+.seccion { padding: clamp(2.5rem, 5vw, 4rem) 0; border-bottom: 1px solid var(--linea); }
+.proyecto {
+  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 4fr);
+  gap: clamp(1.5rem, 3vw, 3rem); padding: 2rem 0; border-top: 1px solid var(--linea);
+  align-items: start;
+}
+.proyecto:first-of-type { margin-top: 1.5rem; }
+.proyecto h3 {
+  margin: 0; font-stretch: 68%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(2.25rem, 4vw, 3.25rem); line-height: 0.92;
+}
+.proyecto .donde { margin: 0.5rem 0 1.25rem; color: var(--tinta-suave); }
+.etapas { display: grid; grid-template-columns: repeat(6, 1fr); list-style: none; margin: 0; padding: 0; border: 1px solid var(--linea); }
+.etapas li {
+  padding: 0.45rem 0.3rem; font-size: 0.75rem; line-height: 1.2; text-align: center;
+  border-left: 1px solid var(--linea); color: var(--tinta-suave); font-stretch: 85%;
+}
+.etapas li:first-child { border-left: 0; }
+.etapas li.hecha { background: var(--papel-hondo); color: var(--tinta); }
+.etapas li.actual { background: var(--tinta); color: var(--papel); font-weight: 700; }
+.avance-num { font-size: 1.25rem; }
+
+.unidades-caja figcaption { font-size: 0.875rem; color: var(--tinta-suave); margin-bottom: 0.6rem; }
+.unidades { display: grid; gap: 2px; }
+.unidades.torre { grid-template-columns: repeat(4, 1fr); max-width: 10rem; }
+.unidades.lotes { grid-template-columns: repeat(8, 1fr); max-width: 16rem; }
+.u { aspect-ratio: 2.4; border: 1px solid var(--tinta); background: transparent; }
+.lotes .u { aspect-ratio: 1; }
+.u.vendido { background: var(--no); border-color: var(--no); }
+.u.reservado { background: var(--reserva); border-color: var(--reserva); }
+.u.disponible { background: transparent; border-color: var(--si); }
+.u.gris { background: var(--tinta); }
+.u.cimiento { background: repeating-linear-gradient(135deg, var(--tinta) 0 2px, transparent 2px 5px); }
+.u.diseno { border-style: dashed; border-color: var(--tinta-suave); }
+.leyenda { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin: 0.75rem 0 0; padding: 0; list-style: none; font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+.leyenda li { display: flex; align-items: center; gap: 0.4rem; }
+.leyenda .u { width: 0.95rem; aspect-ratio: auto; height: 0.95rem; }
+
+/* Avisos y soporte */
+.dos { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 4vw, 4rem); }
+.avisos { width: 100%; border-collapse: collapse; margin-top: 1.25rem; font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
+.avisos th, .avisos td { text-align: left; vertical-align: baseline; padding: 0.8rem 1rem 0.8rem 0; border-top: 1px solid var(--linea-tenue); }
+.avisos thead th { border-top: 1px solid var(--linea); font-weight: 700; text-transform: uppercase; font-stretch: 85%; letter-spacing: 0.02em; font-size: 0.875rem; }
+.avisos td:first-child { white-space: nowrap; color: var(--tinta-suave); }
+.avisos td:nth-child(2) { white-space: nowrap; font-weight: 600; }
+.avisos tr:last-child td { border-bottom: 1px solid var(--linea); }
+.area-m { display: none; }
+.soporte { border: 1px solid var(--linea); padding: clamp(1.25rem, 2.5vw, 2rem); margin-top: 1.25rem; align-self: start; }
+.soporte h2 { margin-bottom: 0.75rem; }
+.soporte .quien { margin: 0 0 1rem; font-size: 1.125rem; }
+.soporte ol { margin: 0 0 1.25rem; padding-left: 1.25rem; }
+.soporte li { margin-bottom: 0.4rem; }
+.soporte .tu-ip { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.75rem 0 0; border-top: 1px solid var(--linea-tenue); font-variant-numeric: tabular-nums; }
+.soporte .tu-ip strong { font-size: 1.25rem; color: var(--grupo); }
+
+.pie { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; padding: 1.5rem 0 2.5rem; font-size: 0.8125rem; color: var(--tinta-suave); }
+
+/* Sellos: se imprimen una vez al cargar */
+@media (prefers-reduced-motion: no-preference) {
+  .sello { animation: sellar 420ms cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: calc(var(--i, 0) * 60ms + 200ms); }
+  @keyframes sellar {
+    from { transform: rotate(-5deg) scale(1.7); opacity: 0; }
+    to   { transform: rotate(-5deg) scale(1); opacity: 1; }
+  }
+}
+
+@media (max-width: 64rem) {
+  .portada, .dos { grid-template-columns: 1fr; }
+  .proyecto { grid-template-columns: 1fr 1fr; }
+  .proyecto > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 40rem) {
+  .proyecto { grid-template-columns: 1fr; }
+  .cuadro { font-size: 0.8125rem; }
+  .cuadro thead th { padding: 0.5rem 0.25rem; font-size: 0.75rem; }
+  .cuadro thead th span { display: none; }
+  .cuadro tbody th { padding: 0.6rem 0.4rem; }
+  .cuadro tbody th small { display: none; }
+  .celda { min-height: 3.2rem; }
+  .si-texto { display: none; }
+  .sello { padding: 0.3rem 0.4rem; letter-spacing: 0.06em; }
+  .sello .l { display: none; }
+  .sello .c { display: inline; }
+  .cuadro thead th:first-child { width: 31%; }
+  .cuadro thead th b { font-stretch: 70%; letter-spacing: 0; font-size: 0.6875rem; }
+  .cuadro tbody th { font-size: 0.75rem; overflow-wrap: anywhere; }
+  .tuyo { display: none !important; }
+  .marca span { display: none; }
+  .avisos td:nth-child(2), .avisos th:nth-child(2) { display: none; }
+  .area-m { display: block; font-weight: 600; color: var(--tinta); }
+}
 </style>
 </head>
 <body>
-<header>
-  <h1>Intranet Terranova</h1>
-  <p>Solo accesible desde la red interna y la VPN de la empresa</p>
+<div class="hoja">
+
+<header class="barra">
+  <a class="marca" href="/" aria-label="Terranova, inicio de la intranet">
+    <svg viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="21" width="28" height="8" fill="#13302a"/><rect x="5" y="12" width="20" height="7" fill="#13302a"/><rect x="10" y="3" width="10" height="7" fill="none" stroke="#13302a" stroke-width="2"/></svg>
+    <b>Terranova</b><span>Intranet</span>
+  </a>
+  <div class="reloj">
+    Hora del servidor
+    <time id="hora" data-epoch="<!--# config timefmt="%s" --><!--# echo var="date_gmt" -->"><!--# config timefmt="%d/%m/%Y %H:%M UTC" --><!--# echo var="date_gmt" --></time>
+  </div>
 </header>
-<main>
-  <div class="card">
-    <h2>Proyectos en desarrollo</h2>
-    <table>
-      <tr><th>Proyecto</th><th>Tipo</th><th>Estado</th></tr>
-      <tr><td>Torre Norte</td><td>Edificio de apartamentos</td><td>Planos en revisiÃ³n</td></tr>
-      <tr><td>Torre Sur</td><td>Edificio de apartamentos</td><td>Renders listos</td></tr>
-      <tr><td>Condominio Las Lomas</td><td>Casas</td><td>Obra gris</td></tr>
+
+<section class="portada" aria-labelledby="grupo">
+  <div class="conexion">
+    <h1 id="grupo">
+      <span class="solo arquitectos">Arquitectos</span><span class="solo ingenieros">Ingenieros</span><span class="solo ti">TI</span><span class="solo visitantes">Visitantes</span><span class="solo interna">Red interna</span><span class="solo desconocido">Sin identificar</span>
+    </h1>
+    <p class="lema">
+      <span class="solo arquitectos">Puedes entrar por SSH a srv-planos y a srv-render, ver la intranet y salir a Internet por la VPN.</span>
+      <span class="solo ingenieros">Puedes entrar por SSH a srv-planos y ver la intranet. De srv-render solo te llega esta página.</span>
+      <span class="solo ti">Llegas a todos los servidores. Nadie puede iniciar una conexión hacia tu equipo.</span>
+      <span class="solo visitantes">Tu VPN solo da salida a Internet. Si ves esta página, avisa a TI.</span>
+      <span class="solo interna">Estás en un equipo de la red de Azure, no en la VPN. El cuadro muestra qué alcanza cada grupo.</span>
+      <span class="solo desconocido">La red no reconoce tu dirección como parte de ningún grupo. Conéctate a la VPN de tu departamento.</span>
+    </p>
+    <table class="ficha">
+      <tr><th scope="row">Tu dirección IP</th><td><!--# echo var="remote_addr" --></td></tr>
+      <tr><th scope="row">Perfil de VPN</th><td>
+        <span class="solo arquitectos">terranova-arquitectos · UDP 1194</span><span class="solo ingenieros">terranova-ingenieros · UDP 1195</span><span class="solo ti">terranova-ti · UDP 1196</span><span class="solo visitantes">terranova-visitantes · UDP 1197</span><span class="solo interna">Sin VPN</span><span class="solo desconocido">Ninguno</span>
+      </td></tr>
+      <tr><th scope="row">Rango del grupo</th><td>
+        <span class="solo arquitectos">10.10.1.0/27</span><span class="solo ingenieros">10.10.1.32/28</span><span class="solo ti">10.10.1.48/29</span><span class="solo visitantes">10.10.1.64/28</span><span class="solo interna">10.0.0.0/16</span><span class="solo desconocido">—</span>
+      </td></tr>
+      <tr><th scope="row">Pasas por</th><td><span class="solo arquitectos ingenieros ti visitantes">fw-vpn · 10.0.0.20</span><span class="solo interna">Directo, red de Azure</span><span class="solo desconocido">—</span></td></tr>
     </table>
   </div>
-  <div class="card">
-    <h2>Avisos</h2>
-    <p>Los planos se guardan en srv-planos. Para soporte, contactar a TI.</p>
+
+  <div class="cuadro-caja">
+    <h2>Cuadro de acceso</h2>
+    <p class="nota">Lo que cada grupo de la VPN alcanza en la red, según el firewall de fw-vpn, los NSG de Azure y el firewall de cada servidor.</p>
+    <table class="cuadro" id="cuadro">
+      <caption class="sr">Acceso por grupo de VPN a cada servicio</caption>
+      <thead>
+        <tr>
+          <th scope="col"><span class="sr">Grupo</span></th>
+          <th scope="col"><b>Planos</b><span>SSH 22</span></th>
+          <th scope="col"><b>Render</b><span>SSH 22</span></th>
+          <th scope="col"><b>Intranet</b><span>HTTP 80</span></th>
+          <th scope="col"><b>LDAP</b><span>389</span></th>
+          <th scope="col"><b>Internet</b><span>NAT</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="f-arquitectos">
+          <th scope="row">Arquitectos <span class="tuyo">· tú</span><small>10.10.1.0/27</small></th>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Arquitectos → srv-planos, SSH: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.0/27 ip daddr 10.0.0.36 tcp dport 22 accept&lt;/code&gt;. srv-planos: &lt;code&gt;tcp dport 22 ip saddr { 10.0.0.20, 10.10.1.0/27, 10.10.1.32/28 } accept&lt;/code&gt;. SSSD acepta el grupo arquitectos."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Arquitectos → srv-render, SSH: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.0/27 ip daddr 10.0.0.37 tcp dport { 22, 80 } accept&lt;/code&gt;. srv-render: &lt;code&gt;tcp dport 22 ip saddr { 10.0.0.20, 10.0.0.36, 10.10.1.0/27 } accept&lt;/code&gt;. SSSD acepta el grupo arquitectos."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Arquitectos → intranet: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.0/27 ip daddr 10.0.0.37 tcp dport { 22, 80 } accept&lt;/code&gt;. srv-render: &lt;code&gt;tcp dport 80 ip saddr { 10.0.0.0/16, 10.10.1.0/27, 10.10.1.32/28 } accept&lt;/code&gt;. NSG de Servidores: Allow-Web-Intranet."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Arquitectos → LDAP: bloqueado.&lt;/b&gt; Ninguna regla de fw-vpn acepta 10.10.1.0/27 hacia el puerto 389: cae en &lt;code&gt;counter comment &amp;quot;resto-bloqueado&amp;quot;&lt;/code&gt; con política DROP. srv-planos solo acepta LDAP de fw-vpn y srv-render: &lt;code&gt;tcp dport { 389, 636 } ip saddr { 10.0.0.20, 10.0.0.37 } accept&lt;/code&gt;."><span class="sello" style="--i:0"><span class="l">Bloqueado</span><span class="c">No</span></span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Arquitectos → Internet: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr { 10.10.1.0/27, 10.10.1.32/28, 10.0.0.32/28 } ip daddr != { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } oifname &amp;quot;eth0&amp;quot; accept&lt;/code&gt;, y el NAT: &lt;code&gt;oifname &amp;quot;eth0&amp;quot; ip saddr { 10.10.1.0/24, 10.0.0.32/28 } … masquerade&lt;/code&gt;."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+        </tr>
+        <tr class="f-ingenieros">
+          <th scope="row">Ingenieros <span class="tuyo">· tú</span><small>10.10.1.32/28</small></th>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Ingenieros → srv-planos, SSH: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.32/28 ip daddr 10.0.0.36 tcp dport 22 accept&lt;/code&gt;. srv-planos: &lt;code&gt;tcp dport 22 ip saddr { 10.0.0.20, 10.10.1.0/27, 10.10.1.32/28 } accept&lt;/code&gt;. SSSD acepta el grupo ingenieros."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Ingenieros → srv-render, SSH: bloqueado.&lt;/b&gt; fw-vpn solo les abre el 80 de srv-render (&lt;code&gt;ip saddr 10.10.1.32/28 ip daddr 10.0.0.37 tcp dport 80 accept&lt;/code&gt;); el 22 cae en &lt;code&gt;counter comment &amp;quot;resto-bloqueado&amp;quot;&lt;/code&gt;. srv-render tampoco los deja: &lt;code&gt;tcp dport 22 ip saddr { 10.0.0.20, 10.0.0.36, 10.10.1.0/27 } accept&lt;/code&gt;, y su SSSD solo permite arquitectos y ti."><span class="sello" style="--i:1"><span class="l">Bloqueado</span><span class="c">No</span></span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Ingenieros → intranet: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.32/28 ip daddr 10.0.0.37 tcp dport 80 accept&lt;/code&gt;. srv-render: &lt;code&gt;tcp dport 80 ip saddr { 10.0.0.0/16, 10.10.1.0/27, 10.10.1.32/28 } accept&lt;/code&gt;."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Ingenieros → LDAP: bloqueado.&lt;/b&gt; Ninguna regla de fw-vpn acepta 10.10.1.32/28 hacia el 389: cae en &lt;code&gt;counter comment &amp;quot;resto-bloqueado&amp;quot;&lt;/code&gt;. srv-planos: &lt;code&gt;tcp dport { 389, 636 } ip saddr { 10.0.0.20, 10.0.0.37 } accept&lt;/code&gt;."><span class="sello" style="--i:2"><span class="l">Bloqueado</span><span class="c">No</span></span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Ingenieros → Internet: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr { 10.10.1.0/27, 10.10.1.32/28, 10.0.0.32/28 } ip daddr != { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } oifname &amp;quot;eth0&amp;quot; accept&lt;/code&gt;, y el NAT: &lt;code&gt;oifname &amp;quot;eth0&amp;quot; ip saddr { 10.10.1.0/24, 10.0.0.32/28 } … masquerade&lt;/code&gt;."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+        </tr>
+        <tr class="f-ti">
+          <th scope="row">TI <span class="tuyo">· tú</span><small>10.10.1.48/29</small></th>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;TI → srv-planos: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt; (TI llega a todo). srv-planos: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;TI → srv-render: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;. srv-render: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;. SSSD acepta el grupo ti."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;TI → intranet: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;. srv-render: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;TI → LDAP: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;. srv-planos: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;. Es el único grupo de la VPN que llega al directorio."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;TI → Internet: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.48/29 accept&lt;/code&gt;, y el NAT: &lt;code&gt;oifname &amp;quot;eth0&amp;quot; ip saddr { 10.10.1.0/24, 10.0.0.32/28 } … masquerade&lt;/code&gt;."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+        </tr>
+        <tr class="f-visitantes">
+          <th scope="row">Visitantes <span class="tuyo">· tú</span><small>10.10.1.64/28</small></th>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Visitantes → srv-planos: bloqueado.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.64/28 ip daddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } counter drop comment &amp;quot;visitantes-interno&amp;quot;&lt;/code&gt;."><span class="sello" style="--i:3"><span class="l">Bloqueado</span><span class="c">No</span></span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Visitantes → srv-render: bloqueado.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.64/28 ip daddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } counter drop comment &amp;quot;visitantes-interno&amp;quot;&lt;/code&gt;."><span class="sello" style="--i:4"><span class="l">Bloqueado</span><span class="c">No</span></span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Visitantes → intranet: bloqueado.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.64/28 ip daddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } counter drop comment &amp;quot;visitantes-interno&amp;quot;&lt;/code&gt;. Además, ni el NSG de Servidores ni el firewall de srv-render aceptan 10.10.1.64/28."><span class="sello" style="--i:5"><span class="l">Bloqueado</span><span class="c">No</span></span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Visitantes → LDAP: bloqueado.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.64/28 ip daddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } counter drop comment &amp;quot;visitantes-interno&amp;quot;&lt;/code&gt;."><span class="sello" style="--i:6"><span class="l">Bloqueado</span><span class="c">No</span></span></button></td>
+          <td><button type="button" class="celda" data-regla="&lt;b&gt;Visitantes → Internet: permitido.&lt;/b&gt; fw-vpn: &lt;code&gt;ip saddr 10.10.1.64/28 oifname &amp;quot;eth0&amp;quot; accept&lt;/code&gt;, y el NAT: &lt;code&gt;oifname &amp;quot;eth0&amp;quot; ip saddr { 10.10.1.0/24, 10.0.0.32/28 } … masquerade&lt;/code&gt;. Pensado para clientes en la sala de ventas."><span class="si-marca" aria-hidden="true"></span><span class="si-texto">Sí</span><span class="sr">Permitido</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="lectura" id="lectura" aria-live="polite">Toca, pasa el cursor o enfoca una celda para ver la regla que la decide.</div>
+    <p class="hacia-ti"><b>Hacia TI:</b> nadie puede iniciar una conexión. fw-vpn descarta toda conexión nueva hacia 10.10.1.48/29; TI sí recibe las respuestas a lo que pide.</p>
   </div>
-</main>
-<footer>Servidor: srv-render Â· 10.0.0.37 Â· Proyecto final CC3067</footer>
+</section>
+
+<section class="seccion" aria-labelledby="t-proyectos">
+  <h2 id="t-proyectos">Proyectos en desarrollo</h2>
+  <p class="nota">Etapa, avance y próximo hito de cada obra. Los planos de cada proyecto están en srv-planos.</p>
+
+  <article class="proyecto">
+    <div>
+      <h3>Torre Norte</h3>
+      <p class="donde">Apartamentos · zona 15, Ciudad de Guatemala</p>
+      <ol class="etapas" aria-label="Etapa: diseño">
+        <li class="actual">Diseño</li><li>Licencias</li><li>Cimientos</li><li>Obra gris</li><li>Acabados</li><li>Entrega</li>
+      </ol>
+    </div>
+    <table class="ficha">
+      <tr><th scope="row">Estado</th><td>Planos en revisión</td></tr>
+      <tr><th scope="row">Niveles y unidades</th><td>18 niveles · 72 apartamentos</td></tr>
+      <tr><th scope="row">Avance general</th><td class="avance-num">15 %</td></tr>
+      <tr><th scope="row">Próximo hito</th><td>Licencia municipal · 20/11/2026</td></tr>
+      <tr><th scope="row">Responsable</th><td>Ana (Arquitectura)</td></tr>
+    </table>
+    <figure class="unidades-caja" style="margin:0">
+      <figcaption>Unidades por nivel</figcaption>
+      <div class="unidades torre" data-total="72" data-estados="diseno:72" role="img" aria-label="72 apartamentos, todos en diseño"></div>
+      <ul class="leyenda"><li><span class="u diseno"></span>En diseño · 72</li></ul>
+    </figure>
+  </article>
+
+  <article class="proyecto">
+    <div>
+      <h3>Torre Sur</h3>
+      <p class="donde">Apartamentos · zona 15, Ciudad de Guatemala</p>
+      <ol class="etapas" aria-label="Etapa: licencias">
+        <li class="hecha">Diseño</li><li class="actual">Licencias</li><li>Cimientos</li><li>Obra gris</li><li>Acabados</li><li>Entrega</li>
+      </ol>
+    </div>
+    <table class="ficha">
+      <tr><th scope="row">Estado</th><td>Renders listos · preventa abierta</td></tr>
+      <tr><th scope="row">Niveles y unidades</th><td>16 niveles · 64 apartamentos</td></tr>
+      <tr><th scope="row">Avance general</th><td class="avance-num">30 %</td></tr>
+      <tr><th scope="row">Próximo hito</th><td>Inicio de cimentación · 15/01/2027</td></tr>
+      <tr><th scope="row">Responsable</th><td>Ana (Arquitectura)</td></tr>
+    </table>
+    <figure class="unidades-caja" style="margin:0">
+      <figcaption>Preventa por unidad</figcaption>
+      <div class="unidades torre" data-total="64" data-estados="vendido:31,reservado:9,disponible:24" data-mezcla="1" role="img" aria-label="64 apartamentos: 31 vendidos, 9 reservados, 24 disponibles"></div>
+      <ul class="leyenda"><li><span class="u vendido"></span>Vendido · 31</li><li><span class="u reservado"></span>Reservado · 9</li><li><span class="u disponible"></span>Disponible · 24</li></ul>
+    </figure>
+  </article>
+
+  <article class="proyecto">
+    <div>
+      <h3>Condominio Las Lomas</h3>
+      <p class="donde">Casas · carretera a El Salvador, km 18</p>
+      <ol class="etapas" aria-label="Etapa: obra gris">
+        <li class="hecha">Diseño</li><li class="hecha">Licencias</li><li class="hecha">Cimientos</li><li class="actual">Obra gris</li><li>Acabados</li><li>Entrega</li>
+      </ol>
+    </div>
+    <table class="ficha">
+      <tr><th scope="row">Estado</th><td>Obra gris</td></tr>
+      <tr><th scope="row">Lotes</th><td>40 casas en 2 fases</td></tr>
+      <tr><th scope="row">Avance general</th><td class="avance-num">62 %</td></tr>
+      <tr><th scope="row">Próximo hito</th><td>Acabados, fase 1 · 08/03/2027</td></tr>
+      <tr><th scope="row">Responsable</th><td>Iván (Ingeniería)</td></tr>
+    </table>
+    <figure class="unidades-caja" style="margin:0">
+      <figcaption>Obra por lote</figcaption>
+      <div class="unidades lotes" data-total="40" data-estados="gris:25,cimiento:10,libre:5" role="img" aria-label="40 lotes: 25 en obra gris, 10 en cimentación, 5 sin iniciar"></div>
+      <ul class="leyenda"><li><span class="u gris"></span>Obra gris · 25</li><li><span class="u cimiento"></span>Cimentación · 10</li><li><span class="u"></span>Sin iniciar · 5</li></ul>
+    </figure>
+  </article>
+</section>
+
+<div class="seccion dos">
+  <section aria-labelledby="t-avisos">
+    <h2 id="t-avisos">Avisos</h2>
+    <table class="avisos">
+      <thead><tr><th scope="col">Fecha</th><th scope="col">Área</th><th scope="col">Aviso</th></tr></thead>
+      <tbody>
+        <tr><td>28/10/2026<span class="area-m">TI</span></td><td>TI</td><td>La VPN ahora tiene una instancia por departamento. Usa el perfil de tu grupo y entra con tu usuario de siempre.</td></tr>
+        <tr><td>26/10/2026<span class="area-m">TI</span></td><td>TI</td><td>Mantenimiento de srv-planos el sábado 31/10 de 08:00 a 10:00. Durante ese tiempo no se podrá iniciar sesión en la VPN.</td></tr>
+        <tr><td>22/10/2026<span class="area-m">Arquitectura</span></td><td>Arquitectura</td><td>Renders finales de Torre Sur listos para revisión del equipo de ventas.</td></tr>
+        <tr><td>20/10/2026<span class="area-m">Ingeniería</span></td><td>Ingeniería</td><td>Revisión de planos estructurales de Torre Norte: comentarios hasta el 06/11.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <aside class="soporte" aria-labelledby="t-soporte">
+    <h2 id="t-soporte">Soporte de TI</h2>
+    <p class="quien">Tomás, equipo de TI · ext. 210<br>Lunes a viernes, 7:00 a 17:00</p>
+    <ol>
+      <li>Revisa que estés conectado a la VPN de tu grupo.</li>
+      <li>Di qué servidor o servicio no responde.</li>
+      <li>Incluye tu dirección IP:</li>
+    </ol>
+    <div class="tu-ip"><span>Tu IP ahora</span><strong><!--# echo var="remote_addr" --></strong></div>
+  </aside>
+</div>
+
+<footer class="pie">
+  <span>Servido por srv-render · 10.0.0.37 · solo red interna y VPN</span>
+  <span>Datos de ejemplo del caso Terranova · Proyecto final CC3067</span>
+</footer>
+
+</div>
+<script>
+(function () {
+  // Hora del servidor en la zona de Guatemala
+  var t = document.getElementById("hora");
+  var s = parseInt(t && t.getAttribute("data-epoch"), 10);
+  if (s > 0) {
+    try {
+      t.textContent = new Intl.DateTimeFormat("es-GT", {
+        timeZone: "America/Guatemala", day: "2-digit", month: "2-digit",
+        year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false
+      }).format(new Date(s * 1000)).replace(",", "");
+      t.setAttribute("datetime", new Date(s * 1000).toISOString());
+    } catch (e) {}
+  }
+
+  // Lectura de la regla que decide cada celda
+  var lectura = document.getElementById("lectura");
+  var inicial = lectura.innerHTML, fija = null;
+  // Al abrir, mostrar la regla que más define al grupo detectado
+  var g = document.documentElement.getAttribute("data-grupo");
+  var propia = { arquitectos: [0, 3], ingenieros: [1, 1], ti: [2, 0], visitantes: [3, 2] }[g];
+  if (propia) {
+    var fila = document.querySelectorAll("#cuadro tbody tr")[propia[0]];
+    var celda = fila && fila.querySelectorAll(".celda")[propia[1]];
+    if (celda) { inicial = celda.getAttribute("data-regla"); lectura.innerHTML = inicial; }
+  }
+  function mostrar(b) { lectura.innerHTML = b.getAttribute("data-regla"); }
+  document.querySelectorAll("#cuadro .celda").forEach(function (b) {
+    b.addEventListener("mouseenter", function () { mostrar(b); });
+    b.addEventListener("focus", function () { mostrar(b); });
+    b.addEventListener("click", function () {
+      if (fija) fija.setAttribute("aria-pressed", "false");
+      fija = fija === b ? null : b;
+      if (fija) { fija.setAttribute("aria-pressed", "true"); mostrar(b); }
+    });
+  });
+  document.getElementById("cuadro").addEventListener("mouseleave", function () {
+    lectura.innerHTML = fija ? fija.getAttribute("data-regla") : inicial;
+  });
+
+  // Cuadros de unidades (de arriba hacia abajo: último nivel primero)
+  document.querySelectorAll(".unidades").forEach(function (g) {
+    var lista = [];
+    g.getAttribute("data-estados").split(",").forEach(function (p) {
+      var kv = p.split(":");
+      for (var i = 0; i < +kv[1]; i++) lista.push(kv[0]);
+    });
+    if (g.hasAttribute("data-mezcla")) {
+      var x = 7;
+      for (var i = lista.length - 1; i > 0; i--) {
+        x = (x * 9301 + 49297) % 233280;
+        var j = Math.floor(x / 233280 * (i + 1));
+        var tmp = lista[i]; lista[i] = lista[j]; lista[j] = tmp;
+      }
+    }
+    var html = "";
+    lista.forEach(function (e) { html += '<span class="u ' + (e === "libre" ? "" : e) + '"></span>'; });
+    g.innerHTML = html;
+  });
+})();
+</script>
 </body>
 </html>
