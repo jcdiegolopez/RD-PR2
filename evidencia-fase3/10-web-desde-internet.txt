@@ -1,0 +1,6 @@
+== 2026-10-28T14:57:08 Intranet desde Internet (laptop, sin VPN)
+IP publica de fw-vpn, puerto 80: TcpTestSucceeded=False
+srv-render (10.0.0.37) no tiene IP publica: no hay direccion para llegar desde Internet.
+Ip_publica    Asociada_a
+------------  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+fw-vpn-ip     /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/rg-redes-proyecto/providers/Microsoft.Network/networkInterfaces/fw-vpn434/ipConfigurations/ipconfig1

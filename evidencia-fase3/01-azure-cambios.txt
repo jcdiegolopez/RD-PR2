@@ -1,0 +1,63 @@
+== 2026-10-28T14:36:44 Fase 3 paso 1
+
+### borrar subred Arquitectos
+
+
+### borrar subred Ingenieros
+
+
+### borrar subred TI
+
+
+### quitar espacio 10.10.1.0/26
+
+
+### fw: OpenVPN 1194-1197
+
+
+### fw: salida servidores
+
+
+### srv: borrar Allow-SSH
+
+
+### srv: borrar Allow-ICMP
+
+
+### srv: TI todo
+
+
+### srv: SSH planos
+
+
+### srv: SSH render
+
+
+### srv: web intranet
+
+
+### srv: LDAP destino planos
+
+
+### srv: ICMP
+
+
+### dmz: borrar HTTP
+
+
+### dmz: borrar HTTPS
+
+
+### crear rt-servidores
+
+
+### ruta vpn
+
+
+### ruta internet
+
+
+### asociar a Servidores
+
+
+### nsg-firewall: Allow-VPN-Hacia-Red (salida, 10.10.1.0/24 -> 10.0.0.0/16). Sin esta regla Azure bota el trafico de la VPN que fw-vpn reenvia.

@@ -1,0 +1,2 @@
+IP de salida de srv-planos:
+<IP-PUBLICA-FW-VPN>

@@ -1,0 +1,47 @@
+===== DHCP (Azure para VMs, OpenVPN para usuarios) · 2026-10-28T15:07:55
+ssh : Connection timed out during banner exchange
+At line:3 char:151
++ ... lse { '' }; ssh -F $cfg $h "bash /tmp/dhcp-check.sh $arg" 2>&1 | Tee- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection time...banner exchange:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Connection to <IP-PUBLICA-FW-VPN> port 22 timed out
+Connection closed by UNKNOWN port 65535
+--- srv-render: IP por DHCP de Azure
+  HW Address: 60:45:bd:49:80:bb (Microsoft)
+  IPv6 Address Generation Mode: eui64
+  Address: 10.0.0.37 (DHCP4 via 168.63.129.16)
+  Gateway: 10.0.0.33
+  DNS: 168.63.129.16
+  Oct 28 20:36:30 srv-render systemd-networkd[453]: eth0: DHCPv4 address 10.0.0.37/28 via 10.0.0.33
+ssh : Connection timed out during banner exchange
+At line:3 char:151
++ ... lse { '' }; ssh -F $cfg $h "bash /tmp/dhcp-check.sh $arg" 2>&1 | Tee- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection time...banner exchange:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Connection to <IP-PUBLICA-FW-VPN> port 22 timed out
+--- srv-planos: IP por DHCP de Azure
+  HW Address: 60:45:bd:4d:10:0d (Microsoft)
+  IPv6 Address Generation Mode: eui64
+  Address: 10.0.0.36 (DHCP4 via 168.63.129.16)
+  Gateway: 10.0.0.33
+  DNS: 168.63.129.16
+  Oct 28 20:36:27 srv-planos systemd-networkd[453]: eth0: DHCPv4 address 10.0.0.36/28 via 10.0.0.33
+--- fw-vpn: IP por DHCP de Azure
+  Hardware Address: 70:a8:a5:9e:d2:bf
+  IPv6 Address Generation Mode: eui64
+  Address: 10.0.0.20 (DHCP4 via 168.63.129.16)
+  Gateway: 10.0.0.17
+  DNS: 168.63.129.16
+  Oct 28 20:36:35 fw-vpn systemd-networkd[618]: eth0: DHCPv4 address 10.0.0.20/28, gateway 10.0.0.17 acquired from 168.63.129.16
+--- OpenVPN: IPs dinÃ¡micas que entregÃ³ cada instancia (pool)
+  [arq] ana.arq/<IP-ADMIN>:53010 MULTI_sva: pool returned IPv4=10.10.1.2, IPv6=(Not enabled)
+  [ing] ivan.ing/<IP-ADMIN>:4180 MULTI_sva: pool returned IPv4=10.10.1.34, IPv6=(Not enabled)
+  [ti] tomas.ti/<IP-ADMIN>:4191 MULTI_sva: pool returned IPv4=10.10.1.50, IPv6=(Not enabled)
+  [vis] visita1/<IP-ADMIN>:4223 MULTI_sva: pool returned IPv4=10.10.1.66, IPv6=(Not enabled)
+--- Intentos rechazados por LDAP
+  Oct 28 20:52:00 fw-vpn vpn-ldap[6022]: rechazado ana.arq (ti): no es del grupo
+  Oct 28 20:52:00 fw-vpn vpn-ldap[6033]: rechazado ana.arq (arquitectos): clave

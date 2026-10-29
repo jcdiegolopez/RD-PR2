@@ -1,0 +1,17 @@
+paquetes ok: OpenVPN 2.6.19
+certificados ok
+configuraciones ok
+--- openvpn-server@arq: active
+--- openvpn-server@ing: active
+--- openvpn-server@ti: active
+--- openvpn-server@vis: active
+--- interfaces
+tun-arq          UNKNOWN        10.10.1.1/27 
+tun-ing          UNKNOWN        10.10.1.33/28 
+tun-ti           UNKNOWN        10.10.1.49/29 
+tun-vis          UNKNOWN        10.10.1.65/28 
+--- puertos
+UNCONN 0      0             0.0.0.0:1194      0.0.0.0:*    users:(("openvpn",pid=5706,fd=6))        
+UNCONN 0      0             0.0.0.0:1195      0.0.0.0:*    users:(("openvpn",pid=5770,fd=6))        
+UNCONN 0      0             0.0.0.0:1196      0.0.0.0:*    users:(("openvpn",pid=5833,fd=6))        
+UNCONN 0      0             0.0.0.0:1197      0.0.0.0:*    users:(("openvpn",pid=5897,fd=6))        

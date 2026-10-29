@@ -1,0 +1,27 @@
+--- srv-planos: usuarios de LDAP vistos por el sistema
+uid=10001(ana.arq) gid=20001(arquitectos) groups=20001(arquitectos)
+uid=10002(ivan.ing) gid=20002(ingenieros) groups=20002(ingenieros)
+uid=10003(tomas.ti) gid=20003(ti) groups=20003(ti)
+uid=10004(visita1) gid=20004(visitantes) groups=20004(visitantes)
+--- grupos permitidos: arquitectos,ingenieros,ti
+--- srv-render: usuarios de LDAP vistos por el sistema
+uid=10001(ana.arq) gid=20001(arquitectos) groups=20001(arquitectos)
+uid=10002(ivan.ing) gid=20002(ingenieros) groups=20002(ingenieros)
+uid=10003(tomas.ti) gid=20003(ti) groups=20003(ti)
+uid=10004(visita1) gid=20004(visitantes) groups=20004(visitantes)
+--- grupos permitidos: arquitectos,ti
+SSH con usuarios de LDAP (desde fw-vpn 10.0.0.20)
+-- ana.arq (arquitectos)
+  entro como ana.arq [arquitectos] a srv-planos
+  entro como ana.arq [arquitectos] a srv-render
+-- ivan.ing (ingenieros)
+  entro como ivan.ing [ingenieros] a srv-planos
+  RECHAZADO: ivan.ing -> 10.0.0.37
+-- tomas.ti (ti)
+  entro como tomas.ti [ti] a srv-planos
+  entro como tomas.ti [ti] a srv-render
+-- visita1 (visitantes)
+  RECHAZADO: visita1 -> 10.0.0.36
+  RECHAZADO: visita1 -> 10.0.0.37
+-- azureuser con clave (debe fallar: solo llave)
+  RECHAZADO: azureuser -> 10.0.0.36

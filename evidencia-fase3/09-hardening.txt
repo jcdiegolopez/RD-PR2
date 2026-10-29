@@ -1,0 +1,88 @@
+
+===== fw-vpn Â· 2026-10-28 20:56:00 UTC
+--- Puertos escuchando (ss -tulpn)
+Netid State  Recv-Q Send-Q  Local Address:Port Peer Address:PortProcess                                                 
+udp   UNCONN 0      0          127.0.0.54:53        0.0.0.0:*    users:(("systemd-resolve",pid=456,fd=16))              
+udp   UNCONN 0      0      10.0.0.20%eth0:68        0.0.0.0:*    users:(("systemd-network",pid=618,fd=21))              
+udp   UNCONN 0      0             0.0.0.0:123       0.0.0.0:*    users:(("chronyd",pid=2967,fd=8))                      
+udp   UNCONN 0      0             0.0.0.0:1194      0.0.0.0:*    users:(("openvpn",pid=5706,fd=6))                      
+udp   UNCONN 0      0             0.0.0.0:1195      0.0.0.0:*    users:(("openvpn",pid=5770,fd=6))                      
+udp   UNCONN 0      0             0.0.0.0:1196      0.0.0.0:*    users:(("openvpn",pid=5833,fd=6))                      
+udp   UNCONN 0      0             0.0.0.0:1197      0.0.0.0:*    users:(("openvpn",pid=5897,fd=6))                      
+udp   UNCONN 0      0           127.0.0.1:323       0.0.0.0:*    users:(("chronyd",pid=2967,fd=6))                      
+tcp   LISTEN 0      4096          0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=1067,fd=3),("systemd",pid=1,fd=169))
+tcp   LISTEN 0      4096       127.0.0.54:53        0.0.0.0:*    users:(("systemd-resolve",pid=456,fd=17))              
+tcp   LISTEN 0      4096             [::]:22           [::]:*    users:(("sshd",pid=1067,fd=4),("systemd",pid=1,fd=172))
+--- sshd efectivo
+permitrootlogin without-password
+pubkeyauthentication yes
+passwordauthentication no
+--- PolÃ­tica de entrada
+  type filter hook input priority filter; policy drop;
+  udp sport 67 udp dport 68 accept
+  udp dport 1194-1197 accept
+  tcp dport 22 ip saddr { 10.10.1.48/29, <IP-ADMIN> } accept
+  udp dport 123 ip saddr { 10.0.0.0/16, 10.10.1.0-10.10.1.55 } accept
+  icmp type echo-request ip saddr { 10.0.0.0/16, 10.10.1.0-10.10.1.55 } accept
+===== srv-planos Â· 2026-10-28 20:56:08 UTC
+--- Puertos escuchando (ss -tulpn)
+Netid State  Recv-Q Send-Q  Local Address:Port Peer Address:PortProcess                                   
+udp   UNCONN 0      0           127.0.0.1:323       0.0.0.0:*    users:(("chronyd",pid=2355,fd=5))        
+udp   UNCONN 0      0      10.0.0.36%eth0:68        0.0.0.0:*    users:(("systemd-network",pid=453,fd=18))
+tcp   LISTEN 0      2048          0.0.0.0:389       0.0.0.0:*    users:(("slapd",pid=1866,fd=8))          
+tcp   LISTEN 0      128           0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=560,fd=3))            
+tcp   LISTEN 0      2048             [::]:389          [::]:*    users:(("slapd",pid=1866,fd=9))          
+tcp   LISTEN 0      128              [::]:22           [::]:*    users:(("sshd",pid=560,fd=4))            
+--- sshd efectivo
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+--- PolÃ­tica de entrada
+  type filter hook input priority filter; policy drop;
+  udp sport 67 udp dport 68 accept
+  ip saddr 10.10.1.48/29 accept
+  tcp dport 22 ip saddr { 10.0.0.20, 10.10.1.0-10.10.1.47 } accept
+  tcp dport { 389, 636 } ip saddr { 10.0.0.20, 10.0.0.37 } accept
+  icmp type echo-request ip saddr { 10.0.0.0/16, 10.10.1.0-10.10.1.47 } accept
+===== srv-render Â· 2026-10-28 20:56:16 UTC
+--- Puertos escuchando (ss -tulpn)
+Netid State  Recv-Q Send-Q  Local Address:Port Peer Address:PortProcess                                                                         
+udp   UNCONN 0      0      10.0.0.37%eth0:68        0.0.0.0:*    users:(("systemd-network",pid=453,fd=18))                                      
+udp   UNCONN 0      0           127.0.0.1:323       0.0.0.0:*    users:(("chronyd",pid=2475,fd=5))                                              
+tcp   LISTEN 0      511         10.0.0.37:80        0.0.0.0:*    users:(("nginx",pid=2063,fd=6),("nginx",pid=2061,fd=6),("nginx",pid=2060,fd=6))
+tcp   LISTEN 0      128           0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=826,fd=3))                                                  
+tcp   LISTEN 0      128              [::]:22           [::]:*    users:(("sshd",pid=826,fd=4))                                                  
+--- sshd efectivo
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+--- PolÃ­tica de entrada
+  type filter hook input priority filter; policy drop;
+  udp sport 67 udp dport 68 accept
+  ip saddr 10.10.1.48/29 accept
+  tcp dport 22 ip saddr { 10.0.0.20, 10.0.0.36, 10.10.1.0/27 } accept
+  tcp dport 80 ip saddr { 10.0.0.0/16, 10.10.1.0-10.10.1.47 } accept
+  icmp type echo-request ip saddr { 10.0.0.0/16, 10.10.1.0-10.10.1.47 } accept
+ssh : bash: -c: line 1: syntax error near unexpected token `('
+At line:4 char:1
++ ssh -F $cfg fw 'sudo DEBIAN_FRONTEND=noninteractive apt-get install - ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (bash: -c: line ...ected token `(':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+bash: -c: line 1: `sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq nmap >/dev/null 2>&1; echo ===== nmap 
+desde fw-vpn (10.0.0.20) a los servidores, 1000 puertos TCP; sudo nmap -Pn --top-ports 1000 10.0.0.36 10.0.0.37 | grep 
+-E Nmap scan|open|filtered ports|closed ports'
+--- fw-vpn sshd efectivo
+permitrootlogin no
+passwordauthentication no
+===== nmap desde fw-vpn (10.0.0.20) a los servidores, 1000 puertos TCP
+Nmap scan report for srv-planos.internal.cloudapp.net (10.0.0.36)
+Not shown: 997 filtered tcp ports (no-response)
+22/tcp  open   ssh
+389/tcp open   ldap
+636/tcp closed ldapssl
+Nmap scan report for srv-render.internal.cloudapp.net (10.0.0.37)
+Not shown: 998 filtered tcp ports (no-response)
+22/tcp open  ssh
+80/tcp open  http

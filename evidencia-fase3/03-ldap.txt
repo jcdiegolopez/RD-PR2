@@ -1,0 +1,53 @@
+srv-planos
+--- grupos
+dn: cn=arquitectos,ou=grupos,dc=terranova,dc=local
+cn: arquitectos
+gidNumber: 20001
+memberUid: ana.arq
+
+dn: cn=ingenieros,ou=grupos,dc=terranova,dc=local
+cn: ingenieros
+gidNumber: 20002
+memberUid: ivan.ing
+
+dn: cn=ti,ou=grupos,dc=terranova,dc=local
+cn: ti
+gidNumber: 20003
+memberUid: tomas.ti
+
+dn: cn=visitantes,ou=grupos,dc=terranova,dc=local
+cn: visitantes
+gidNumber: 20004
+memberUid: visita1
+
+--- usuarios
+dn: ou=usuarios,dc=terranova,dc=local
+
+dn: uid=ana.arq,ou=usuarios,dc=terranova,dc=local
+uid: ana.arq
+uidNumber: 10001
+gidNumber: 20001
+
+dn: uid=visita1,ou=usuarios,dc=terranova,dc=local
+uid: visita1
+uidNumber: 10004
+gidNumber: 20004
+
+dn: uid=ivan.ing,ou=usuarios,dc=terranova,dc=local
+uid: ivan.ing
+uidNumber: 10002
+gidNumber: 20002
+
+dn: uid=tomas.ti,ou=usuarios,dc=terranova,dc=local
+uid: tomas.ti
+uidNumber: 10003
+gidNumber: 20003
+
+--- escuchando
+ssh : bash: line 1: ﻿date: command not found
+At line:12 char:6
++ $s | ssh -F $cfg planos 'bash -s' 2>&1 | Tee-Object -FilePath "$HOME\ ...
++      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (bash: line 1: ﻿date: command not found:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

@@ -1,0 +1,43 @@
+
+===== VPN arquitectos Ã‚Â· 2026-10-28T15:04:33
+IP asignada por OpenVPN: 10.10.1.2
+ping srv-planos 10.0.0.36 ........ responde
+ping srv-render 10.0.0.37 ........ responde
+SSH srv-planos  10.0.0.36:22 ..... abierto
+SSH srv-render  10.0.0.37:22 ..... abierto
+LDAP srv-planos 10.0.0.36:389 .... BLOQUEADO
+Intranet http://10.0.0.37 ........ OK: Intranet Terranova
+===== VPN ingenieros Ã‚Â· 2026-10-28T15:04:51
+IP asignada por OpenVPN: 10.10.1.34
+ping srv-planos 10.0.0.36 ........ responde
+ping srv-render 10.0.0.37 ........ responde
+SSH srv-planos  10.0.0.36:22 ..... abierto
+SSH srv-render  10.0.0.37:22 ..... BLOQUEADO
+LDAP srv-planos 10.0.0.36:389 .... BLOQUEADO
+Intranet http://10.0.0.37 ........ OK: Intranet Terranova
+===== VPN ti Ã‚Â· 2026-10-28T15:05:23
+IP asignada por OpenVPN: 10.10.1.50
+ping srv-planos 10.0.0.36 ........ responde
+ping srv-render 10.0.0.37 ........ responde
+SSH srv-planos  10.0.0.36:22 ..... abierto
+SSH srv-render  10.0.0.37:22 ..... abierto
+LDAP srv-planos 10.0.0.36:389 .... abierto
+Intranet http://10.0.0.37 ........ OK: Intranet Terranova
+
+===== Nadie inicia hacia TI (laptop de TI con IP 10.10.1.50)
+antes:   ip daddr 10.10.1.48/29 ct state new counter packets 0 bytes 0 drop comment "nadie-hacia-TI"
+3 packets transmitted, 0 received, 100% packet loss, time 2034ms
+
+srv-planos -> TI tcp/445: BLOQUEADO
+despues: ip daddr 10.10.1.48/29 ct state new counter packets 8 bytes 552 drop comment "nadie-hacia-TI"
+
+===== VPN visitantes Ã‚Â· 2026-10-28T15:06:01
+IP asignada por OpenVPN: 10.10.1.66
+ping srv-planos 10.0.0.36 ........ BLOQUEADO
+ping srv-render 10.0.0.37 ........ BLOQUEADO
+SSH srv-planos  10.0.0.36:22 ..... BLOQUEADO
+SSH srv-render  10.0.0.37:22 ..... BLOQUEADO
+LDAP srv-planos 10.0.0.36:389 .... BLOQUEADO
+Intranet http://10.0.0.37 ........ BLOQUEADO
+Internet (IP de salida) ........... <IP-PUBLICA-FW-VPN>
+contador: ip saddr 10.10.1.64/28 ip daddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } counter packets 14 bytes 760 drop comment "visitantes-interno"

@@ -1,0 +1,28 @@
+--- fw-vpn: fuentes de hora
+===============================================================================
+#? PHC0                          0   3     0     -     +0ns[   +0ns] +/-    0ns
+--- fw-vpn: puerto 123
+UNCONN 0      0             0.0.0.0:123       0.0.0.0:*    users:(("chronyd",pid=2967,fd=8))        
+--- srv-planos
+^? fw-vpn.internal.cloudapp>     0   7     0     -     +0ns[   +0ns] +/-    0ns
+--- srv-render
+^? fw-vpn.internal.cloudapp>     0   7     0     -     +0ns[   +0ns] +/-    0ns
+--- clientes de NTP en fw-vpn
+Hostname                      NTP   Drop Int IntL Last     Cmd   Drop Int  Last
+===============================================================================
+localhost                       0      0   -   -     -       2      0  -5    53
+
+=== Despues de reiniciar clientes (2026-10-28T14:47:43)
+--- srv-planos
+^* fw-vpn.internal.cloudapp>     1   6    17    40  +6049ns[+6101ns] +/-  342us
+Reference ID    : 0A000014 (fw-vpn.internal.cloudapp.net)
+Stratum         : 2
+Ref time (UTC)  : Wed Oct 28 20:47:06 2026
+--- srv-render
+^* fw-vpn.internal.cloudapp>     1   6    17    41    +18us[  +41us] +/-  472us
+--- clientes de NTP en fw-vpn
+Hostname                      NTP   Drop Int IntL Last     Cmd   Drop Int  Last
+===============================================================================
+localhost                       0      0   -   -     -       3      0   4    53
+srv-planos.internal.clou>       4      0   1   -    44       0      0   -     -
+srv-render.internal.clou>       4      0   1   -    41       0      0   -     -

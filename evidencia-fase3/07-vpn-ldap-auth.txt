@@ -1,0 +1,16 @@
+ACEPTADO  usuario=ana.arq instancia=arquitectos
+RECHAZADO usuario=ana.arq instancia=ti (no es del grupo ti)
+RECHAZADO usuario=ana.arq instancia=arquitectos (clave incorrecta)
+ACEPTADO  usuario=tomas.ti instancia=ti
+ACEPTADO  usuario=visita1 instancia=visitantes
+ACEPTADO  usuario=ivan.ing instancia=ingenieros
+
+===== Cliente real: usuario de Arquitectos intentando la VPN de TI (2026-10-28T15:07:17)
+IP recibida: ninguna. OJO: el log de fw-vpn no muestra este intento, asi que esta prueba con el cliente real NO es concluyente; la evidencia valida del rechazo es la prueba del script de arriba.
+Oct 28 20:52:00 fw-vpn vpn-ldap[6059]: aceptado visita1 (visitantes)
+Oct 28 20:52:00 fw-vpn vpn-ldap[6072]: aceptado ivan.ing (ingenieros)
+Oct 28 21:01:39 fw-vpn vpn-ldap[8489]: aceptado ana.arq (arquitectos)
+Oct 28 21:04:49 fw-vpn vpn-ldap[8723]: aceptado ivan.ing (ingenieros)
+Oct 28 21:05:21 fw-vpn vpn-ldap[8736]: aceptado tomas.ti (ti)
+Oct 28 21:05:59 fw-vpn vpn-ldap[8936]: aceptado visita1 (visitantes)
+

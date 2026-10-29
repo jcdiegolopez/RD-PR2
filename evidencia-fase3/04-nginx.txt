@@ -1,0 +1,12 @@
+ssh : nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+At line:3 char:1
++ ssh -F $cfg render 'bash /tmp/setup-nginx.sh' 2>&1 | Tee-Object -File ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (nginx: the conf...nf syntax is ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+--- puertos de nginx
+LISTEN 0      511        10.0.0.37:80        0.0.0.0:*    users:(("nginx",pid=2063,fd=6),("nginx",pid=2061,fd=6),("nginx",pid=2060,fd=6))
+--- prueba local
+<title>Intranet Terranova</title>
