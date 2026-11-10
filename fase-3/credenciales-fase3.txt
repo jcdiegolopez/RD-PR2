@@ -1,0 +1,7 @@
+﻿# Credenciales de prueba Fase 3 · NO subir al repo
+
+ldap-admin (cn=admin,dc=terranova,dc=local) = NnRKvXLPFxgpuhYy
+ana.arq (arquitectos) = r2xXdzTqm6jtIhga
+ivan.ing (ingenieros) = Bn7iJmNxUakdAIp5
+tomas.ti (ti) = Bfxj6bArYlgE0WsQ
+visita1 (visitantes) = 5zTfSnH371aP98vi

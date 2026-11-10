@@ -1,3 +1,5 @@
+> **Reemplazado en la Fase 3.** Este es el diseño inicial (una sola instancia con IP fija por usuario). Lo que se implementó son 4 instancias, una por grupo, con IPs dinámicas: ver `fase-3/config/setup-openvpn.sh` y `fase-3/plan-fase3.md`.
+
 # OpenVPN en fw-vpn: diseño documentado
 
 Estado: **documentado para la Fase 3**. En la Fase 2 no se instaló. La subred Firewall ya tiene abierto UDP 1194 en `nsg-firewall`, así que el puerto está listo.

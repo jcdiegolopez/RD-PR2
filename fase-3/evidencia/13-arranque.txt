@@ -1,0 +1,14 @@
+===== Servicios despues de encender las VMs � 2026-10-28T19:44:12
+== fw: sin respuesta por SSH
+== srv-planos · encendida hace 12 minutes
+  slapd                    active
+  sssd                     active
+  chrony                   active
+  ssh                      active
+  firewall nftables        cargado
+== srv-render · encendida hace 12 minutes
+  nginx                    active
+  sssd                     active
+  chrony                   active
+  ssh                      active
+  firewall nftables        cargado

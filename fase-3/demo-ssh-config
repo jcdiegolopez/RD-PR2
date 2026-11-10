@@ -1,0 +1,26 @@
+# Config SSH para la demo (usar con la VPN de TI conectada)
+# Uso: ssh -F demo-ssh-config fw   |   planos   |   render
+
+Host fw
+    HostName 10.0.0.20
+    User azureuser
+    IdentityFile C:\Windows\System32\redes_key
+    IdentitiesOnly yes
+    ConnectTimeout 10
+    StrictHostKeyChecking accept-new
+
+Host planos
+    HostName 10.0.0.36
+    User azureuser
+    IdentityFile C:\Users\dijol\.ssh\llave_compa
+    IdentitiesOnly yes
+    ConnectTimeout 10
+    StrictHostKeyChecking accept-new
+
+Host render
+    HostName 10.0.0.37
+    User azureuser
+    IdentityFile C:\Users\dijol\.ssh\llave_compa
+    IdentitiesOnly yes
+    ConnectTimeout 10
+    StrictHostKeyChecking accept-new
