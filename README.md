@@ -43,7 +43,7 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 - `llaves/`: `redes_key` (+ `.pub`) para fw-vpn y `llave_compa` para srv-planos y srv-render.
 - Guía de estudio (artifact): https://claude.ai/artifact/T8pgkrySdJ7qTGuD2vdXqi
 - `enunciado-fase3.pdf`.
-- La presentación de la fase fue la demo en vivo, con el guion de `demo-fase3.md`; no hay diapositivas.
+- Presentación (artifact, 8 diapositivas): https://claude.ai/artifact/5JQoDa2PVnePx5wGSkBgwj. El guion de la demo en vivo está en `demo-fase3.md`.
 - **Falta agregar:** reporte y capturas de los servicios.
 
 ### Fase 4
