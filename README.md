@@ -20,7 +20,7 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 ### Fase 1
 - `documento-fase1.md`: documento de diseño (copia en texto, sin figuras).
 - `diagrama-fase1.drawio`: diagrama original.
-- **Falta agregar:** enunciado (PDF) y presentación (PDF).
+- `enunciado-fase1.pdf` y `presentacion-fase1.pptx`.
 
 ### Fase 2
 - `config/nsg/`: script con el que se crearon los NSG y sus reglas exportadas.
@@ -28,8 +28,8 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 - `evidencia/`: pruebas de conectividad, auditoría de Azure y capturas del portal.
 - `informe-fase2.md`: el informe entregado (copia en texto, sin figuras).
 - `guion-presentacion-fase2.md` y `demo-en-vivo-fase2.md`.
+- `enunciado-fase2.pdf`.
 - Presentación (artifact): https://claude.ai/artifact/Y1rqBdre5vYgRvYrA3H2cx
-- **Falta agregar:** enunciado (PDF).
 
 ### Fase 3
 - `plan-fase3.md`: el plan completo, con las decisiones.
@@ -42,7 +42,12 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 - `vpn-perfiles/`: los 8 perfiles `.ovpn` (2 por grupo). Se conectan con el usuario y la contraseña de LDAP.
 - `llaves/`: `redes_key` (+ `.pub`) para fw-vpn y `llave_compa` para srv-planos y srv-render.
 - Guía de estudio (artifact): https://claude.ai/artifact/T8pgkrySdJ7qTGuD2vdXqi
-- **Falta agregar:** enunciado (PDF), reporte, presentación y capturas de los servicios.
+- `enunciado-fase3.pdf`.
+- La presentación de la fase fue la demo en vivo, con el guion de `demo-fase3.md`; no hay diapositivas.
+- **Falta agregar:** reporte y capturas de los servicios.
+
+### Fase 4
+- `enunciado-fase4.pdf`.
 
 ## Datos de la red
 

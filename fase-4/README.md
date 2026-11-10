@@ -1,5 +1,7 @@
 # Fase 4 · Pendiente
 
+Enunciado: `enunciado-fase4.pdf`.
+
 Ideas iniciales (ver [BITACORA.md](../BITACORA.md)):
 - Pasar a una suscripción de pago para tener todas las máquinas y reconstruir la red completa.
 - VM propia para la web pública (DMZ) y para la intranet (Servidores).
