@@ -44,7 +44,7 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 - Guía de estudio (artifact): https://claude.ai/artifact/T8pgkrySdJ7qTGuD2vdXqi
 - `enunciado-fase3.pdf`.
 - `presentacion-fase3.pdf` y `presentacion-fase3.pptx` (8 diapositivas). Original (artifact): https://claude.ai/artifact/5JQoDa2PVnePx5wGSkBgwj. El guion de la demo en vivo está en `demo-fase3.md`.
-- **No existe:** el reporte de la fase, que según el enunciado se escribe sobre el informe de la Fase 2, con screenshots de los servicios funcionando. La evidencia en texto de `evidencia/` cubre lo mismo, pero no hay capturas de pantalla.
+- `reporte-fase3.md`: el reporte de la fase, escrito el 10 nov a partir de la evidencia, para el reporte final. **Faltan los screenshots:** cada `[Insertar captura: …]` dice cuál tomar.
 
 ### Fase 4
 - `enunciado-fase4.pdf`.
