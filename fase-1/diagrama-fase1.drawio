@@ -1,0 +1,194 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="CdCfuAQnvbEcnvdVsAIX">
+    <mxGraphModel grid="0" page="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=22;fontStyle=1;align=left;verticalAlign=middle;" value="Caso 4 · Desarrolladora de bienes raíces — Red en Azure (Proyecto Final, Fase 1)" vertex="1">
+          <mxGeometry height="40" width="1000" x="20" as="geometry" />
+        </mxCell>
+        <mxCell id="internet" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=15;" value="&lt;b&gt;Internet&lt;/b&gt;" vertex="1">
+          <mxGeometry height="120" width="220" x="820" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dnspub" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=11;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/DNS_Zones.svg;" value="&lt;b&gt;Azure DNS&lt;/b&gt; (zona pública .me)&lt;br&gt;registros A → IP web / IP fw-vpn" vertex="1">
+          <mxGeometry height="64" width="64" x="1200" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="blob" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=11;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/storage/Storage_Accounts.svg;" value="&lt;b&gt;Blob Storage&lt;/b&gt;&lt;br&gt;respaldos (retención 5 años)" vertex="1">
+          <mxGeometry height="52" width="65" x="1500" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="users" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff4e5;strokeColor=#b45309;dashed=1;verticalAlign=top;fontSize=13;arcSize=3;spacingTop=8;" value="&lt;b&gt;Usuarios remotos (oficina o casa)&lt;/b&gt;&lt;br&gt;Pool OpenVPN 10.10.0.0/23" vertex="1">
+          <mxGeometry height="640" width="340" x="20" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="arq" parent="1" style="image;html=1;image=https://app.diagrams.net/img/lib/clip_art/computers/Laptop_128x128.png;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=10;fontSize=12;" value="&lt;b&gt;Arquitectos&lt;/b&gt; (15)&lt;br&gt;10.10.1.0/27&lt;br&gt;IPs .1 – .15" vertex="1">
+          <mxGeometry height="70" width="70" x="55" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="ing" parent="1" style="image;html=1;image=https://app.diagrams.net/img/lib/clip_art/computers/Laptop_128x128.png;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=10;fontSize=12;" value="&lt;b&gt;Ingenieros&lt;/b&gt; (10)&lt;br&gt;10.10.1.32/28&lt;br&gt;IPs .33 – .42" vertex="1">
+          <mxGeometry height="70" width="70" x="55" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="ti" parent="1" style="image;html=1;image=https://app.diagrams.net/img/lib/clip_art/computers/Laptop_128x128.png;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=10;fontSize=12;" value="&lt;b&gt;TI&lt;/b&gt; (3)&lt;br&gt;10.10.1.48/29&lt;br&gt;IPs .49 – .51&lt;br&gt;&lt;font color=&#39;#e67e22&#39;&gt;nadie inicia conexión hacia TI&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="70" x="55" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="step3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#1f6feb;fontSize=11;align=left;spacing=8;" value="&lt;b&gt;③&lt;/b&gt; Al conectar, OpenVPN consulta el grupo del usuario en LDAP y le asigna una IP del rango de su departamento (client-config-dir)" vertex="1">
+          <mxGeometry height="85" width="300" x="40" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="vnet" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf3fb;strokeColor=#0078d4;dashed=1;verticalAlign=top;align=left;spacingLeft=14;spacingTop=8;fontSize=13;arcSize=2;" value="&lt;b&gt;VNet 10.0.0.0/16&lt;/b&gt; · Azure for Students (región permitida, ej. Sweden Central)" vertex="1">
+          <mxGeometry height="640" width="1260" x="420" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="sdmz" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#2e7d32;dashed=1;verticalAlign=top;fontSize=12;arcSize=3;spacingTop=6;" value="&lt;b&gt;Subred DMZ&lt;/b&gt;&lt;br&gt;10.0.0.0/28" vertex="1">
+          <mxGeometry height="560" width="300" x="450" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="sfw" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#0f766e;dashed=1;verticalAlign=top;fontSize=12;arcSize=3;spacingTop=6;" value="&lt;b&gt;Subred Firewall&lt;/b&gt;&lt;br&gt;10.0.0.16/28" vertex="1">
+          <mxGeometry height="560" width="370" x="810" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="ssrv" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#8e44ad;dashed=1;verticalAlign=top;fontSize=12;arcSize=3;spacingTop=6;" value="&lt;b&gt;Subred Servidores&lt;/b&gt;&lt;br&gt;10.0.0.32/28" vertex="1">
+          <mxGeometry height="560" width="410" x="1240" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="pipweb" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=11;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/Public_IP_Addresses.svg;" value="IP pública web" vertex="1">
+          <mxGeometry height="52" width="65" x="568" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="web" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=11;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/compute/Virtual_Machine.svg;" value="&lt;b&gt;web&lt;/b&gt; · 10.0.0.4&lt;br&gt;Ubuntu + Nginx&lt;br&gt;Certbot (HTTPS 443) · B1s" vertex="1">
+          <mxGeometry height="64" width="69" x="566" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="nsgdmz" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/Network_Security_Groups.svg;" value="NSG DMZ&lt;br&gt;443 desde Internet" vertex="1">
+          <mxGeometry height="34" width="28" x="500" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="rtdmz" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/Route_Tables.svg;" value="UDR DMZ&lt;br&gt;(sin ruta 0/0)" vertex="1">
+          <mxGeometry height="35" width="36" x="660" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="pipfw" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=11;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/Public_IP_Addresses.svg;" value="IP pública fw-vpn" vertex="1">
+          <mxGeometry height="52" width="65" x="963" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="fw" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f3f0;strokeColor=#0f766e;strokeWidth=2;align=left;verticalAlign=top;spacing=10;fontSize=11;arcSize=5;" value="&lt;b&gt;fw-vpn&lt;/b&gt; · 10.0.0.20 (IP fija)&lt;br&gt;túnel VPN 10.10.0.1 · B1s&lt;hr&gt;• OpenVPN UDP 1194 (login LDAP, IP por grupo)&lt;br&gt;• &lt;b&gt;④ nftables revisa la ACL&lt;/b&gt;&lt;br&gt;• NAT solo hacia Internet&lt;br&gt;• IP forwarding (Linux + NIC de Azure)&lt;br&gt;• BIND9 DNS interno · chrony NTP" vertex="1">
+          <mxGeometry height="190" width="250" x="870" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="nsgfw" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/Network_Security_Groups.svg;" value="NSG Firewall&lt;br&gt;UDP 1194 desde Internet" vertex="1">
+          <mxGeometry height="34" width="28" x="880" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="noudr" parent="1" style="text;html=1;fontSize=10;align=center;verticalAlign=middle;fontColor=#8a94a3;" value="Sin UDR&lt;br&gt;(evita loop)" vertex="1">
+          <mxGeometry height="40" width="90" x="1050" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="planos" parent="1" style="image;aspect=fixed;html=1;points=[];fontSize=11;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=10;image=https://app.diagrams.net/img/lib/azure2/compute/Virtual_Machine.svg;" value="&lt;b&gt;srv-planos&lt;/b&gt; · 10.0.0.36&lt;br&gt;Samba 445 · SSH 22&lt;br&gt;OpenLDAP 636 · B1s" vertex="1">
+          <mxGeometry height="64" width="69" x="1300" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="render" parent="1" style="image;aspect=fixed;html=1;points=[];fontSize=11;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=10;image=https://app.diagrams.net/img/lib/azure2/compute/Virtual_Machine.svg;" value="&lt;b&gt;srv-render&lt;/b&gt; · 10.0.0.37&lt;br&gt;Blender Cycles (CPU)&lt;br&gt;SSH 22 · B1s" vertex="1">
+          <mxGeometry height="64" width="69" x="1300" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="intra" parent="1" style="text;html=1;whiteSpace=wrap;fontSize=10;fontColor=#8a94a3;align=left;" value="render ↔ planos (SMB 445) van en la misma subred: lo filtra el NSG, no pasa por fw-vpn" vertex="1">
+          <mxGeometry height="35" width="320" x="1300" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="nsgsrv" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/Network_Security_Groups.svg;" value="NSG + ASG&lt;br&gt;Servidores" vertex="1">
+          <mxGeometry height="34" width="28" x="1300" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="rtsrv" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;image=https://app.diagrams.net/img/lib/azure2/networking/Route_Tables.svg;" value="UDR Servidores&lt;br&gt;todo → 10.0.0.20" vertex="1">
+          <mxGeometry height="35" width="36" x="1540" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1f6feb;strokeWidth=2;fontColor=#1f6feb;fontSize=11;labelBackgroundColor=default;endArrow=classic;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="internet" value="① túnel cifrado OpenVPN (UDP 1194)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="internet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1f6feb;strokeWidth=2;fontColor=#1f6feb;fontSize=12;labelBackgroundColor=default;endArrow=classic;exitX=0.55;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="pipfw" value="①">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="941" y="265" />
+              <mxPoint x="983" y="265" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="pipfw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#e65100;strokeWidth=2;fontColor=#e65100;fontSize=11;labelBackgroundColor=default;endArrow=classic;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.85;entryY=0.85;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="internet" value="⑦ NAT">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1012" y="265" />
+              <mxPoint x="1007" y="265" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2b" edge="1" parent="1" source="pipfw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1f6feb;strokeWidth=2;endArrow=classic;exitX=0.5;exitY=1;exitDx=0;exitDy=20;entryX=0.5;entryY=0;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="fw" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="996" y="451" />
+              <mxPoint x="995" y="451" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="internet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#2e7d32;strokeWidth=2;fontColor=#2e7d32;fontSize=11;labelBackgroundColor=default;endArrow=classic;exitX=0.15;exitY=0.7;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="pipweb" value="⑧ HTTPS 443">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="601" y="134" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8b" edge="1" parent="1" source="pipweb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#2e7d32;strokeWidth=2;endArrow=classic;exitX=0.5;exitY=1;exitDx=0;exitDy=20;entryX=0.5;entryY=0;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="web" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="web" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#888888;strokeWidth=1.5;fontColor=#8a94a3;fontSize=10;labelBackgroundColor=default;endArrow=classic;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="fw" value="DNS 53 · NTP 123">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="753" y="552" />
+              <mxPoint x="753" y="585" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="fw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#9b59b6;strokeWidth=2;fontColor=#9b59b6;fontSize=11;labelBackgroundColor=default;endArrow=classic;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="planos" value="② LDAP 636">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1210" y="528" />
+              <mxPoint x="1210" y="402" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="fw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1f6feb;strokeWidth=2;fontColor=#1f6feb;fontSize=11;labelBackgroundColor=default;endArrow=classic;exitX=1;exitY=0.55;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="render" value="⑤ SSH 22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1210" y="595" />
+              <mxPoint x="1210" y="592" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="rtsrv" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#e65100;strokeWidth=1.5;dashed=1;fontColor=#e65100;fontSize=11;labelBackgroundColor=default;endArrow=classic;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="fw" value="⑥ ⑦ UDR: respuestas VPN y salida a Internet → fw-vpn">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1558" y="715" />
+              <mxPoint x="1058" y="715" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="planos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#888888;strokeWidth=1.5;dashed=1;fontColor=#8a94a3;fontSize=10;labelBackgroundColor=default;endArrow=classic;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=40;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="blob" value="⑨ respaldos">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1335" y="244" />
+              <mxPoint x="1533" y="244" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="dnspub" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#888888;strokeWidth=1;dashed=1;dashPattern=1 3;fontColor=#8a94a3;fontSize=10;labelBackgroundColor=default;endArrow=none;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.95;entryY=0.5;entryDx=0;entryDy=0;libavoidRouting=1;orthogonalLoop=1;jettySize=auto;" target="internet" value="resuelve dominio">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1120" y="92" />
+              <mxPoint x="1120" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend" parent="1" style="text;html=1;whiteSpace=wrap;fontSize=12;align=left;" value="&lt;b&gt;Leyenda:&lt;/b&gt;&amp;nbsp; &lt;font color=&#39;#1f6feb&#39;&gt;■ flujo VPN&lt;/font&gt; &amp;nbsp;·&amp;nbsp; &lt;font color=&#39;#9b59b6&#39;&gt;■ autenticación LDAP&lt;/font&gt; &amp;nbsp;·&amp;nbsp; &lt;font color=&#39;#e65100&#39;&gt;■ rutas UDR / salida a Internet (NAT)&lt;/font&gt; &amp;nbsp;·&amp;nbsp; &lt;font color=&#39;#2e7d32&#39;&gt;■ web pública&lt;/font&gt; &amp;nbsp;·&amp;nbsp; &lt;font color=&#39;#888888&#39;&gt;■ servicios y respaldos&lt;/font&gt; &amp;nbsp;·&amp;nbsp; punteado = retorno o secundario &amp;nbsp;·&amp;nbsp; los números ①–⑨ se explican en la tabla de flujo" vertex="1">
+          <mxGeometry height="30" width="1660" x="20" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="tflujo" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=12;" value="&lt;b style=&#39;font-size:15px&#39;&gt;Flujo paso a paso&lt;/b&gt;&lt;table border=&#39;1&#39; cellpadding=&#39;5&#39; style=&#39;border-collapse:collapse;width:100%;font-size:12px;margin-top:8px&#39;&gt;&lt;tr&gt;&lt;td&gt;①&lt;/td&gt;&lt;td&gt;El empleado abre el túnel OpenVPN (UDP 1194) hacia la IP pública de fw-vpn.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;②&lt;/td&gt;&lt;td&gt;fw-vpn valida usuario y contraseña contra OpenLDAP (srv-planos:636).&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;③&lt;/td&gt;&lt;td&gt;Según su grupo LDAP, OpenVPN le asigna una IP del pool de su departamento.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;④&lt;/td&gt;&lt;td&gt;Cada paquete pasa por nftables, que revisa origen (pool) y destino/puerto contra la ACL.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;⑤&lt;/td&gt;&lt;td&gt;Si se permite, fw-vpn lo reenvía al servidor (ej. SSH 22 a srv-render). Sin NAT interno: el servidor ve la IP real 10.10.1.x.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;⑥&lt;/td&gt;&lt;td&gt;El servidor responde a 10.10.1.x; la UDR de Servidores manda la respuesta a fw-vpn, que la mete al túnel.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;⑦&lt;/td&gt;&lt;td&gt;Los servidores salen a Internet por la UDR 0.0.0.0/0 → fw-vpn, que hace NAT con su IP pública.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;⑧&lt;/td&gt;&lt;td&gt;El público entra a la web por HTTPS 443 a la IP pública de la web (por eso la DMZ no lleva ruta 0/0 a fw-vpn).&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;⑨&lt;/td&gt;&lt;td&gt;srv-planos respalda planos y expedientes en Blob Storage.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="360" width="810" x="20" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="tip" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=12;" value="&lt;b style=&#39;font-size:15px&#39;&gt;Plan de direccionamiento&lt;/b&gt;&lt;table border=&#39;1&#39; cellpadding=&#39;5&#39; style=&#39;border-collapse:collapse;width:100%;font-size:12px;margin-top:8px&#39;&gt;&lt;tr&gt;&lt;th&gt;Subred&lt;/th&gt;&lt;th&gt;Dónde&lt;/th&gt;&lt;th&gt;Rango&lt;/th&gt;&lt;th&gt;IP útiles&lt;/th&gt;&lt;th&gt;Equipos&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DMZ&lt;/td&gt;&lt;td&gt;Azure&lt;/td&gt;&lt;td&gt;10.0.0.0/28&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;&lt;td&gt;web 10.0.0.4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Firewall&lt;/td&gt;&lt;td&gt;Azure&lt;/td&gt;&lt;td&gt;10.0.0.16/28&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;&lt;td&gt;fw-vpn 10.0.0.20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Servidores&lt;/td&gt;&lt;td&gt;Azure&lt;/td&gt;&lt;td&gt;10.0.0.32/28&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;&lt;td&gt;srv-planos 10.0.0.36, srv-render 10.0.0.37&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Arquitectos&lt;/td&gt;&lt;td&gt;VPN&lt;/td&gt;&lt;td&gt;10.10.1.0/27&lt;/td&gt;&lt;td&gt;30&lt;/td&gt;&lt;td&gt;.1 a .15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Ingenieros&lt;/td&gt;&lt;td&gt;VPN&lt;/td&gt;&lt;td&gt;10.10.1.32/28&lt;/td&gt;&lt;td&gt;14&lt;/td&gt;&lt;td&gt;.33 a .42&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TI&lt;/td&gt;&lt;td&gt;VPN&lt;/td&gt;&lt;td&gt;10.10.1.48/29&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;td&gt;.49 a .51&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&#39;font-size:11px;margin-top:6px&#39;&gt;Azure reserva 5 IP por subred (la primera usable es la .4). OpenVPN usa 10.10.0.0/23 y el servidor toma 10.10.0.1.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="300" width="810" x="918" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="tudr" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=12;" value="&lt;b style=&#39;font-size:15px&#39;&gt;Tablas de rutas (UDR)&lt;/b&gt;&lt;table border=&#39;1&#39; cellpadding=&#39;5&#39; style=&#39;border-collapse:collapse;width:100%;font-size:12px;margin-top:8px&#39;&gt;&lt;tr&gt;&lt;th&gt;Tabla&lt;/th&gt;&lt;th&gt;Destino&lt;/th&gt;&lt;th&gt;Siguiente salto&lt;/th&gt;&lt;th&gt;Para qué&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;UDR Servidores&lt;/td&gt;&lt;td&gt;0.0.0.0/0&lt;/td&gt;&lt;td&gt;10.0.0.20&lt;/td&gt;&lt;td&gt;Salida a Internet con NAT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;UDR Servidores&lt;/td&gt;&lt;td&gt;10.10.0.0/23&lt;/td&gt;&lt;td&gt;10.0.0.20&lt;/td&gt;&lt;td&gt;Respuestas a usuarios VPN&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;UDR Servidores&lt;/td&gt;&lt;td&gt;10.0.0.0/28&lt;/td&gt;&lt;td&gt;10.0.0.20&lt;/td&gt;&lt;td&gt;Tráfico hacia la DMZ pasa por el firewall&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;UDR DMZ&lt;/td&gt;&lt;td&gt;10.0.0.32/28&lt;/td&gt;&lt;td&gt;10.0.0.20&lt;/td&gt;&lt;td&gt;Tráfico hacia Servidores pasa por el firewall&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;UDR DMZ&lt;/td&gt;&lt;td&gt;10.10.0.0/23&lt;/td&gt;&lt;td&gt;10.0.0.20&lt;/td&gt;&lt;td&gt;Tráfico hacia usuarios VPN&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;UDR DMZ&lt;/td&gt;&lt;td&gt;sin 0.0.0.0/0&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;La web responde por su propia IP pública&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Subred Firewall&lt;/td&gt;&lt;td&gt;sin UDR&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;Evita que fw-vpn se mande tráfico a sí mismo&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&#39;font-size:11px;margin-top:6px&#39;&gt;Requisito en Azure: IP forwarding activo en la NIC de fw-vpn y su IP privada estática.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="330" width="810" x="20" y="1350" as="geometry" />
+        </mxCell>
+        <mxCell id="tacl" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=12;" value="&lt;b style=&#39;font-size:15px&#39;&gt;ACL (nftables en fw-vpn + NSG de Servidores)&lt;/b&gt;&lt;table border=&#39;1&#39; cellpadding=&#39;5&#39; style=&#39;border-collapse:collapse;width:100%;font-size:12px;margin-top:8px&#39;&gt;&lt;tr&gt;&lt;th&gt;Origen → Destino&lt;/th&gt;&lt;th&gt;srv-planos&lt;/th&gt;&lt;th&gt;srv-render&lt;/th&gt;&lt;th&gt;DNS / NTP&lt;/th&gt;&lt;th&gt;TI&lt;/th&gt;&lt;th&gt;Internet&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Arquitectos&lt;/td&gt;&lt;td&gt;✔ SMB 445, SSH 22&lt;/td&gt;&lt;td&gt;✔ SSH 22&lt;/td&gt;&lt;td&gt;✔&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✔ NAT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Ingenieros&lt;/td&gt;&lt;td&gt;✔ SMB 445, SSH 22&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✔&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✔ NAT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TI&lt;/td&gt;&lt;td&gt;✔ todo&lt;/td&gt;&lt;td&gt;✔ todo&lt;/td&gt;&lt;td&gt;✔&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;✔ NAT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DMZ (web)&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✔&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✔&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fw-vpn&lt;/td&gt;&lt;td&gt;✔ LDAP 636&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;✔&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Internet&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;✘&lt;/td&gt;&lt;td&gt;solo 443 → web y UDP 1194 → fw-vpn&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div style=&#39;font-size:11px;margin-top:6px&#39;&gt;Política por defecto DROP. Las conexiones establecidas sí regresan: TI recibe sus respuestas, pero nadie puede iniciar conexión hacia TI. Hardening: solo quedan abiertos los puertos de esta tabla.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="340" width="810" x="870" y="1290" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

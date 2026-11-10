@@ -18,16 +18,18 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 ## Lo que hay en cada fase
 
 ### Fase 1
-- Diagrama original: Google Drive, "Diagrama bienes racies".
-- **Falta agregar:** enunciado (PDF), documento de diseño (PDF) y presentación (PDF).
+- `documento-fase1.md`: documento de diseño (copia en texto, sin figuras).
+- `diagrama-fase1.drawio`: diagrama original.
+- **Falta agregar:** enunciado (PDF) y presentación (PDF).
 
 ### Fase 2
 - `config/nsg/`: script con el que se crearon los NSG y sus reglas exportadas.
 - `config/openvpn/`: diseño inicial de la VPN (una sola instancia). **Reemplazado en la Fase 3.**
 - `evidencia/`: pruebas de conectividad, auditoría de Azure y capturas del portal.
+- `informe-fase2.md`: el informe entregado (copia en texto, sin figuras).
 - `guion-presentacion-fase2.md` y `demo-en-vivo-fase2.md`.
 - Presentación (artifact): https://claude.ai/artifact/Y1rqBdre5vYgRvYrA3H2cx
-- **Falta agregar:** enunciado (PDF) y reporte.
+- **Falta agregar:** enunciado (PDF).
 
 ### Fase 3
 - `plan-fase3.md`: el plan completo, con las decisiones.
@@ -37,19 +39,10 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 - `demo-fase3.md` y `demo-ssh-config`: guion y comandos de la demo.
 - `credenciales-fase3.txt`: usuarios de LDAP de prueba y sus contraseñas.
 - `intranet-DESIGN.md` y `intranet-PRODUCT.md`: diseño de la intranet.
+- `vpn-perfiles/`: los 8 perfiles `.ovpn` (2 por grupo). Se conectan con el usuario y la contraseña de LDAP.
+- `llaves/`: `redes_key` (+ `.pub`) para fw-vpn y `llave_compa` para srv-planos y srv-render.
 - Guía de estudio (artifact): https://claude.ai/artifact/T8pgkrySdJ7qTGuD2vdXqi
-- **Falta agregar:** enunciado (PDF), reporte, presentación, capturas de los servicios, perfiles `.ovpn` y llaves SSH (ver abajo).
-
-## Agregar los perfiles de VPN y las llaves
-
-No se copiaron automáticamente. Desde la carpeta `RD-PR2`:
-
-```powershell
-New-Item -ItemType Directory -Force fase-3\vpn-perfiles, fase-3\llaves
-Copy-Item "$HOME\fase3-vpn-perfiles\*.ovpn" fase-3\vpn-perfiles\
-Copy-Item C:\Windows\System32\redes_key, C:\Windows\System32\redes_key.pub fase-3\llaves\
-Copy-Item "$HOME\.ssh\llave_compa" fase-3\llaves\
-```
+- **Falta agregar:** enunciado (PDF), reporte, presentación y capturas de los servicios.
 
 ## Datos de la red
 
