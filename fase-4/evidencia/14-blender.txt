@@ -1,0 +1,7 @@
+﻿===== NFS
+TARGET       SOURCE                                     FSTYPE OPTIONS
+/srv/renders planos.terranova.local:/srv/planos/renders nfs4   rw,relatime,vers=4.2,rsize=524288,wsize=524288,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=10.0.0.37,local_lock=none,addr=10.0.0.36
+===== Blender (snap oficial)
+Blender 5.3.0
+===== Render de prueba (como ana.arq, con prioridad baja)
+(render interrumpido al apagar las VMs el 10 nov; el Blender oficial ya arranca. Primer intento con el paquete de Ubuntu: imagen negra por falta de colormanagement)

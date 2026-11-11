@@ -1,0 +1,26 @@
+﻿paquetes ok: OpenVPN 2.6.19
+certificados ok
+configuraciones ok
+--- openvpn-server@arq: active
+--- openvpn-server@ing: active
+--- openvpn-server@ti: active
+--- openvpn-server@vis: active
+--- interfaces
+tun-arq          UNKNOWN        10.10.1.1/27 
+tun-ing          UNKNOWN        10.10.1.33/28 
+tun-ti           UNKNOWN        10.10.1.49/29 
+tun-vis          UNKNOWN        10.10.1.65/28 
+--- puertos
+UNCONN 0      0             0.0.0.0:1194      0.0.0.0:*    users:(("openvpn",pid=5603,fd=6))        
+UNCONN 0      0             0.0.0.0:1195      0.0.0.0:*    users:(("openvpn",pid=5669,fd=6))        
+UNCONN 0      0             0.0.0.0:1196      0.0.0.0:*    users:(("openvpn",pid=5734,fd=6))        
+UNCONN 0      0             0.0.0.0:1197      0.0.0.0:*    users:(("openvpn",pid=5800,fd=6))        
+EXIT=0
+--- DNS empujado
+/etc/openvpn/server/arq.conf:push "dhcp-option DNS 10.0.0.20"
+/etc/openvpn/server/arq.conf:push "dhcp-option DOMAIN terranova.local"
+/etc/openvpn/server/ing.conf:push "dhcp-option DNS 10.0.0.20"
+/etc/openvpn/server/ing.conf:push "dhcp-option DOMAIN terranova.local"
+/etc/openvpn/server/ti.conf:push "dhcp-option DNS 10.0.0.20"
+/etc/openvpn/server/ti.conf:push "dhcp-option DOMAIN terranova.local"
+/etc/openvpn/server/vis.conf:push "dhcp-option DNS 1.1.1.1"

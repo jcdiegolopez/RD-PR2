@@ -1,0 +1,29 @@
+﻿===== snmp_exporter
+snmp_exporter-0.31.0.linux-amd64.tar.gz: OK
+snmp_exporter 0.31.0 activo
+módulos: system, if_mib, hrStorage, ucd_memory, ucd_la_table
+===== Prometheus
+prometheus 2.31.2+ds1 activo
+===== Grafana
+===== Verificación
+--- escuchando
+127.0.0.1:9090 users:(("prometheus",pid=9427,fd=8))
+127.0.0.1:9116 users:(("snmp_exporter",pid=8987,fd=4))
+--- snmp_exporter → fw-vpn (sysName)
+sysName{sysName="fw-vpn"} 1
+--- objetivos en Prometheus
+snmp 10.0.0.36 up 
+snmp 10.0.0.37 up 
+snmp 10.0.0.20 up 
+snmp 10.0.0.4 up 
+snmp_exporter 127.0.0.1:9116 up 
+--- Grafana
+Grafana después del primer arranque: escucha en 10.0.0.36:3000, /api/health database=ok
+
+===== Grafana desde la VPN de ti (IP 10.10.1.50) - 2026-11-10T22:05:45
+http://grafana.terranova.local:3000 -> abre (Grafana 13.3.0, base de datos ok)
+tablero: Terranova (carpeta ), Red Terranova (SNMP) (carpeta Terranova)
+equipos (up): fw-vpn=1, srv-planos=1, srv-render=1, srv-web=1
+
+===== Grafana desde la VPN de arquitectos (IP 10.10.1.2) - 2026-11-10T22:05:56
+http://grafana.terranova.local:3000 -> BLOQUEADO (The operation has timed out.)

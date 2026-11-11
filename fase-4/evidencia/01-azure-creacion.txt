@@ -1,0 +1,65 @@
+== Suscripción: terranova-fase4 · región northcentralus
+== Cuota regional de vCPU: 20 (hacen falta 8)
+ok   grupo rg-redes-proyecto
+ok   vnet-proyecto
+ok   subred DMZ 10.0.0.0/28
+ok   subred Firewall 10.0.0.16/28
+ok   subred Servidores 10.0.0.32/28
+ok   nsg-firewall
+ok   nsg-dmz
+ok   nsg-servidores
+ok   nsg-firewall Allow-OpenVPN
+ok   nsg-firewall Allow-Web-Publico
+ok   nsg-firewall Allow-SSH-Admin
+ok   nsg-firewall Allow-DNS-NTP
+ok   nsg-firewall Allow-ICMP
+ok   nsg-firewall Allow-Retorno-VPN
+ok   nsg-firewall Allow-Salida-Internos
+ok   nsg-firewall Allow-SNMP-Colector
+ok   nsg-firewall Deny-Resto
+ok   nsg-firewall Allow-VPN-Hacia-Red
+ok   nsg-firewall Allow-DNAT-Web
+ok   nsg-dmz Allow-Web
+ok   nsg-dmz Allow-SSH-Admin-TI
+ok   nsg-dmz Allow-SNMP-Colector
+ok   nsg-dmz Allow-ICMP-TI
+ok   nsg-dmz Deny-Resto
+ok   nsg-servidores Allow-TI-Todo
+ok   nsg-servidores Allow-SSH-Planos
+ok   nsg-servidores Allow-SSH-Render
+ok   nsg-servidores Allow-Web-Intranet
+ok   nsg-servidores Allow-LDAP
+ok   nsg-servidores Allow-ICMP
+ok   nsg-servidores Allow-NFS-Renders
+ok   nsg-servidores Allow-SNMP-Colector
+ok   nsg-servidores Deny-Resto
+ok   rt-servidores
+ok   rt-dmz
+ok   rt-servidores vpn-hacia-fw 10.10.0.0/16 → 10.0.0.20
+ok   rt-servidores internet-hacia-fw 0.0.0.0/0 → 10.0.0.20
+ok   rt-servidores dmz-hacia-fw 10.0.0.0/28 → 10.0.0.20
+ok   rt-dmz internet-hacia-fw 0.0.0.0/0 → 10.0.0.20
+ok   rt-dmz vpn-hacia-fw 10.10.0.0/16 → 10.0.0.20
+ok   rt-dmz servidores-hacia-fw 10.0.0.32/28 → 10.0.0.20
+ok   NSG y rutas asociados
+WARNING: [Coming breaking change] In the coming release, the default behavior will be changed as follows when sku is Standard and zone is not provided: For zonal regions, you will get a zone-redundant IP indicated by zones:["1","2","3"]; For non-zonal regions, you will get a non zone-redundant IP indicated by zones:null.
+ok   fw-vpn-ip y fw-vpn-nic (IP forwarding activo)
+WARNING: Consider upgrading security for your workloads using Azure Trusted Launch VMs. To know more about Trusted Launch, please visit https://aka.ms/TrustedLaunch.
+ok   fw-vpn
+WARNING: Consider upgrading security for your workloads using Azure Trusted Launch VMs. To know more about Trusted Launch, please visit https://aka.ms/TrustedLaunch.
+ok   srv-planos 10.0.0.36
+WARNING: Consider upgrading security for your workloads using Azure Trusted Launch VMs. To know more about Trusted Launch, please visit https://aka.ms/TrustedLaunch.
+ok   srv-render 10.0.0.37
+WARNING: Consider upgrading security for your workloads using Azure Trusted Launch VMs. To know more about Trusted Launch, please visit https://aka.ms/TrustedLaunch.
+ok   srv-web 10.0.0.4
+
+== Listo. IP pública de fw-vpn: 52.159.123.60
+   - Apuntar el dominio (registros A @ y www) a 52.159.123.60
+   - Poner 52.159.123.60 en los perfiles .ovpn y en fase-4/config/fw-nftables.conf (DNAT desde la VPN)
+   - Entrar: ssh azureuser@52.159.123.60   ·   a los servidores: ssh -J azureuser@52.159.123.60 azureuser@10.0.0.36
+Vm          Ip         Tam                Estado
+----------  ---------  -----------------  ----------
+fw-vpn      10.0.0.20  Standard_B2ats_v2  VM running
+srv-planos  10.0.0.36  Standard_B2als_v2  VM running
+srv-render  10.0.0.37  Standard_B2als_v2  VM running
+srv-web     10.0.0.4   Standard_B2ats_v2  VM running

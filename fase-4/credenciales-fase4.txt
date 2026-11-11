@@ -1,0 +1,14 @@
+# Credenciales Fase 4 (suscripcion terranova-fase4) - repositorio privado
+
+ldap-admin (cn=admin,dc=terranova,dc=local) = v27UInLkd13hQ00b
+ana.arq (arquitectos) = SByABu6iAZj4rxSS
+ivan.ing (ingenieros) = NkfvRb5LmzDf7kTh
+tomas.ti (ti) = UEZVGi2PGlTCFmCe
+visita1 (visitantes) = DTcKDZvHv4e5kFVK
+
+# SNMPv3 (usuario monitor, SHA + AES)
+snmp-auth = Sf9MpP7wPoUeMdDXcssQ
+snmp-priv = 9KtHHrwdEpGRJ0ucMTiR
+
+# Grafana (http://grafana.terranova.local:3000, solo desde la VPN de TI)
+grafana-admin = jwbd3zeFTHcIXCsn3n

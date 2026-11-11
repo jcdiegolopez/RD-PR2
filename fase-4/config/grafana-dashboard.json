@@ -1,0 +1,67 @@
+{
+  "uid": "red-terranova",
+  "title": "Red Terranova (SNMP)",
+  "tags": ["terranova", "snmp"],
+  "timezone": "America/Guatemala",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Equipos que responden por SNMP",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus-terranova" },
+      "targets": [ { "refId": "A", "expr": "up{job=\"snmp\"}", "legendFormat": "{{equipo}}" } ],
+      "fieldConfig": { "defaults": {
+        "mappings": [ { "type": "value", "options": { "0": { "text": "CAÍDO", "color": "red" }, "1": { "text": "ARRIBA", "color": "green" } } } ],
+        "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "green", "value": 1 } ] }
+      } },
+      "options": { "colorMode": "background", "graphMode": "none", "textMode": "value_and_name", "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 2, "type": "stat", "title": "Tiempo encendido",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus-terranova" },
+      "targets": [ { "refId": "A", "expr": "sysUpTime{job=\"snmp\"} / 100", "legendFormat": "{{equipo}}" } ],
+      "fieldConfig": { "defaults": { "unit": "s", "decimals": 0 } },
+      "options": { "colorMode": "none", "graphMode": "none", "textMode": "value_and_name", "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 3, "type": "timeseries", "title": "Tráfico de entrada por interfaz",
+      "gridPos": { "x": 0, "y": 5, "w": 12, "h": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus-terranova" },
+      "targets": [ { "refId": "A", "expr": "rate(ifHCInOctets{job=\"snmp\", ifDescr!=\"lo\"}[5m]) * 8", "legendFormat": "{{equipo}} · {{ifDescr}}" } ],
+      "fieldConfig": { "defaults": { "unit": "bps" } }
+    },
+    {
+      "id": 4, "type": "timeseries", "title": "Tráfico de salida por interfaz",
+      "gridPos": { "x": 12, "y": 5, "w": 12, "h": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus-terranova" },
+      "targets": [ { "refId": "A", "expr": "rate(ifHCOutOctets{job=\"snmp\", ifDescr!=\"lo\"}[5m]) * 8", "legendFormat": "{{equipo}} · {{ifDescr}}" } ],
+      "fieldConfig": { "defaults": { "unit": "bps" } }
+    },
+    {
+      "id": 5, "type": "timeseries", "title": "Memoria usada",
+      "gridPos": { "x": 0, "y": 14, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus-terranova" },
+      "targets": [ { "refId": "A", "expr": "100 * (1 - (memAvailReal{job=\"snmp\"} + memBuffer{job=\"snmp\"} + memCached{job=\"snmp\"}) / memTotalReal{job=\"snmp\"})", "legendFormat": "{{equipo}}" } ],
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100 } }
+    },
+    {
+      "id": 6, "type": "timeseries", "title": "Carga del CPU (promedio 1 minuto)",
+      "gridPos": { "x": 12, "y": 14, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus-terranova" },
+      "targets": [ { "refId": "A", "expr": "laLoadFloat{job=\"snmp\", laNames=\"Load-1\"}", "legendFormat": "{{equipo}}" } ]
+    },
+    {
+      "id": 7, "type": "timeseries", "title": "Errores de entrada y salida por interfaz",
+      "gridPos": { "x": 0, "y": 22, "w": 24, "h": 7 },
+      "datasource": { "type": "prometheus", "uid": "prometheus-terranova" },
+      "targets": [
+        { "refId": "A", "expr": "rate(ifInErrors{job=\"snmp\", ifDescr!=\"lo\"}[5m])", "legendFormat": "entrada · {{equipo}} · {{ifDescr}}" },
+        { "refId": "B", "expr": "rate(ifOutErrors{job=\"snmp\", ifDescr!=\"lo\"}[5m])", "legendFormat": "salida · {{equipo}} · {{ifDescr}}" }
+      ]
+    }
+  ]
+}

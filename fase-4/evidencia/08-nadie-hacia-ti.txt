@@ -1,0 +1,6 @@
+﻿===== Nadie inicia hacia TI (laptop de TI con IP 10.10.1.50) - 2026-11-10T21:52:07
+antes:   		ip daddr 10.10.1.48/29 ct state new counter packets 0 bytes 0 drop comment "nadie-hacia-TI"
+3 packets transmitted, 0 received, 100% packet loss, time 2029ms
+
+srv-planos -> TI tcp/445: BLOQUEADO
+despues: 		ip daddr 10.10.1.48/29 ct state new counter packets 7 bytes 492 drop comment "nadie-hacia-TI"

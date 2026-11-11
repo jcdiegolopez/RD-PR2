@@ -1,0 +1,19 @@
+﻿===== SNMPv3 en las 4 VMs - 2026-11-10T21:59:16
+--- fw-vpn: snmpd en 10.0.0.20:161
+--- srv-web: snmpd en 10.0.0.4:161
+--- srv-planos: snmpd en 10.0.0.36:161
+--- srv-render: snmpd en 10.0.0.37:161
+v3  10.0.0.20 -> "fw-vpn" 0:0:01:57.32 
+v3  10.0.0.4 -> "srv-web" 0:0:01:32.13 
+v3  10.0.0.36 -> "srv-planos" 0:0:01:08.49 
+v3  10.0.0.37 -> "srv-render" 0:0:00:47.50 
+--- tráfico de la interfaz de fw-vpn (IF-MIB)
+iso.3.6.1.2.1.2.2.1.2.1 = STRING: "lo"
+iso.3.6.1.2.1.2.2.1.2.2 = STRING: "eth0"
+iso.3.6.1.2.1.2.2.1.2.4 = STRING: "tun-arq"
+iso.3.6.1.2.1.2.2.1.2.5 = STRING: "tun-ing"
+--- v2c con comunidad public (debe fallar)
+v2c 10.0.0.20 -> sin respuesta (bien)
+v2c 10.0.0.4 -> sin respuesta (bien)
+--- v3 con clave equivocada (debe fallar)
+snmpget: Authentication failure (incorrect password, community or key)

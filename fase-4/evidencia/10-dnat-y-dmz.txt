@@ -1,0 +1,16 @@
+﻿===== Web pública por DNAT (laptop sin VPN) - 2026-11-10T21:57:59
+VPN activa: no
+http://52.159.123.60 -> HTTP 200, Terranova · Desarrolladora inmobiliaria, Server: nginx
+		iifname "eth0" ip daddr 10.0.0.20 tcp dport { 80, 443 } dnat to 10.0.0.4
+		ip daddr 52.159.123.60 tcp dport { 80, 443 } dnat to 10.0.0.4
+
+
+===== La DMZ no inicia nada hacia adentro (desde srv-web)
+antes:   		ip saddr 10.0.0.0/28 ip daddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } counter packets 0 bytes 0 drop comment "dmz-hacia-interno"
+2 packets transmitted, 0 received, 100% packet loss, time 1048ms
+srv-web -> 10.0.0.36:389 BLOQUEADO
+srv-web -> 10.0.0.36:22 BLOQUEADO
+srv-web -> 10.0.0.37:80 BLOQUEADO
+srv-web -> 10.0.0.20:22 BLOQUEADO
+salida a Internet (IP): 52.159.123.60
+despues: 		ip saddr 10.0.0.0/28 ip daddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } counter packets 14 bytes 888 drop comment "dmz-hacia-interno"

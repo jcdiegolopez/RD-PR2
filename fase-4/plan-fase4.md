@@ -17,9 +17,26 @@ Este plan parte de lo que ya existe en Azure (Fase 3) y agrega lo que piden el e
 | Decisión | **Suscripción nueva de pago por uso y reconstruir todo desde cero.** La suscripción vieja queda apagada como respaldo, con la Fase 3 funcionando y su evidencia |
 | Qué se reutiliza | Los scripts y configuraciones de la Fase 3 (`fase-3/config/`), los firewalls finales (`fase-4/config/`), el script que crea Azure (`fase-4/infra/01-azure.sh`) y el de LDAP (`fase-4/infra/setup-ldap.sh`) |
 | Qué cambia | IP pública nueva (perfiles `.ovpn` nuevos), CA y certificados de VPN nuevos, llave SSH y contraseñas nuevas |
-| Página pública | **No existe** (ni VM ni contenido) |
-| Intranet | Existe (`fase-3/config/intranet.html`); se vuelve a desplegar en srv-render. Si r0sv tiene una versión más nueva en la VM vieja, copiarla antes |
-| Zona DNS interna | **No existe** (la pide el caso 4) |
+| **Avance 10 nov** | **Pasos 0 y 1 hechos.** Suscripción `terranova-fase4` (`016952af-f2ae-4f99-9a34-17441b3f5130`), pago por uso, cuota Basv2 10 aprobada, presupuesto de $20/mes con alertas. Red y 4 VMs creadas con `01-azure.sh` (salida en `evidencia/01-azure-creacion.txt`). **IP pública de fw-vpn: 52.159.123.60**. Acceso SSH: `fase-4/ssh-config` con la llave `~/.ssh/terranova` |
+| **Avance 10 nov (noche)** | **Pasos 2 y 3 hechos, y BIND9 del paso 4.2.** Fase 3 reconstruida con contraseñas, CA y perfiles nuevos (`credenciales-fase4.txt`, `vpn-perfiles/`). Regresión completa igual a la Fase 3: ACL por grupo desde las 4 VPN (`evidencia/06`), SSH con LDAP por grupo (`evidencia/07`), nadie hacia TI (`evidencia/08`). DNS interno funcionando desde la VPN (no para Visitantes) |
+| **Avance 10 nov (noche, Fase 4)** | **Hechos los pasos 4, 5b (sin HTTPS), 7, 8 y 9.** SSH sin root en fw-vpn y srv-web. srv-web sirve la página por el DNAT: `http://52.159.123.60` abre desde Internet sin VPN; la DMZ no llega a nada interno (`evidencia/10`). SNMPv3 en las 4 VMs, v2c rechazado (`evidencia/11`). Prometheus + snmp_exporter 0.31.0 + Grafana 13.3 en srv-planos; Grafana abre desde TI y no desde Arquitectos (`evidencia/12`). Carpeta de planos con permisos por grupo y NFS (`evidencia/13`). Blender oficial (snap 5.3.0) instalado; el render de prueba quedó a medias al apagar (`evidencia/14`). **VMs apagadas (desasignadas) al cierre del 10 nov.** |
+
+### Pendiente (al 10 nov, noche)
+
+| # | Qué | Quién | Detalle |
+|---|---|---|---|
+| 1 | **Dominio** | Jose Pablo | Conseguirlo (Student Pack → Namecheap `.me`, o comprarlo) y crear los registros A `@` y `www` → **52.159.123.60**. Bloquea el HTTPS |
+| 2 | **HTTPS** (paso 6) | Jose Pablo | Con el dominio resolviendo: `server_name` en `config/nginx-terranova.conf` y Certbot con `--redirect` |
+| 3 | **Render del condominio** | Fabian | Encender srv-planos y srv-render y correr `infra/setup-render-blender.sh` (ya corregido; ~4 min) |
+| 4 | **Subir la página pública** | Jose Pablo | `web/index.html` está hecho pero srv-web todavía tiene la página provisional. Copiar `web/` con el render en `web/img/condominio.png`. Revisar si los datos de los proyectos (inventados) se dejan así |
+| 5 | **Acceso del equipo** (paso 0.4) | Diego López | Rol Contributor sobre `rg-redes-proyecto` para cada integrante |
+| 6 | **Capturas** | Todos | Fase 3 y Fase 4 (pruebas de la sección 5), con las VMs encendidas |
+| 7 | **Reporte final** | Fabian | Fases 1–3 + sección de Fase 4 (decisiones, implementación, pruebas, costos, problemas) |
+| 8 | **Diagrama** | Fabian | `diagrama-fase4.drawio` ya refleja lo implementado; exportar a PNG |
+| 9 | **Presentación y guion de la demo** | Todos | Presentación ejecutiva y guía de demo como `demo-fase3.md` |
+| 10 | **Push** | Diego López | `git push` (el modo automático lo bloquea) |
+
+Costo con las VMs apagadas: discos e IP pública, unos $13 al mes. Encender las 4 VMs suma unos $0.10 por hora.
 
 ---
 
@@ -169,7 +186,7 @@ Todos: capturas de su parte para el reporte.
    az vm list-usage -l northcentralus -o table   # "Total Regional vCPUs" ≥ 8
    ```
    Si es menor, pedir 8 en Portal → **Quotas** → Compute. En suscripciones de pago estas solicitudes suelen aprobarse rápido, pero no está garantizado: hacerlo hoy.
-3. Presupuesto con alerta (Cost Management → Budgets) de $25 al mes.
+3. Presupuesto con alerta (Cost Management → Budgets) de $20 al mes. *Hecho: `presupuesto-terranova`, alertas al dueño al 50%, 80% y 100% real y al 100% del pronóstico.*
 4. Después del paso 1, dar acceso al equipo (rol Contributor sobre el grupo de recursos):
    ```bash
    az role assignment create --assignee <correo> --role Contributor \

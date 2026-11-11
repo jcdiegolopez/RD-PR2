@@ -1,0 +1,35 @@
+﻿===== NTP
+--- srv-render: fuentes de hora
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^* fw-vpn.internal.cloudapp>     1   6    17    13  +6692ns[  +46us] +/-  362us
+Reference ID    : 0A000014 (fw-vpn.internal.cloudapp.net)
+Stratum         : 2
+Ref time (UTC)  : Wed Nov 11 03:29:52 2026
+System time     : 0.000000040 seconds slow of NTP time
+===== SSSD
+--- srv-render: usuarios de LDAP vistos por el sistema
+uid=10001(ana.arq) gid=20001(arquitectos) groups=20001(arquitectos)
+uid=10002(ivan.ing) gid=20002(ingenieros) groups=20002(ingenieros)
+uid=10003(tomas.ti) gid=20003(ti) groups=20003(ti)
+uid=10004(visita1) gid=20004(visitantes) groups=20004(visitantes)
+--- grupos permitidos: arquitectos,ti
+===== Intranet
+ssh : nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+At line:4 char:1
++ ssh -F $cfg render4 "sudo bash /tmp/setup-render-base.sh; echo EXIT=` ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (nginx: the conf...nf syntax is ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+--- puertos de nginx
+LISTEN 0      511        10.0.0.37:80        0.0.0.0:*    users:(("nginx",pid=4699,fd=6),("nginx",pid=4698,fd=6),("nginx",pid=4697,fd=6))
+--- prueba local
+<title>Intranet Terranova</title>
+fuente: HTTP 200
+===== Firewall
+reglas de entrada: 8 aceptaciones, política drop
+===== listo
+EXIT=0

@@ -30,6 +30,15 @@ apt-get install -y -qq slapd ldap-utils >/dev/null
 dpkg-reconfigure -f noninteractive slapd >/dev/null 2>&1
 echo "slapd ok: $(dpkg -l slapd | awk '/^ii/{print $3}')"
 
+# Contraseña del admin: debconf la borra después de instalar, así que se fija directo en cn=config
+ldapmodify -Q -Y EXTERNAL -H ldapi:/// >/dev/null <<EOF
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+replace: olcRootPW
+olcRootPW: $(slappasswd -s "$LDAP_ADMIN_PW")
+EOF
+ldapwhoami -x -D "$ADMIN" -w "$LDAP_ADMIN_PW" >/dev/null && echo "admin ok"
+
 # ---------- Índices (los mismos de la Fase 3; uidNumber/gidNumber aceleran SSSD) ----------
 ldapmodify -Q -Y EXTERNAL -H ldapi:/// >/dev/null <<EOF
 dn: olcDatabase={1}mdb,cn=config
@@ -43,7 +52,7 @@ EOF
 echo "índices ok"
 
 # ---------- Usuarios y grupos ----------
-clave () { awk -v u="$1" '$1==u {print $2}' "$CLAVES"; }
+clave () { tr -d '\r' < "$CLAVES" | awk -v u="$1" '$1==u {print $2}'; }
 hash ()  { local c; c=$(clave "$1"); [ -n "$c" ] || { echo "Falta la clave de $1 en $CLAVES" >&2; exit 1; }; slappasswd -s "$c"; }
 
 # uid · nombre · apellido · uidNumber · grupo · gidNumber

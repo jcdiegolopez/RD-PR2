@@ -1,0 +1,41 @@
+﻿== reenvío de paquetes
+net.ipv4.ip_forward = 1
+== paquetes
+ssh : 
+At line:4 char:1
++ ssh -F $cfg fw4 "sudo bash /tmp/setup-fw-base.sh" 2>&1 | Tee-Object - ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ok
+== firewall (si se pierde el SSH, se borra solo en 5 minutos)
+reglas aplicadas; rescate programado (cancelar con: systemctl stop nft-rescate.timer)
+== NTP: servidor para la red y la VPN
+cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead
+== DNS interno: BIND9 con la zona terranova.local
+zone terranova.local/IN: loaded serial 2026111001
+OK
+--- puerto 53
+UNCONN 0      0           10.0.0.20:53        0.0.0.0:*    users:(("named",pid=3195,fd=34))         
+UNCONN 0      0           10.0.0.20:53        0.0.0.0:*    users:(("named",pid=3195,fd=35))         
+UNCONN 0      0           127.0.0.1:53        0.0.0.0:*    users:(("named",pid=3195,fd=28))         
+UNCONN 0      0           127.0.0.1:53        0.0.0.0:*    users:(("named",pid=3195,fd=29))         
+UNCONN 0      0          127.0.0.54:53        0.0.0.0:*    users:(("systemd-resolve",pid=476,fd=16))
+UNCONN 0      0       127.0.0.53%lo:53        0.0.0.0:*    users:(("systemd-resolve",pid=476,fd=14))
+--- prueba: planos.terranova.local
+10.0.0.36
+render.terranova.local.
+10.0.0.37
+--- prueba: nombre externo (reenviado a Azure)
+185.125.190.29
+185.125.190.21

@@ -133,6 +133,39 @@ Hallazgos al revisar el documento del proyecto (caso 4):
 
 Estado al 10 nov: la suscripción de Joel no se pudo pasar a pago desde el portal (por su tipo de contrato solo lo hace soporte de Microsoft; se abrió el caso). Se decide crear una suscripción de pago nueva y reconstruir todo. La vieja queda apagada como respaldo.
 
+**10 nov 2026 · Suscripción nueva y red creada.**
+- La cuenta UVG de Diego se pasó a pago por uso (su suscripción de estudiante `8863…` se convirtió; quedó vacía y se canceló) y se creó `terranova-fase4`.
+- En North Central US no existe la serie B clásica y la familia Basv2 venía con cuota 0: se pidió 10 y se aprobó.
+- Presupuesto de $20/mes con alertas.
+- `fase-4/infra/01-azure.sh` creó la red completa y las 4 VMs sin errores. IP pública nueva de fw-vpn: 52.159.123.60.
+- `setup-ldap.sh` se rehízo a partir del LDAP real de la Fase 3 (exportado con `slapcat`).
+
+**10 nov 2026 (noche) · Fase 3 reconstruida y Fase 4 implementada** en `terranova-fase4`, con los scripts de `fase-4/infra/` y la evidencia 01–14 en `fase-4/evidencia/`.
+
+| Pieza | Resultado |
+|---|---|
+| Fase 3 en la red nueva | Igual que antes: ACL por grupo desde las 4 VPN, SSH por grupo de LDAP, nadie hacia TI, NAT, NTP |
+| DNS interno (BIND9 en fw-vpn) | `*.terranova.local` desde Arquitectos, Ingenieros, TI y los servidores; Visitantes no lo ve |
+| Web pública | srv-web en la DMZ detrás del DNAT de fw-vpn; abre desde Internet por la IP 52.159.123.60 |
+| DMZ aislada | srv-web no inicia nada hacia adentro; contador `dmz-hacia-interno` |
+| SNMPv3 | Las 4 VMs (SHA + AES); v2c y claves equivocadas rechazados |
+| Grafana (extra) | Solo desde TI; tablero "Red Terranova (SNMP)" con los 4 equipos |
+| Planos y renders | Carpeta con permisos por grupo, NFS de render a planos, Blender |
+
+**Problemas y soluciones:**
+
+| Problema | Causa | Solución |
+|---|---|---|
+| El admin de LDAP no podía entrar | `slapd` borra de debconf la clave después de instalarse | `setup-ldap.sh` fija `olcRootPW` directo en `cn=config` |
+| Las claves de LDAP tenían un carácter invisible | El archivo de claves se escribió con fin de línea de Windows (CRLF) | El script quita `\r`; `.gitattributes` fuerza LF en scripts y configuraciones |
+| Aviso "host key changed" al entrar a .36 y .37 | Mismas IPs privadas que las VMs viejas | `known_hosts` aparte para la red nueva (`fase-4/ssh-config`) |
+| Pruebas de VPN con resultados cruzados | Un túnel de una prueba anterior seguía conectado y chocaban dos rutas por defecto | Cerrar todos los túneles antes de cada prueba y esperar la IP del rango del grupo |
+| `snmpget` con nombres fallaba | Ubuntu no trae los archivos MIB | OID numéricos |
+| Render de Blender negro | El paquete de Ubuntu viene sin `colormanagement` | Blender oficial por snap, más las librerías gráficas que usa y una carpeta `/home` para el usuario |
+
+Al cierre del 10 nov las 7 VMs (las 4 nuevas y las 3 de la suscripción de Joel) quedaron apagadas y desasignadas. Los pendientes están en `fase-4/plan-fase4.md` (sección 0).
+| Familia Basv2 con cuota 0 en la suscripción nueva | Cuota por defecto de la región | Solicitud de cuota (aprobada) |
+
 ---
 
 ## 10 nov 2026 · Reorganización del repo como bitácora

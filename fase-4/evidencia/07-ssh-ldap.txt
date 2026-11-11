@@ -1,0 +1,15 @@
+﻿SSH con usuarios de LDAP (desde fw-vpn 10.0.0.20)
+-- ana.arq
+  entro como ana.arq [arquitectos] en srv-planos
+  entro como ana.arq [arquitectos] en srv-render
+-- ivan.ing
+  entro como ivan.ing [ingenieros] en srv-planos
+  RECHAZADO: ivan.ing -> 10.0.0.37
+-- tomas.ti
+  entro como tomas.ti [ti] en srv-planos
+  entro como tomas.ti [ti] en srv-render
+-- visita1
+  RECHAZADO: visita1 -> 10.0.0.36
+  RECHAZADO: visita1 -> 10.0.0.37
+-- azureuser con clave (debe fallar: solo llave)
+  RECHAZADO: azureuser -> 10.0.0.36

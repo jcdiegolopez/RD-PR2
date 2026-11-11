@@ -1,0 +1,30 @@
+# Acceso SSH a la red de la Fase 4 (suscripción terranova-fase4)
+# Uso: ssh -F fase-4/ssh-config fw   |   planos   |   render   |   web
+# Llave: ~/.ssh/terranova (cada quien ajusta la ruta de IdentityFile).
+# Usa su propio known_hosts para no chocar con las VMs viejas de la Fase 3 (mismas IP privadas).
+
+Host fw
+    HostName 52.159.123.60
+    User azureuser
+    IdentityFile ~/.ssh/terranova
+    IdentitiesOnly yes
+    ConnectTimeout 15
+    ConnectionAttempts 3
+    StrictHostKeyChecking accept-new
+    UserKnownHostsFile ~/.ssh/known_hosts_terranova
+
+Host planos render web
+    User azureuser
+    IdentityFile ~/.ssh/terranova
+    IdentitiesOnly yes
+    ProxyJump fw
+    ConnectTimeout 15
+    StrictHostKeyChecking accept-new
+    UserKnownHostsFile ~/.ssh/known_hosts_terranova
+
+Host planos
+    HostName 10.0.0.36
+Host render
+    HostName 10.0.0.37
+Host web
+    HostName 10.0.0.4

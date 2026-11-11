@@ -1,0 +1,18 @@
+﻿===== paquetes
+ok
+===== página pública
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+<title>Terranova · Desarrolladora inmobiliaria</title>
+===== NTP
+Stratum         : 2
+Ref time (UTC)  : Wed Nov 11 03:57:29 2026
+System time     : 0.000000012 seconds slow of NTP time
+===== DNS interno (solo terranova.local va a fw-vpn)
+10.0.0.36       planos.terranova.local
+===== SSH: sin root, solo llave
+permitrootlogin no
+passwordauthentication no
+===== firewall
+reglas de entrada: 7 aceptaciones, política drop
+===== listo
+EXIT=0

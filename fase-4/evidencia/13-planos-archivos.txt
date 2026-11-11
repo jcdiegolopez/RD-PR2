@@ -1,0 +1,26 @@
+﻿--- exportado
+/srv/planos/renders
+		10.0.0.37(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+--- permisos
+group::rwx
+group:ingenieros:r-x
+group:ti:rwx
+default:group::rwx
+default:group:ingenieros:r-x
+default:group:ti:rwx
+/srv/planos:
+total 28
+drwxrws---+ 4 root arquitectos 4096 Nov 11 04:07 .
+drwxr-xr-x  3 root root        4096 Nov 11 04:07 ..
+drwxrws---+ 5 root arquitectos 4096 Nov 11 04:07 proyectos
+drwxrws---+ 4 root arquitectos 4096 Nov 11 04:07 renders
+
+/srv/planos/proyectos:
+total 40
+drwxrws---+ 5 root arquitectos 4096 Nov 11 04:07 .
+drwxrws---+ 4 root arquitectos 4096 Nov 11 04:07 ..
+drwxrws---+ 2 root arquitectos 4096 Nov 11 04:07 Condominio Los Robles
+drwxrws---+ 2 root arquitectos 4096 Nov 11 04:07 Residencial Vista Norte
+drwxrws---+ 2 root arquitectos 4096 Nov 11 04:07 Torre Aurora
+EXIT=0
+10.0.0.37       render.terranova.local

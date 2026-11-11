@@ -1,0 +1,14 @@
+; Zona interna de Terranova · BIND9 en fw-vpn
+$TTL 300
+@        IN SOA fw.terranova.local. ti.terranova.local. ( 2026111001 3600 600 86400 300 )
+         IN NS  fw.terranova.local.
+fw       IN A   10.0.0.20
+web      IN A   10.0.0.4
+planos   IN A   10.0.0.36
+render   IN A   10.0.0.37
+ntp      IN CNAME fw
+dns      IN CNAME fw
+vpn      IN CNAME fw
+ldap     IN CNAME planos
+grafana  IN CNAME planos
+intranet IN CNAME render

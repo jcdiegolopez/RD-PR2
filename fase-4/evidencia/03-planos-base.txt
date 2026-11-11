@@ -1,0 +1,77 @@
+﻿===== LDAP
+slapd ok: 2.5.20+dfsg-0ubuntu0.22.04.1
+admin ok
+índices ok
+--- grupos
+dn: cn=arquitectos,ou=grupos,dc=terranova,dc=local
+cn: arquitectos
+gidNumber: 20001
+memberUid: ana.arq
+
+dn: cn=ingenieros,ou=grupos,dc=terranova,dc=local
+cn: ingenieros
+gidNumber: 20002
+memberUid: ivan.ing
+
+dn: cn=ti,ou=grupos,dc=terranova,dc=local
+cn: ti
+gidNumber: 20003
+memberUid: tomas.ti
+
+dn: cn=visitantes,ou=grupos,dc=terranova,dc=local
+cn: visitantes
+gidNumber: 20004
+memberUid: visita1
+
+--- usuarios
+dn: uid=ana.arq,ou=usuarios,dc=terranova,dc=local
+uid: ana.arq
+cn: Ana Arquitecta
+uidNumber: 10001
+gidNumber: 20001
+
+dn: uid=ivan.ing,ou=usuarios,dc=terranova,dc=local
+uid: ivan.ing
+cn: Ivan Ingeniero
+uidNumber: 10002
+gidNumber: 20002
+
+dn: uid=tomas.ti,ou=usuarios,dc=terranova,dc=local
+uid: tomas.ti
+cn: Tomas TI
+uidNumber: 10003
+gidNumber: 20003
+
+dn: uid=visita1,ou=usuarios,dc=terranova,dc=local
+uid: visita1
+cn: Visita Uno
+uidNumber: 10004
+gidNumber: 20004
+
+--- login de prueba (ana.arq)
+dn:uid=ana.arq,ou=usuarios,dc=terranova,dc=local
+--- escuchando
+LISTEN 0      2048         0.0.0.0:389       0.0.0.0:*    users:(("slapd",pid=5937,fd=8))          
+LISTEN 0      2048            [::]:389          [::]:*    users:(("slapd",pid=5937,fd=9))          
+===== NTP
+--- srv-planos: fuentes de hora
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^* fw-vpn.internal.cloudapp>     1   6    17    14  -2785ns[  -31us] +/-  349us
+Reference ID    : 0A000014 (fw-vpn.internal.cloudapp.net)
+Stratum         : 2
+Ref time (UTC)  : Wed Nov 11 03:28:57 2026
+System time     : 0.000000029 seconds fast of NTP time
+===== SSSD
+--- srv-planos: usuarios de LDAP vistos por el sistema
+uid=10001(ana.arq) gid=20001(arquitectos) groups=20001(arquitectos)
+uid=10002(ivan.ing) gid=20002(ingenieros) groups=20002(ingenieros)
+uid=10003(tomas.ti) gid=20003(ti) groups=20003(ti)
+uid=10004(visita1) gid=20004(visitantes) groups=20004(visitantes)
+--- grupos permitidos: arquitectos,ingenieros,ti
+===== Firewall
+reglas de entrada: 8 aceptaciones, política drop
+===== listo
+EXIT=0
+0
