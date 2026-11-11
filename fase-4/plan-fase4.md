@@ -21,20 +21,37 @@ Este plan parte de lo que ya existe en Azure (Fase 3) y agrega lo que piden el e
 | **Avance 10 nov (noche)** | **Pasos 2 y 3 hechos, y BIND9 del paso 4.2.** Fase 3 reconstruida con contraseñas, CA y perfiles nuevos (`credenciales-fase4.txt`, `vpn-perfiles/`). Regresión completa igual a la Fase 3: ACL por grupo desde las 4 VPN (`evidencia/06`), SSH con LDAP por grupo (`evidencia/07`), nadie hacia TI (`evidencia/08`). DNS interno funcionando desde la VPN (no para Visitantes) |
 | **Avance 10 nov (noche, Fase 4)** | **Hechos los pasos 4, 5b (sin HTTPS), 7, 8 y 9.** SSH sin root en fw-vpn y srv-web. srv-web sirve la página por el DNAT: `http://52.159.123.60` abre desde Internet sin VPN; la DMZ no llega a nada interno (`evidencia/10`). SNMPv3 en las 4 VMs, v2c rechazado (`evidencia/11`). Prometheus + snmp_exporter 0.31.0 + Grafana 13.3 en srv-planos; Grafana abre desde TI y no desde Arquitectos (`evidencia/12`). Carpeta de planos con permisos por grupo y NFS (`evidencia/13`). Blender oficial (snap 5.3.0) instalado; el render de prueba quedó a medias al apagar (`evidencia/14`). **VMs apagadas (desasignadas) al cierre del 10 nov.** |
 
-### Pendiente (al 10 nov, noche)
+### Pendiente, dividido en 3 personas (11 nov)
 
-| # | Qué | Quién | Detalle |
-|---|---|---|---|
-| 1 | **Dominio** | Jose Pablo | Conseguirlo (Student Pack → Namecheap `.me`, o comprarlo) y crear los registros A `@` y `www` → **52.159.123.60**. Bloquea el HTTPS |
-| 2 | **HTTPS** (paso 6) | Jose Pablo | Con el dominio resolviendo: `server_name` en `config/nginx-terranova.conf` y Certbot con `--redirect` |
-| 3 | **Render del condominio** | Fabian | Encender srv-planos y srv-render y correr `infra/setup-render-blender.sh` (ya corregido; ~4 min) |
-| 4 | **Subir la página pública** | Jose Pablo | `web/index.html` está hecho pero srv-web todavía tiene la página provisional. Copiar `web/` con el render en `web/img/condominio.png`. Revisar si los datos de los proyectos (inventados) se dejan así |
-| 5 | **Acceso del equipo** (paso 0.4) | Diego López | Rol Contributor sobre `rg-redes-proyecto` para cada integrante |
-| 6 | **Capturas** | Todos | Fase 3 y Fase 4 (pruebas de la sección 5), con las VMs encendidas |
-| 7 | **Reporte final** | Fabian | Fases 1–3 + sección de Fase 4 (decisiones, implementación, pruebas, costos, problemas) |
-| 8 | **Diagrama** | Fabian | `diagrama-fase4.drawio` ya refleja lo implementado; exportar a PNG |
-| 9 | **Presentación y guion de la demo** | Todos | Presentación ejecutiva y guía de demo como `demo-fase3.md` |
-| 10 | **Push** | Diego López | `git push` (el modo automático lo bloquea) |
+Los roles de Azure del equipo ya están asignados. Falta lo siguiente:
+
+**Persona 1 · Infraestructura y página pública**
+
+| Cuándo | Tarea | Detalle |
+|---|---|---|
+| Hoy | **Dominio** | Conseguirlo (Student Pack → Namecheap `.me`, o comprarlo) y crear los registros A `@` y `www` → **52.159.123.60**. Bloquea el HTTPS |
+| Hoy | **Commit y push** | `git add -A`, `git commit` y `git push` |
+| Sesión de VMs encendidas (12 nov, mañana) | **Render del condominio** | Encender srv-planos y srv-render y correr `infra/setup-render-blender.sh` (~4 min) |
+| Sesión de VMs encendidas | **Subir la página pública** | `web/index.html` ya está hecho; srv-web todavía tiene la provisional. Copiar `web/` con el render en `web/img/condominio.png`. Decidir si los datos de los proyectos (inventados) se dejan así |
+| Sesión de VMs encendidas | **HTTPS** (paso 6) | Con el dominio resolviendo: `server_name` en `config/nginx-terranova.conf` y Certbot con `--redirect` |
+| Al terminar | **Apagar todo** | Stop (desasignar) de las 4 VMs |
+
+**Persona 2 · Reporte final**
+
+| Cuándo | Tarea | Detalle |
+|---|---|---|
+| Hoy | **Armar el documento** | Informe de la Fase 2 + `fase-3/reporte-fase3.md` + sección nueva de la Fase 4 (decisiones, implementación, pruebas, costos, problemas). El material está en este plan, en `BITACORA.md` y en `evidencia/` |
+| Hoy | **Diagrama** | Exportar `diagrama-fase4.drawio` a PNG e insertarlo |
+| 12 nov, tarde | **Cerrar el reporte** | Insertar las capturas que entregue la Persona 3 |
+
+**Persona 3 · Presentación, demo y capturas**
+
+| Cuándo | Tarea | Detalle |
+|---|---|---|
+| Hoy | **Presentación ejecutiva** | Tomar la de la Fase 3 como base |
+| Hoy | **Guion de la demo** | Con `fase-3/demo-fase3.md` como modelo |
+| Sesión de VMs encendidas | **Capturas** | Las pruebas de la sección 5 de este plan, las de la Fase 4 y las que faltan de la Fase 3 |
+| 12 nov, tarde | **Ensayo de la demo** | Completa, entre las 3 personas |
 
 Costo con las VMs apagadas: discos e IP pública, unos $13 al mes. Encender las 4 VMs suma unos $0.10 por hora.
 
@@ -153,25 +170,16 @@ Celular ──► https://<dominio>  (DNS público: A → <IP-PUBLICA-FW>)
 
 ### Reparto
 
-| Quién | Pasos |
-|---|---|
-| Joel (o quien ponga la tarjeta) | 0, 1, acceso del equipo y la captura de costos |
-| Diego López | 2.1 y 2.4 (fw-vpn y OpenVPN), 3 y 4 |
-| Diego Rosales | 2.2 (LDAP y SSSD) y 9 (carpeta y NFS) |
-| Jose Pablo | 2.3 (intranet), dominio, 5 y 6 |
-| Erick | 7, 8 y los firewalls de las 4 VMs |
-| Fabian | Página pública (5a), Blender (9), 11 y juntar las capturas |
-
-Todos: capturas de su parte para el reporte.
+Los pasos 0 al 5b, 7, 8 y 9 ya están hechos (ver sección 0). Lo que queda se reparte en 3 personas, en la sección 0: **Persona 1** (dominio, HTTPS, render, página, commit y push), **Persona 2** (reporte final y diagrama) y **Persona 3** (presentación, guion de la demo y capturas).
 
 ### Calendario
 
 | Día | Objetivo |
 |---|---|
-| **10 nov (hoy)** | Paso 0 (suscripción y cuota), dominio registrado, contenido y HTML de la página pública. Si da tiempo, paso 1 |
-| **11 nov** | Mañana: pasos 1–3 (red nueva y Fase 3 funcionando). Tarde: pasos 4–9 |
-| **12 nov** | Paso 10 (pruebas y capturas) y paso 11 (reporte, diagrama, presentación); ensayo de la demo |
-| **13 nov** | Entrega y demo. Encender las VMs 30 minutos antes |
+| **11 nov (hoy)** | P1: dominio y commit/push. P2: armar el reporte con lo que ya existe y exportar el diagrama. P3: presentación y guion de la demo |
+| **12 nov, mañana** | Sesión de VMs encendidas: P1 hace el render, sube la página y saca el HTTPS; P3 toma las capturas |
+| **12 nov, tarde** | P2 cierra el reporte con las capturas; P3 termina la presentación; ensayo de la demo entre los 3 |
+| **13 nov** | Encender las VMs 30 minutos antes. Entrega y demo. Apagar al terminar |
 
 ---
 
