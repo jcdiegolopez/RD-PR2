@@ -123,7 +123,7 @@ Hallazgos al revisar el documento del proyecto (caso 4):
 
 | Decisión | Por qué | Alternativas descartadas |
 |---|---|---|
-| Convertir la suscripción de Joel a **pago por uso** (la misma suscripción) y pedir cuota de 8 vCPU | Azure for Students no permite subir la cuota; convertirla no obliga a reconstruir nada | Borrar srv-render (rompe el caso 4), otra región con peering, ACI, cuenta nueva |
+| **Suscripción nueva de pago por uso** y reconstruir todo desde cero con scripts (`fase-4/infra/`) | Azure for Students no permite subir la cuota, y la de Joel no se puede pasar a pago desde el portal: solo por solicitud a soporte de Microsoft, que no llega antes del 13 | Esperar a soporte, borrar srv-render (rompe el caso 4), otra región con peering, ACI |
 | **srv-web en la DMZ, detrás de fw-vpn con DNAT** (sin IP pública) | Todo el tráfico público pasa por el firewall; una sola entrada; una IP menos | IP pública propia, como en la Fase 1 (queda como plan B) |
 | **BIND9 en fw-vpn** para `terranova.local` | Una sola pieza, gratis, sirve directo a la VPN | Azure Private DNS (no responde a la VPN sin un reenviador) |
 | SNMPv3 + Prometheus + Grafana (solo TI) | Lo pide la Fase 4; Grafana es el 10% extra | SNMP v2c (comunidad en texto plano) |
@@ -131,7 +131,7 @@ Hallazgos al revisar el documento del proyecto (caso 4):
 | Planos por **SFTP** con permisos por grupo | Cumple "almacenar planos" sin otro servicio | Samba |
 | Fuera de alcance: **Samba, Blob Storage, LDAPS** | No los pide ni la fase ni el caso | — |
 
-Estado al 10 nov: la suscripción todavía figura como Azure for Students y la cuota sigue en 6/6.
+Estado al 10 nov: la suscripción de Joel no se pudo pasar a pago desde el portal (por su tipo de contrato solo lo hace soporte de Microsoft; se abrió el caso). Se decide crear una suscripción de pago nueva y reconstruir todo. La vieja queda apagada como respaldo.
 
 ---
 

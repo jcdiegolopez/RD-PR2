@@ -1,0 +1,102 @@
+# Directorio de srv-planos en la Fase 3, exportado con `slapcat -n 1` el 10 nov 2026.
+# Sin userPassword ni atributos operacionales. setup-ldap.sh recrea exactamente esto.
+#
+# Configuración (cn=config): slapd 2.5.20 (Ubuntu 22.04), backend mdb en /var/lib/ldap,
+# rootDN cn=admin,dc=terranova,dc=local, escucha ldap:/// (389) y ldapi:///, sin TLS.
+# Esquemas: core, cosine, nis, inetorgperson. Sin overlays.
+# Índices: objectClass eq · cn,uid eq · uidNumber,gidNumber eq · member,memberUid eq
+# ACL (las de Ubuntu por defecto):
+#   {0} to attrs=userPassword by self write by anonymous auth by * none
+#   {1} to attrs=shadowLastChange by self write by * read
+#   {2} to * by * read
+
+dn: dc=terranova,dc=local
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Terranova
+dc: terranova
+
+dn: ou=usuarios,dc=terranova,dc=local
+objectClass: organizationalUnit
+ou: usuarios
+
+dn: ou=grupos,dc=terranova,dc=local
+objectClass: organizationalUnit
+ou: grupos
+
+dn: uid=ana.arq,ou=usuarios,dc=terranova,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: ana.arq
+cn: Ana Arquitecta
+givenName: Ana
+sn: Arquitecta
+uidNumber: 10001
+gidNumber: 20001
+homeDirectory: /home/ana.arq
+loginShell: /bin/bash
+
+dn: uid=ivan.ing,ou=usuarios,dc=terranova,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: ivan.ing
+cn: Ivan Ingeniero
+givenName: Ivan
+sn: Ingeniero
+uidNumber: 10002
+gidNumber: 20002
+homeDirectory: /home/ivan.ing
+loginShell: /bin/bash
+
+dn: uid=tomas.ti,ou=usuarios,dc=terranova,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: tomas.ti
+cn: Tomas TI
+givenName: Tomas
+sn: TI
+uidNumber: 10003
+gidNumber: 20003
+homeDirectory: /home/tomas.ti
+loginShell: /bin/bash
+
+dn: uid=visita1,ou=usuarios,dc=terranova,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: visita1
+cn: Visita Uno
+givenName: Visita
+sn: Uno
+uidNumber: 10004
+gidNumber: 20004
+homeDirectory: /home/visita1
+loginShell: /bin/bash
+
+dn: cn=arquitectos,ou=grupos,dc=terranova,dc=local
+objectClass: posixGroup
+cn: arquitectos
+gidNumber: 20001
+memberUid: ana.arq
+
+dn: cn=ingenieros,ou=grupos,dc=terranova,dc=local
+objectClass: posixGroup
+cn: ingenieros
+gidNumber: 20002
+memberUid: ivan.ing
+
+dn: cn=ti,ou=grupos,dc=terranova,dc=local
+objectClass: posixGroup
+cn: ti
+gidNumber: 20003
+memberUid: tomas.ti
+
+dn: cn=visitantes,ou=grupos,dc=terranova,dc=local
+objectClass: posixGroup
+cn: visitantes
+gidNumber: 20004
+memberUid: visita1

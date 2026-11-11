@@ -9,16 +9,16 @@ Este plan parte de lo que ya existe en Azure (Fase 3) y agrega lo que piden el e
 
 ---
 
-## 0. Estado de partida (verificado el 10 de noviembre)
+## 0. Estado de partida (10 de noviembre)
 
 | Qué | Estado |
 |---|---|
-| Suscripción | **Todavía es Azure for Students** (`quotaId: AzureForStudents_2018-01-01`, límite de gasto activo). Hay que convertirla a pago (paso 0) |
-| Cuota de vCPU en North Central US | 6 de 6 usadas (familia Basv2: 6 de 10) |
-| VMs | fw-vpn, srv-planos y srv-render existen, apagadas (B2ats_v2) |
-| Fase 3 | Todo implementado y probado: VPN ×4 con LDAP, NAT, ACL, NTP, DHCP, intranet, hardening |
+| Suscripción actual (de Joel) | Azure for Students. **No se puede pasar a pago desde el portal**: por el tipo de contrato, solo Microsoft puede hacerlo con una solicitud a soporte (caso abierto). No da tiempo para el 13 |
+| Decisión | **Suscripción nueva de pago por uso y reconstruir todo desde cero.** La suscripción vieja queda apagada como respaldo, con la Fase 3 funcionando y su evidencia |
+| Qué se reutiliza | Los scripts y configuraciones de la Fase 3 (`fase-3/config/`), los firewalls finales (`fase-4/config/`), el script que crea Azure (`fase-4/infra/01-azure.sh`) y el de LDAP (`fase-4/infra/setup-ldap.sh`) |
+| Qué cambia | IP pública nueva (perfiles `.ovpn` nuevos), CA y certificados de VPN nuevos, llave SSH y contraseñas nuevas |
 | Página pública | **No existe** (ni VM ni contenido) |
-| Intranet | Existe en srv-render. Falta confirmar si está desplegada la versión rediseñada de r0sv |
+| Intranet | Existe (`fase-3/config/intranet.html`); se vuelve a desplegar en srv-render. Si r0sv tiene una versión más nueva en la VM vieja, copiarla antes |
 | Zona DNS interna | **No existe** (la pide el caso 4) |
 
 ---
@@ -72,13 +72,13 @@ Este plan parte de lo que ya existe en Azure (Fase 3) y agrega lo que piden el e
 
 | VM | Subred | IP | Tamaño | Servicios |
 |---|---|---|---|---|
-| fw-vpn | Firewall 10.0.0.16/28 | 10.0.0.20 (pública 52.162.223.107) | B2ats_v2 (2 vCPU, 1 GiB) | nftables (ACL, NAT, **DNAT**), OpenVPN ×4, chrony, **BIND9**, **snmpd** |
+| fw-vpn | Firewall 10.0.0.16/28 | 10.0.0.20 (IP pública estática nueva) | B2ats_v2 (2 vCPU, 1 GiB) | nftables (ACL, NAT, **DNAT**), OpenVPN ×4, chrony, **BIND9**, **snmpd** |
 | **srv-web** (nueva) | **DMZ 10.0.0.0/28** | **10.0.0.4**, sin IP pública | B2ats_v2 (2 vCPU, 1 GiB) | **nginx + Certbot**, snmpd |
 | srv-planos | Servidores 10.0.0.32/28 | 10.0.0.36 | **B2als_v2 (2 vCPU, 4 GiB)** | OpenLDAP, **carpeta de planos**, **NFS para renders**, **Prometheus + Grafana**, snmpd |
 | srv-render | Servidores 10.0.0.32/28 | 10.0.0.37 | **B2als_v2 (2 vCPU, 4 GiB)** | intranet (nginx), **Blender**, snmpd |
 
 **Cuota necesaria:** 4 VMs × 2 vCPU = **8**.
-**Por qué se agrandan srv-planos y srv-render:** con 1 GiB no caben LDAP + Prometheus + Grafana, ni un render de Blender. B2als_v2 tiene las mismas 2 vCPU (no gasta más cuota) y 4 GiB.
+**Por qué srv-planos y srv-render son B2als_v2:** con 1 GiB no caben LDAP + Prometheus + Grafana, ni un render de Blender. B2als_v2 tiene las mismas 2 vCPU (no gasta más cuota) y 4 GiB.
 
 ### Decisión: la web entra por el firewall (DNAT), no con IP propia
 
@@ -94,7 +94,7 @@ El dominio funciona igual: su registro A apunta a la IP de fw-vpn. La redirecci�
 ### Recorrido de una visita a la página web
 
 ```
-Celular ──► https://<dominio>  (DNS público: A → 52.162.223.107)
+Celular ──► https://<dominio>  (DNS público: A → <IP-PUBLICA-FW>)
         ──► fw-vpn: DNAT 443 → 10.0.0.4
         ──► srv-web (DMZ) responde ──► ruta de la DMZ: 0.0.0.0/0 → fw-vpn ──► celular
 ```
@@ -125,31 +125,25 @@ Celular ──► https://<dominio>  (DNS público: A → 52.162.223.107)
 ## 3. Orden, reparto y calendario
 
 ```
-0. Joel: convertir a pago y pedir cuota 8 ──┐        Dominio (Jose Pablo): HOY,
-                                            │        la propagación puede tardar
-1. Agrandar srv-planos y srv-render ◄───────┤        Página pública (paso 5a): HOY,
-2. Crear srv-web ◄──── necesita la cuota ───┘        no necesita Azure
-3. Rutas y NSG
-4. fw-vpn: nftables (DNAT + DMZ) + BIND9 + SSH de root
-5. srv-web: nginx, página, firewall ──► 6. Certbot (necesita dominio + DNAT)
-7. SNMPv3 en las 4 VMs ──► 8. Prometheus + Grafana
-9. Carpeta de planos + NFS + Blender
-10. Pruebas y capturas (también las que faltan de la Fase 3)
-11. Diagrama, reporte final, presentación, ensayo
+0. Suscripción nueva y cuota (hoy)           Dominio y página pública: HOY
+1. infra/01-azure.sh: red, NSG, rutas, 4 VMs  (no necesitan Azure)
+2. Reconstruir la Fase 3: fw-vpn → srv-planos (LDAP) → srv-render → OpenVPN
+3. Comprobar la Fase 3 en la red nueva (regresión)
+4. fw-vpn: BIND9, DNS en la VPN, SSH de root   5. srv-web ──► 6. Certbot (dominio + DNAT)
+7. SNMPv3 ──► 8. Prometheus + Grafana          9. Carpeta de planos, NFS, Blender
+10. Pruebas y capturas ──► 11. Reporte final, diagrama, presentación, ensayo
 ```
-
-Lo que no necesita la VM nueva (paso 4 sin el DNAT, 5a, 7, 8 y 9) puede empezar mientras llega la cuota.
 
 ### Reparto
 
 | Quién | Pasos |
 |---|---|
-| Joel | 0, 1, 2, 3 y la captura de costos |
-| Diego López | 4 (nftables, BIND9, DNS en la VPN, SSH de root) |
-| Jose Pablo | Dominio, 5 y 6 |
-| Erick | 7, 8 y el firewall de srv-web |
-| Diego Rosales | 9 (carpeta, NFS) y confirmar qué versión de la intranet está en srv-render |
-| Fabian | Blender (9), renders para la página, 11 y juntar las capturas |
+| Joel (o quien ponga la tarjeta) | 0, 1, acceso del equipo y la captura de costos |
+| Diego López | 2.1 y 2.4 (fw-vpn y OpenVPN), 3 y 4 |
+| Diego Rosales | 2.2 (LDAP y SSSD) y 9 (carpeta y NFS) |
+| Jose Pablo | 2.3 (intranet), dominio, 5 y 6 |
+| Erick | 7, 8 y los firewalls de las 4 VMs |
+| Fabian | Página pública (5a), Blender (9), 11 y juntar las capturas |
 
 Todos: capturas de su parte para el reporte.
 
@@ -157,8 +151,8 @@ Todos: capturas de su parte para el reporte.
 
 | Día | Objetivo |
 |---|---|
-| **10 nov (hoy)** | Paso 0 (conversión y cuota), dominio registrado, contenido y HTML de la página pública |
-| **11 nov** | Pasos 1–9: todo implementado |
+| **10 nov (hoy)** | Paso 0 (suscripción y cuota), dominio registrado, contenido y HTML de la página pública. Si da tiempo, paso 1 |
+| **11 nov** | Mañana: pasos 1–3 (red nueva y Fase 3 funcionando). Tarde: pasos 4–9 |
 | **12 nov** | Paso 10 (pruebas y capturas) y paso 11 (reporte, diagrama, presentación); ensayo de la demo |
 | **13 nov** | Entrega y demo. Encender las VMs 30 minutos antes |
 
@@ -166,90 +160,74 @@ Todos: capturas de su parte para el reporte.
 
 ## 4. Pasos
 
-### Paso 0 · Suscripción de pago y cuota (Joel)
+### Paso 0 · Suscripción nueva (Joel o quien ponga la tarjeta)
 
-1. Revisar cuánto crédito queda (Cost Management). **Al convertir, lo más probable es que se pierda el crédito de estudiante que quede.**
-2. Portal → **Subscriptions** → la suscripción del proyecto (`17bfaf33-…`) → **Upgrade** → tarjeta. Es la misma suscripción: no se borra ni se mueve nada.
-3. **Verificar** que la conversión quedó hecha (debe dejar de decir `AzureForStudents`):
+1. En https://portal.azure.com → **Subscriptions** → **Add** → **Pay-As-You-Go**, con la tarjeta de quien vaya a pagar. Si el portal la crea como "cuenta gratuita", convertirla a pago enseguida (en ese tipo sí hay botón **Upgrade**), porque la gratuita tiene límites bajos.
+2. Revisar la cuota de vCPU en la región (hacen falta **8**):
    ```bash
-   az rest --method get --url "https://management.azure.com/subscriptions/17bfaf33-8d04-4cd4-8549-276b18b372ec?api-version=2022-12-01" --query "subscriptionPolicies.quotaId"
+   az account set --subscription <ID-NUEVO>
+   az vm list-usage -l northcentralus -o table   # "Total Regional vCPUs" ≥ 8
    ```
-4. Portal → **Quotas** → Compute → North Central US → **Total Regional vCPUs**: pedir **8** (hoy 6). Si no se habilita (hay reportes de demora después de convertir), abrir un caso de soporte.
-5. Verificar: `az vm list-usage -l northcentralus -o table` → "Total Regional vCPUs" con límite 8.
-6. Crear un presupuesto con alerta (Cost Management → Budgets) de $25 al mes.
+   Si es menor, pedir 8 en Portal → **Quotas** → Compute. En suscripciones de pago estas solicitudes suelen aprobarse rápido, pero no está garantizado: hacerlo hoy.
+3. Presupuesto con alerta (Cost Management → Budgets) de $25 al mes.
+4. Después del paso 1, dar acceso al equipo (rol Contributor sobre el grupo de recursos):
+   ```bash
+   az role assignment create --assignee <correo> --role Contributor \
+     --scope /subscriptions/<ID-NUEVO>/resourceGroups/rg-redes-proyecto
+   ```
+5. **No borrar la suscripción vieja.** Dejar sus VMs apagadas (Stop, desasignar) hasta después de la entrega.
 
-### Paso 1 · Agrandar los servidores (Joel)
-
-```bash
-az vm deallocate -g rg-redes-proyecto -n srv-planos
-az vm resize     -g rg-redes-proyecto -n srv-planos --size Standard_B2als_v2
-az vm deallocate -g rg-redes-proyecto -n srv-render
-az vm resize     -g rg-redes-proyecto -n srv-render --size Standard_B2als_v2
-```
-
-Las IPs privadas son estáticas, no cambian. Después de encender, verificar que la VPN, LDAP, la intranet y NTP siguen funcionando (`fase-3/demo-fase3.md` sirve de guía).
-
-### Paso 2 · Crear srv-web (Joel)
+### Paso 1 · Crear la red en Azure con el script (Joel)
 
 ```bash
-az vm create -g rg-redes-proyecto -n srv-web -l northcentralus \
-  --image Ubuntu2204 --size Standard_B2ats_v2 \
-  --vnet-name vnet-proyecto --subnet DMZ --private-ip-address 10.0.0.4 \
-  --public-ip-address "" --nsg "" \
-  --admin-username azureuser --ssh-key-values fase-3/llaves/redes_key.pub
+ssh-keygen -t ed25519 -f ~/.ssh/terranova -C terranova     # llave nueva para azureuser
+ADMIN_IP=<tu-ip-publica> SSH_PUB=~/.ssh/terranova.pub bash fase-4/infra/01-azure.sh
 ```
 
-- `--public-ip-address ""`: sin IP pública. `--nsg ""`: sin NSG en la tarjeta (manda el de la subred).
-- Se administra desde fw-vpn o desde la VPN de TI: `ssh -J azureuser@52.162.223.107 azureuser@10.0.0.4`.
-- No tiene salida a Internet hasta el paso 3 (ruta) y el paso 4 (NAT).
+`fase-4/infra/01-azure.sh` crea, en este orden:
+- Grupo de recursos `rg-redes-proyecto`, VNet `vnet-proyecto` 10.0.0.0/16 y las subredes DMZ, Firewall y Servidores (mismos rangos de siempre).
+- Los 3 NSG con las reglas **finales**: las de la Fase 3 más la web pública y el DNAT en `nsg-firewall`, la DMZ que solo acepta la web, SSH de TI y SNMP, y en `nsg-servidores` NFS y SNMP, sin el 445 y con la DMZ fuera de todas las reglas (resumen en la tabla de NSG del diagrama).
+- `rt-servidores` y `rt-dmz` con todas las rutas hacia 10.0.0.20; la subred Firewall sin tabla.
+- La IP pública estática de fw-vpn y su tarjeta de red con **IP forwarding**.
+- Las 4 VMs con IP privada fija: fw-vpn (Ubuntu 24.04, B2ats_v2), srv-planos y srv-render (Ubuntu 22.04, B2als_v2) y srv-web (Ubuntu 22.04, B2ats_v2). Solo fw-vpn tiene IP pública.
 
-### Paso 3 · Rutas y NSG (Joel)
+Antes de crear nada revisa que la cuota alcance. Al final imprime la **IP pública nueva**: anotarla, porque va en el dominio, en los perfiles de VPN y en `fase-4/config/fw-nftables.conf`. Guardar la llave privada en `fase-4/llaves/`, como en la Fase 3.
 
-**Rutas:**
+### Paso 2 · Reconstruir la Fase 3 en la red nueva
 
-```bash
-az network route-table create -g rg-redes-proyecto -n rt-dmz -l northcentralus
-az network route-table route create -g rg-redes-proyecto --route-table-name rt-dmz -n internet-hacia-fw   --address-prefix 0.0.0.0/0    --next-hop-type VirtualAppliance --next-hop-ip-address 10.0.0.20
-az network route-table route create -g rg-redes-proyecto --route-table-name rt-dmz -n vpn-hacia-fw        --address-prefix 10.10.0.0/16 --next-hop-type VirtualAppliance --next-hop-ip-address 10.0.0.20
-az network route-table route create -g rg-redes-proyecto --route-table-name rt-dmz -n servidores-hacia-fw --address-prefix 10.0.0.32/28 --next-hop-type VirtualAppliance --next-hop-ip-address 10.0.0.20
-az network vnet subnet update -g rg-redes-proyecto --vnet-name vnet-proyecto -n DMZ --route-table rt-dmz
+Los scripts se copian con `scp` a `/tmp` de cada VM y se corren con `bash` (lección de la Fase 3: no mandar comandos largos desde PowerShell). A los servidores se entra saltando por fw-vpn: `ssh -J azureuser@<IP-PUBLICA-FW> azureuser@10.0.0.36`.
 
-az network route-table route create -g rg-redes-proyecto --route-table-name rt-servidores -n dmz-hacia-fw --address-prefix 10.0.0.0/28 --next-hop-type VirtualAppliance --next-hop-ip-address 10.0.0.20
-```
+**2.1 fw-vpn (Diego López)**
+1. Reenvío de paquetes: `echo 'net.ipv4.ip_forward=1' | sudo tee /etc/sysctl.d/99-terranova.conf && sudo sysctl --system`.
+2. Firewall: `fase-4/config/fw-nftables.conf` con `<IP-ADMIN>` y `<IP-PUBLICA-FW>` reemplazados → `/etc/nftables.conf`, y `sudo systemctl enable --now nftables` (con el truco del borrado a los 5 minutos).
+3. NTP: `sudo cp -n /etc/chrony/chrony.conf /etc/chrony/chrony.conf.orig` y luego `fase-3/config/ntp-servidor.sh`.
+4. Desde srv-planos, `curl -s ifconfig.me` debe dar la IP de fw-vpn: con eso los servidores ya tienen Internet para instalar paquetes.
 
-**`nsg-firewall`** (lección de la Fase 3: el NSG de la subred Firewall también filtra el tráfico que fw-vpn reenvía):
+**2.2 srv-planos (Diego Rosales)**
+1. LDAP igual al de la Fase 3 (sacado del servidor real con `slapcat`; referencia en `fase-4/infra/ldap-referencia.ldif`), con contraseñas **nuevas**: crear `claves.txt` con una línea `uid clave` por usuario (ana.arq, ivan.ing, tomas.ti, visita1) y correr `sudo LDAP_ADMIN_PW='<clave>' bash setup-ldap.sh claves.txt`. Guardar las claves en `fase-4/credenciales-fase4.txt`.
+2. NTP: `fase-3/config/ntp-cliente.sh`.
+3. SSH con LDAP: `sudo bash setup-sssd.sh arquitectos,ingenieros,ti` (`fase-3/config/setup-sssd.sh`).
+4. Firewall: `fase-4/config/planos-nftables.conf`.
 
-| Dirección | Prioridad | Nombre | Origen | Destino | Puerto | Para qué |
-|---|---|---|---|---|---|---|
-| Entrada | 105 | Allow-Web-Publico | Internet | cualquiera | TCP 80, 443 | Visitas a la página |
-| Entrada | 150 | Allow-Salida-Servidores | **10.0.0.32/28, 10.0.0.0/28** | cualquiera | cualquiera | Agregar la DMZ: salida a Internet de srv-web |
-| Entrada | 155 | Allow-SNMP-Colector | 10.0.0.36 | cualquiera | UDP 161 | Monitoreo de fw-vpn y de srv-web (pasa por fw-vpn) |
-| Salida | 110 | Allow-DNAT-Web | cualquiera | 10.0.0.4 | TCP 80, 443 | Reenviar las visitas a srv-web |
+**2.3 srv-render (Jose Pablo)**
+1. NTP: `ntp-cliente.sh`. SSH con LDAP: `sudo bash setup-sssd.sh arquitectos,ti`.
+2. Intranet: copiar a `/tmp` `intranet.html`, `nginx-intranet.conf` y `archivo.woff2` y correr `fase-3/config/setup-nginx.sh` (después, `sudo cp /tmp/archivo.woff2 /var/www/intranet/`).
+3. Firewall: `fase-4/config/render-nftables.conf`.
 
-Las reglas actuales (`Allow-OpenVPN`, `Allow-SSH-Admin`, `Allow-DNS-NTP`, `Allow-ICMP`, `Allow-Retorno-VPN`, `Allow-VPN-Hacia-Red`, `Deny-Resto`) se mantienen. `Allow-DNS-NTP` ya cubre el DNS de BIND9.
+**2.4 OpenVPN en fw-vpn (Diego López)**
+1. Antes de correrlo, cambiar el DNS que empuja `fase-3/config/setup-openvpn.sh`: para `arq`, `ing` y `ti`, `push "dhcp-option DNS 10.0.0.20"` y `push "dhcp-option DOMAIN terranova.local"`; para `vis`, se queda `1.1.1.1`. (El DNS interno se enciende en el paso 4; mientras tanto, la VPN puede usar 1.1.1.1.)
+2. Copiar `ldap-auth.sh` a `/tmp` y correr `setup-openvpn.sh`: crea una **CA nueva**, los certificados y las 4 instancias.
+3. Perfiles nuevos: `fase-3/config/perfil.sh <puerto> cliente1 <grupo>` para cada grupo, reemplazando `<IP-PUBLICA-FW-VPN>` por la IP nueva. Guardarlos en `fase-4/vpn-perfiles/`. Los de `fase-3/vpn-perfiles/` dejan de servir.
 
-**`nsg-dmz`** (reemplaza las reglas actuales `Allow-SSH-Interno` y `Allow-ICMP`, que aceptan toda la red):
+### Paso 3 · Comprobar la Fase 3 en la red nueva (Diego López)
 
-| Prioridad | Nombre | Origen | Destino | Puerto |
-|---|---|---|---|---|
-| 100 | Allow-Web | cualquiera | 10.0.0.4 | TCP 80, 443 |
-| 110 | Allow-SSH-Admin-TI | 10.0.0.20, 10.10.1.48/29 | 10.0.0.4 | TCP 22 |
-| 120 | Allow-SNMP-Colector | 10.0.0.36 | 10.0.0.4 | UDP 161 |
-| 130 | Allow-ICMP-TI | 10.0.0.20, 10.10.1.48/29 | 10.0.0.4 | ICMP |
-| 4000 | Deny-Resto | cualquiera | cualquiera | cualquiera |
-
-**`nsg-servidores`:**
-- `Allow-Web-Intranet` y `Allow-ICMP`: cambiar el origen `10.0.0.0/16` por `10.0.0.16/28, 10.0.0.32/28` para que **la DMZ no entre**.
-- **Borrar `Allow-SMB-Planos`**: el 445 no se usa (no hay Samba). Es hardening.
-- Agregar `Allow-NFS-Renders` (prioridad 145): 10.0.0.37 → 10.0.0.36, TCP 2049.
-- Agregar `Allow-SNMP-Colector` (prioridad 150): 10.0.0.36 → 10.0.0.37, UDP 161.
-- Grafana no necesita regla: `Allow-TI-Todo` ya lo cubre.
+Repetir las pruebas de `fase-3/demo-fase3.md` con los perfiles nuevos: IP por grupo, SSH por grupo, intranet, nadie hacia TI, Visitantes solo Internet, NAT y NTP. Guardar la salida en `fase-4/evidencia/`. Hasta que esto pase, no seguir con lo nuevo.
 
 ### Paso 4 · fw-vpn (Diego López)
 
 #### 4.1 nftables
 
-Cambios sobre `fase-3/config/fw-nftables.conf` (guardar el nuevo como `fase-4/config/fw-nftables.conf`):
+El archivo completo es `fase-4/config/fw-nftables.conf` y se aplica en el paso 2.1. Lo nuevo respecto de la Fase 3:
 
 ```
 table inet filtro {
@@ -292,7 +270,7 @@ table ip nat {
     # Visitas desde Internet (Azure entrega el paquete con destino 10.0.0.20)
     iifname "eth0" ip daddr 10.0.0.20 tcp dport { 80, 443 } dnat to 10.0.0.4
     # Usuarios de la VPN que abren el dominio (resuelve a la IP pública)
-    ip daddr 52.162.223.107 tcp dport { 80, 443 } dnat to 10.0.0.4
+    ip daddr <IP-PUBLICA-FW> tcp dport { 80, 443 } dnat to 10.0.0.4
   }
   chain postrouting {
     type nat hook postrouting priority srcnat; policy accept;
@@ -301,7 +279,7 @@ table ip nat {
 }
 ```
 
-**Importante:** la regla de la web va **antes** de `visitantes-interno` y de `dmz-hacia-interno`, porque fw-vpn tiene una sola tarjeta (`eth0`) y todo sale por ella. Aplicar con el truco de la Fase 3 (borrado automático a los 5 minutos si se pierde el SSH).
+**Importante:** la regla de la web va **antes** de `visitantes-interno` y de `dmz-hacia-interno`, porque fw-vpn tiene una sola tarjeta (`eth0`) y todo sale por ella. Las reglas de NSG y rutas que acompañan esto ya las crea `fase-4/infra/01-azure.sh`.
 
 #### 4.2 BIND9 (zona interna)
 
@@ -388,23 +366,7 @@ sudo mkdir -p /var/www/terranova && sudo cp -r web/* /var/www/terranova/
 
 - **nginx** (`/etc/nginx/sites-available/terranova`): `server_name <dominio> www.<dominio>;`, `root /var/www/terranova;`, `listen 80;` (Certbot agrega el 443). Ocultar la versión: `server_tokens off;` en `nginx.conf`. Desactivar el sitio `default`.
 - **NTP:** `server 10.0.0.20 iburst prefer` en `/etc/chrony/chrony.conf` (como en los otros servidores).
-- **Firewall** (Erick), `/etc/nftables.conf`:
-  ```
-  table inet filtro {
-    chain input {
-      type filter hook input priority 0; policy drop;
-      iif lo accept
-      ct state established,related accept
-      ct state invalid drop
-      udp sport 67 udp dport 68 accept
-      tcp dport { 80, 443 } accept
-      tcp dport 22 ip saddr { 10.0.0.20, 10.10.1.48/29 } accept
-      udp dport 161 ip saddr 10.0.0.36 accept
-      icmp type echo-request ip saddr { 10.0.0.20, 10.10.1.48/29 } accept
-      counter
-    }
-  }
-  ```
+- **Firewall** (Erick): `fase-4/config/web-nftables.conf` → `/etc/nftables.conf`.
 - **SSH:** sin root, sin contraseña (`PermitRootLogin no`, `PasswordAuthentication no`). **No** se instala SSSD/LDAP: es un servidor público y no debe poder consultar el directorio de usuarios.
 
 **Cómo llegan los renders a la página sin romper la DMZ:** la DMZ no puede pedir nada a los servidores, ni los servidores le escriben. Alguien de TI, conectado a su VPN, copia las imágenes **ya aprobadas**:
@@ -419,7 +381,7 @@ Así, si atacan srv-web, el atacante solo ve las imágenes públicas, no los pla
 ### Paso 6 · Dominio y HTTPS (Jose Pablo)
 
 1. **Dominio (hoy):** GitHub Student Pack → Namecheap → dominio `.me` gratis por un año, o comprar uno (~$10/año). Con el nombre de la inmobiliaria.
-2. En el registrador: registro **A** `@` → `52.162.223.107` y **A** `www` → `52.162.223.107`. Verificar: `nslookup <dominio>`.
+2. En el registrador: registro **A** `@` → `<IP-PUBLICA-FW>` y **A** `www` → `<IP-PUBLICA-FW>`. Verificar: `nslookup <dominio>`.
 3. Con el dominio resolviendo y el DNAT del paso 4 funcionando:
    ```bash
    sudo apt install -y certbot python3-certbot-nginx
@@ -532,7 +494,7 @@ Las pruebas de la sección 5, con capturas para el reporte final. Aprovechar que
 | 2 | `curl -I https://<dominio>` | Cualquier lado | `200`, certificado de Let's Encrypt |
 | 3 | Abrir la intranet | Celular con datos, sin VPN | No carga |
 | 4 | Abrir la intranet | VPN de Arquitectos | Carga |
-| 5 | `nmap -Pn 52.162.223.107` | Internet | Solo 80 y 443 TCP (+ UDP 1194–1197); 22 solo desde la IP del admin |
+| 5 | `nmap -Pn <IP-PUBLICA-FW>` | Internet | Solo 80 y 443 TCP (+ UDP 1194–1197); 22 solo desde la IP del admin |
 | 6 | SSH a 10.0.0.4 | Arquitectos / TI | Falla / entra |
 | 7 | Desde srv-web: `ping 10.0.0.36`, `nc -zv 10.0.0.36 389` | srv-web | Fallan; el contador `dmz-hacia-interno` sube |
 | 8 | Desde srv-web: `curl ifconfig.me` | srv-web | IP de fw-vpn (NAT) |
@@ -566,8 +528,9 @@ Las VMs se apagan (Stop, desasignar) al terminar cada sesión. Los discos y la I
 
 | Riesgo | Mitigación |
 |---|---|
-| La conversión a pago o la cuota tardan | Hacerlo hoy; avanzar mientras tanto con los pasos 4, 5a, 7, 8 y 9; abrir caso de soporte |
-| Se pierde el crédito de estudiante al convertir | Revisarlo antes; el costo de pago por uso es bajo |
+| La suscripción nueva sale con cuota baja | `01-azure.sh` lo revisa antes de crear nada; pedir 8 en Quotas hoy |
+| Algo de la Fase 3 no levanta en la red nueva | Son los mismos scripts que ya funcionaron; el paso 3 lo detecta antes de seguir. La suscripción vieja queda apagada como respaldo |
+| Credenciales viejas en el repo | Llave SSH, CA, certificados y contraseñas nuevas; las de `fase-3/` quedan obsoletas |
 | El dominio tarda en resolver | Registrarlo hoy; TTL bajo |
 | Límite de certificados de Let's Encrypt | Probar con `--staging` primero |
 | Quedarse fuera de fw-vpn al cambiar nftables | Truco del borrado a los 5 minutos; Run command del portal |
@@ -579,7 +542,7 @@ Las VMs se apagan (Stop, desasignar) al terminar cada sesión. Los discos y la I
 
 ## 8. Documentación de referencia
 
-- Pasar Azure for Students a pago: https://learn.microsoft.com/azure/cost-management-billing/manage/upgrade-azure-subscription
+- Cuotas de vCPU: https://learn.microsoft.com/azure/quotas/per-vm-quota-requests
 - Rutas definidas por el usuario: https://learn.microsoft.com/azure/virtual-network/virtual-networks-udr-overview
 - Certbot con nginx: https://certbot.eff.org/
 - nftables (NAT y DNAT): https://wiki.nftables.org
