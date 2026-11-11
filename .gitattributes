@@ -1,0 +1,6 @@
+# Scripts y configuraciones que se copian a las VMs Linux: siempre con fin de línea LF
+*.sh       text eol=lf
+*.conf     text eol=lf
+*.ldif     text eol=lf
+*.ovpn     text eol=lf
+*-config   text eol=lf
