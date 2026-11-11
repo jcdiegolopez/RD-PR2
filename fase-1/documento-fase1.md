@@ -1,7 +1,5 @@
 # Proyecto Final CC3067 · Fase 1 · Diseño de una Red
 
-> Copia en texto del documento de Google Docs (exportada el 10 nov 2026). Original: https://docs.google.com/document/d/1k27tQWvM6V9jcJtFZqwPnQnKBhZkvFxZa3oyg4XMbbY/edit
-
 Universidad del Valle de Guatemala · Redes · Facultad de Ingeniería · Sección 30 · Juan Carlos Canteo Boix
 
 Proyecto final, Fase 1

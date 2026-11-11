@@ -2,8 +2,6 @@
 
 Quién: Diego López · Duración: unos 2:30 · Terminal: PowerShell en tu laptop.
 
-> Este archivo tiene la IP pública de fw-vpn y tu IP. Es solo para ti: no lo subas al repo.
-
 ## Datos
 
 | Qué | Valor |

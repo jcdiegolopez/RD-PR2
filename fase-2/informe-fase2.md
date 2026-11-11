@@ -1,9 +1,5 @@
 # Proyecto Final, Fase 2 · Implementación de la red en Azure: segmentación y conectividad
 
-> Copia en texto del informe de Google Docs (exportada el 10 nov 2026). **No incluye las figuras**: están en el original. Original: https://docs.google.com/document/d/1Z12l6kziRNfVFDvcDO3smcxcoiQEAhsEfKDNzsBdjXw/edit
->
-> Se copió tal como estaba, incluidas las notas de edición pendientes entre corchetes.
-
 Informe de avance del Caso 4: desarrolladora de bienes raíces.
 Curso: Redes de Computadoras 2026 (CC3067, Sección 30). Docente: Juan Carlos Canteo Boix.
 Integrantes: Jose Pablo, Joel Jaquez, Diego López, Erick Guerra, Diego Rosales, Fabian Morales. Octubre de 2026.
@@ -84,7 +80,7 @@ Todas las VMs usan autenticación por llave SSH (usuario azureuser). El software
 
 ### Reenvío de IP en fw-vpn
 
-Para que fw-vpn actúe como firewall y VPN debe reenviar tráfico entre redes. Esto requiere IP forwarding en la tarjeta de red desde Azure y net.ipv4.ip_forward=1 en Ubuntu. En Azure, la NIC fw-vpn434 ya tiene IP forwarding activo. En Ubuntu el valor era 0 durante las pruebas (figura 3) y después se activó en 1 de forma persistente (archivo evidencia/05-fw-vpn-ipforward.txt). [Agregar captura de la NIC con IP forwarding habilitado]
+Para que fw-vpn actúe como firewall y VPN debe reenviar tráfico entre redes. Esto requiere IP forwarding en la tarjeta de red desde Azure y net.ipv4.ip_forward=1 en Ubuntu. En Azure, la NIC fw-vpn434 ya tiene IP forwarding activo. En Ubuntu el valor era 0 durante las pruebas (figura 3) y después se activó en 1 de forma persistente (archivo evidencia/05-fw-vpn-ipforward.txt).
 
 ### Tablas de rutas (UDR), según el diagrama de la Fase 1
 
@@ -138,7 +134,7 @@ Las pruebas se hicieron el 15 de octubre de 2026 desde una laptop con Windows. S
 | RequestDisallowedByPolicy al crear la red en Sweden Central | La suscripción solo permite 5 regiones | Se usó North Central US |
 | B1s aparece como Size not available | La serie B de primera generación está restringida en Azure for Students | Se usó Standard_B2ats_v2 (2 vCPU) |
 | Cuota de vCPU regional baja | Cada B2ats_v2 usa 2 vCPU; con 4 vCPU caben 2 VMs | Se priorizaron las VMs de la prueba principal; web y otras quedan diseñadas |
-| Microsoft.Storage is not registered | El proveedor no estaba registrado y el rol sobre el grupo de recursos no permite registrarlo | Se desactivó boot diagnostics o el dueño de la suscripción registró el proveedor [confirmar cuál] |
+| Microsoft.Storage is not registered | El proveedor no estaba registrado y el rol sobre el grupo de recursos no permite registrarlo | Se desactivó boot diagnostics o el dueño de la suscripción registró el proveedor |
 | Run command no disponible | Limitación de permisos o de ubicación de la suscripción | Se autorizó la llave SSH desde una sesión existente |
 | La primera fw-vpn quedó en una red nueva (172.16.0.0) | El asistente creó una VNet por defecto en vez de usar vnet-proyecto | Se eliminó y se recreó en la subred Firewall de vnet-proyecto |
 | Subredes creadas como /24 | No coincidían con el VLSM de la Fase 1 | Se cambiaron a /28 antes de crear las VMs |
@@ -146,10 +142,6 @@ Las pruebas se hicieron el 15 de octubre de 2026 desde una laptop con Windows. S
 ## 9. Costos
 
 Cada B2ats_v2 cuesta 0.0094 USD por hora de uso. Los discos y las IP públicas se cobran aunque las VMs estén apagadas, por lo que es importante eliminar la IP pública temporal y detener las VMs (Stop con desasignación) al terminar. Las VMs se encienden solo para las pruebas y la demostración.
-
-[Insertar captura: Cost Management, Cost analysis, con el gasto real acumulado y el crédito restante (responsable: Joel)]
-
-[Escribir el costo real acumulado y comparar contra los $20.10 mensuales estimados en la Fase 1.]
 
 ## 10. Pendiente para la siguiente fase
 

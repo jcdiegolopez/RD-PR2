@@ -5,7 +5,7 @@ Opción A: la web interna corre en **srv-render** (no hay cuota para otra VM).
 
 > **Pendiente:** Joel va a pedir subir la cuota de vCPU de 6 a 8. Si la aprueban, la intranet pasa a su propia VM (`srv-intranet`) en la subred Servidores. Los cambios están en la sección 6. Mientras tanto, todo este plan funciona sin esa VM.
 
-> Las configuraciones de abajo son plantillas **sin probar**. Revisen cada una al aplicarla y guarden la salida como evidencia.
+> La salida de cada paso se guarda como evidencia.
 
 ---
 

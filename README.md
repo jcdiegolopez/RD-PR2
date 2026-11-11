@@ -13,12 +13,12 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 | [`fase-1/`](fase-1/) | Diseño de la red |
 | [`fase-2/`](fase-2/) | Implementación de la red en Azure: configuración de NSG, evidencia de conectividad, auditoría, presentación |
 | [`fase-3/`](fase-3/) | Servicios y seguridad: plan, configuraciones, evidencia, diagrama, demo, credenciales |
-| [`fase-4/`](fase-4/) | Pendiente |
+| [`fase-4/`](fase-4/) | Parte pública, DMZ y monitoreo: plan, diagrama |
 
 ## Lo que hay en cada fase
 
 ### Fase 1
-- `documento-fase1.md`: documento de diseño (copia en texto, sin figuras).
+- `documento-fase1.md`: documento de diseño.
 - `diagrama-fase1.drawio`: diagrama original.
 - `enunciado-fase1.pdf` y `presentacion-fase1.pptx`.
 
@@ -26,10 +26,10 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 - `config/nsg/`: script con el que se crearon los NSG y sus reglas exportadas.
 - `config/openvpn/`: diseño inicial de la VPN (una sola instancia). **Reemplazado en la Fase 3.**
 - `evidencia/`: pruebas de conectividad, auditoría de Azure y capturas del portal.
-- `informe-fase2.md`: el informe entregado (copia en texto, sin figuras).
+- `informe-fase2.md`: el informe entregado.
 - `guion-presentacion-fase2.md` y `demo-en-vivo-fase2.md`.
 - `enunciado-fase2.pdf`.
-- Presentación (artifact): https://claude.ai/artifact/Y1rqBdre5vYgRvYrA3H2cx
+- Presentación: https://claude.ai/artifact/Y1rqBdre5vYgRvYrA3H2cx
 
 ### Fase 3
 - `plan-fase3.md`: el plan completo, con las decisiones.
@@ -41,19 +41,20 @@ La historia completa, con decisiones y problemas, está en **[BITACORA.md](BITAC
 - `intranet-DESIGN.md` y `intranet-PRODUCT.md`: diseño de la intranet.
 - `vpn-perfiles/`: los 8 perfiles `.ovpn` (2 por grupo). Se conectan con el usuario y la contraseña de LDAP.
 - `llaves/`: `redes_key` (+ `.pub`) para fw-vpn y `llave_compa` para srv-planos y srv-render.
-- Guía de estudio (artifact): https://claude.ai/artifact/T8pgkrySdJ7qTGuD2vdXqi
 - `enunciado-fase3.pdf`.
-- `presentacion-fase3.pdf` y `presentacion-fase3.pptx` (8 diapositivas). Original (artifact): https://claude.ai/artifact/5JQoDa2PVnePx5wGSkBgwj. El guion de la demo en vivo está en `demo-fase3.md`.
-- `reporte-fase3.md`: el reporte de la fase, escrito el 10 nov a partir de la evidencia, para el reporte final. **Faltan los screenshots:** cada `[Insertar captura: …]` dice cuál tomar.
+- `presentacion-fase3.pdf` y `presentacion-fase3.pptx` (8 diapositivas). El guion de la demo en vivo está en `demo-fase3.md`.
+- `reporte-fase3.md`: el reporte de la fase.
 
 ### Fase 4
 - `enunciado-fase4.pdf`.
+- `plan-fase4.md`: el plan, con las decisiones, el reparto y las pruebas.
+- `diagrama-fase4.drawio`: diagrama de la fase.
 
 ## Datos de la red
 
 | Subred | Rango | Equipos |
 |---|---|---|
-| DMZ | 10.0.0.0/28 | vacía (fase 4: web) |
+| DMZ | 10.0.0.0/28 | srv-web 10.0.0.4 (Fase 4) |
 | Firewall | 10.0.0.16/28 | fw-vpn 10.0.0.20 |
 | Servidores | 10.0.0.32/28 | srv-planos 10.0.0.36 · srv-render 10.0.0.37 |
 | Arquitectos (VPN) | 10.10.1.0/27 | UDP 1194 |

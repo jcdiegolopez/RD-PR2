@@ -83,7 +83,7 @@ Equipo: Jose Pablo · Joel Jaquez · Diego López · Erick Guerra · Diego Rosal
 | SSH a fw-vpn con timeouts intermitentes | Probable: el proveedor de Internet usa más de una IP de salida y solo una estaba permitida (no verificado) | Administrar por la VPN de TI, que no depende de la IP |
 | chrony no arrancaba en fw-vpn | Un comando mal citado desde PowerShell dejó una línea inválida | Restaurar el archivo original y aplicar con un script |
 
-**28 oct 2026 · Rediseño de la intranet** (commits de r0sv): detección del grupo por la IP de la VPN, `intranet-DESIGN.md` e `intranet-PRODUCT.md`. *Pendiente confirmar si esa versión está desplegada en srv-render.*
+**28 oct 2026 · Rediseño de la intranet** (commits de r0sv): detección del grupo por la IP de la VPN, `intranet-DESIGN.md` e `intranet-PRODUCT.md`.
 
 **29 oct 2026 · Verificación y presentación.**
 - Después de apagar y encender las VMs, todos los servicios arrancaron solos (`fase-3/evidencia/13-arranque.txt`).
@@ -110,12 +110,28 @@ Equipo: Jose Pablo · Joel Jaquez · Diego López · Erick Guerra · Diego Rosal
 
 ---
 
-## Fase 4 · Pendiente
+## Fase 4 · Parte pública, DMZ y monitoreo
 
-- Pasar a una **suscripción de pago** para tener todas las máquinas y reconstruir la red completa.
-- Separar la web pública (DMZ) y la intranet en sus propias VMs.
-- Servicios pendientes del diseño: Samba, Blender, BIND9, Azure DNS, Blob Storage, web pública con HTTPS.
-- Al reconstruir: **llaves, certificados y contraseñas nuevas**; las de este repo quedan obsoletas.
+**10 nov 2026 · Planificación.** Plan final en `fase-4/plan-fase4.md` y diagrama en `fase-4/diagrama-fase4.drawio`. Entrega: 13 nov.
+
+Hallazgos al revisar el documento del proyecto (caso 4):
+- El caso pide las dos máquinas (planos y render) y que Ingenieros solo entre a planos, así que srv-render no se puede borrar.
+- El caso pide una **zona interna de DNS**, que no se había hecho.
+- La intranet viene del enunciado de la Fase 3, no del caso 4. Se mantiene.
+
+**Decisiones:**
+
+| Decisión | Por qué | Alternativas descartadas |
+|---|---|---|
+| Convertir la suscripción de Joel a **pago por uso** (la misma suscripción) y pedir cuota de 8 vCPU | Azure for Students no permite subir la cuota; convertirla no obliga a reconstruir nada | Borrar srv-render (rompe el caso 4), otra región con peering, ACI, cuenta nueva |
+| **srv-web en la DMZ, detrás de fw-vpn con DNAT** (sin IP pública) | Todo el tráfico público pasa por el firewall; una sola entrada; una IP menos | IP pública propia, como en la Fase 1 (queda como plan B) |
+| **BIND9 en fw-vpn** para `terranova.local` | Una sola pieza, gratis, sirve directo a la VPN | Azure Private DNS (no responde a la VPN sin un reenviador) |
+| SNMPv3 + Prometheus + Grafana (solo TI) | Lo pide la Fase 4; Grafana es el 10% extra | SNMP v2c (comunidad en texto plano) |
+| srv-planos y srv-render a **B2als_v2** (4 GiB) | Con 1 GiB no caben Grafana ni Blender; misma cuota de vCPU | — |
+| Planos por **SFTP** con permisos por grupo | Cumple "almacenar planos" sin otro servicio | Samba |
+| Fuera de alcance: **Samba, Blob Storage, LDAPS** | No los pide ni la fase ni el caso | — |
+
+Estado al 10 nov: la suscripción todavía figura como Azure for Students y la cuota sigue en 6/6.
 
 ---
 

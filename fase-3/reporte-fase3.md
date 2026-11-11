@@ -1,9 +1,5 @@
 # Proyecto Final, Fase 3 · Servicios de red y seguridad en Azure
 
-> Sección del reporte que continúa el informe de la Fase 2 (`fase-2/informe-fase2.md`), como pide el enunciado. Va pegada después de él en el documento final de la Fase 4.
->
-> Los `[Insertar captura: …]` marcan dónde van los screenshots que pide el enunciado. Todavía no existen: hay que tomarlos con las VMs encendidas. La salida en texto de cada prueba está en `fase-3/evidencia/`.
-
 Informe de la Fase 3 del Caso 4: desarrolladora de bienes raíces (Terranova).
 Curso: Redes de Computadoras 2026 (CC3067, Sección 30). Docente: Juan Carlos Canteo Boix.
 Integrantes: Jose Pablo, Joel Jaquez, Diego López, Erick Guerra, Diego Rosales, Fabian Morales. Octubre de 2026.
@@ -42,8 +38,6 @@ Todo se implementó el 28 de octubre y se probó grupo por grupo desde una lapto
 | TI (VPN) | 10.10.1.48/29 | 255.255.255.248 | 10.10.1.49 | .50 – .54 (5) | UDP 1196 |
 | Visitantes (VPN) | 10.10.1.64/28 | 255.255.255.240 | 10.10.1.65 | .66 – .78 (13) | UDP 1197 |
 
-[Insertar figura: diagrama de la Fase 3, `fase-3/diagrama-fase3.drawio` exportado a PNG]
-
 ## 2. Cambios en Azure
 
 **Rutas.** Se creó la tabla `rt-servidores`, asociada solo a la subred Servidores:
@@ -74,9 +68,6 @@ La primera ruta lleva las respuestas de los servidores hacia los usuarios de la 
 
 - `nsg-dmz`: se borraron `Allow-HTTP` y `Allow-HTTPS` desde Internet, porque la DMZ queda vacía en esta fase.
 
-[Insertar captura: reglas de entrada de `nsg-servidores` en el portal]
-[Insertar captura: `rt-servidores` con sus dos rutas y la asociación a la subred Servidores]
-
 Registro de los cambios: `fase-3/evidencia/01-azure-cambios.txt`.
 
 ## 3. Administración de la red
@@ -95,9 +86,6 @@ Azure no permite poner un servidor DHCP propio dentro de una VNet: las VMs siemp
 | tomas.ti | TI | 10.10.1.50 |
 | visita1 | Visitantes | 10.10.1.66 |
 
-[Insertar captura: `ipconfig` en la laptop conectada a la VPN, con la IP del rango del grupo]
-[Insertar captura: `networkctl status eth0` en srv-planos, con "DHCP4 via 168.63.129.16"]
-
 Evidencia: `fase-3/evidencia/12-dhcp.txt`.
 
 ### 3.2 NTP
@@ -106,9 +94,6 @@ Evidencia: `fase-3/evidencia/12-dhcp.txt`.
 - **Clientes:** srv-planos y srv-render quitaron los `pool` por defecto y usan `server 10.0.0.20 iburst prefer`.
 
 Resultado: los dos servidores muestran `^* fw-vpn` (fuente seleccionada) con estrato 2 y un desfase de microsegundos, y fw-vpn los lista en `chronyc clients`.
-
-[Insertar captura: `chronyc sources -v` en srv-planos con `^* fw-vpn`]
-[Insertar captura: `sudo chronyc clients` en fw-vpn]
 
 Evidencia: `fase-3/evidencia/05-ntp.txt`. Scripts: `config/ntp-servidor.sh` y `config/ntp-cliente.sh`.
 
@@ -131,9 +116,6 @@ Los usuarios son `inetOrgPerson` + `posixAccount`, y los grupos son `posixGroup`
 
 El puerto 389 de srv-planos solo es alcanzable desde fw-vpn, srv-render y TI. Desde Arquitectos, Ingenieros y Visitantes está bloqueado.
 
-[Insertar captura: `ldapsearch -x -b dc=terranova,dc=local "(objectClass=posixGroup)" cn memberUid`]
-[Insertar captura: el cliente OpenVPN rechazando a un usuario que no es del grupo]
-
 Evidencia: `03-ldap.txt`, `07-vpn-ldap-auth.txt` y `08-sssd-ssh.txt`. Configuración: `config/ldap-auth.sh` y `config/setup-sssd.sh`.
 
 ## 4. Lógica del negocio: web interna
@@ -152,9 +134,6 @@ nginx en srv-render sirve la página "Intranet Terranova". Es de solo lectura y 
 | Internet (laptop sin VPN) | Sin acceso: render no tiene IP pública y el puerto 80 de fw-vpn está cerrado |
 
 **Limitación:** por la cuota de 6 vCPU de Azure for Students, la intranet comparte VM con el servidor de render. Lo correcto es una VM propia en la subred Servidores, y así se hará en la Fase 4.
-
-[Insertar captura: el navegador mostrando la intranet conectado a la VPN de Arquitectos]
-[Insertar captura: la intranet sin cargar desde la VPN de Visitantes]
 
 Evidencia: `04-nginx.txt`, `10-web-desde-internet.txt` y `11-pruebas-vpn.txt`. Configuración: `config/nginx-intranet.conf`, `config/intranet.html` y `config/setup-nginx.sh`.
 
@@ -201,9 +180,6 @@ Pruebas desde una laptop real, conectada a un perfil por vez:
 - **Nadie hacia TI:** con la laptop de TI conectada (10.10.1.50), un ping y un intento TCP desde srv-planos fallaron. El contador de la regla `nadie-hacia-TI` subió de 0 a 8 paquetes.
 - **Visitantes:** el contador de la regla `visitantes-interno` registró 14 paquetes bloqueados.
 
-[Insertar captura: `sudo nft list ruleset` en fw-vpn mostrando los contadores de `nadie-hacia-TI` y `visitantes-interno`]
-[Insertar captura: `curl ifconfig.me` desde Visitantes con la IP de fw-vpn]
-
 Evidencia: `02-nat-servidores.txt`, `08-sssd-ssh.txt` y `11-pruebas-vpn.txt`.
 
 ## 6. Hardening
@@ -221,9 +197,6 @@ Evidencia: `02-nat-servidores.txt`, `08-sssd-ssh.txt` y `11-pruebas-vpn.txt`.
   - srv-render: 22 y 80.
 - La cuenta `azureuser` no acepta contraseña: el intento con clave fue rechazado.
 - Después de apagar y encender las VMs, todos los servicios y los firewalls arrancaron solos (`13-arranque.txt`).
-
-[Insertar captura: `sudo ss -tulpn` en srv-render]
-[Insertar captura: `nmap` desde fw-vpn a los servidores]
 
 Evidencia: `09-hardening.txt` y `13-arranque.txt`. Firewalls de los servidores: `config/planos-nftables.conf` y `config/render-nftables.conf`.
 
@@ -248,8 +221,6 @@ Evidencia: `09-hardening.txt` y `13-arranque.txt`. Firewalls de los servidores: 
 ## 9. Costos
 
 Las 3 VMs son Standard_B2ats_v2 a 0.0094 USD por hora. Los discos E4 cuestan 2.40 USD al mes cada uno y la IP pública estática 0.005 USD por hora. Con unas 60 horas de uso al mes, el estimado es de **12.54 USD al mes**. Con las VMs apagadas (Stop con desasignación) quedan **10.85 USD al mes**, por los discos y la IP pública. Las VMs se encienden solo para trabajar, probar y presentar.
-
-[Insertar captura: Cost Management, con el gasto acumulado y el crédito restante]
 
 ## 10. Archivos de configuración y documentación
 
