@@ -4,203 +4,232 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terranova · Desarrolladora inmobiliaria</title>
-<meta name="description" content="Terranova desarrolla dos edificios de apartamentos y un condominio de casas en la Ciudad de Guatemala.">
-<style>
-  @font-face {
-    font-family: "Archivo";
-    src: url("archivo.woff2") format("woff2");
-    font-weight: 100 900;
-    font-stretch: 62% 125%;
-    font-display: swap;
-  }
-  :root {
-    --papel: #eef0ec;
-    --papel-hondo: #e3e7e1;
-    --tinta: #13302a;
-    --tinta-suave: #4a5d57;
-    --linea: #b9c3bd;
-    --acento: #2f8a57;
-    --acento-texto: #1e6a40;
-    --reserva: #b8860f;
-  }
-  * { box-sizing: border-box; margin: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--papel);
-    color: var(--tinta);
-    font-family: Archivo, system-ui, sans-serif;
-    font-size: 1.0625rem;
-    line-height: 1.55;
-  }
-  a { color: inherit; }
-  .marco { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
-
-  header {
-    border-bottom: 1px solid var(--linea);
-    position: sticky; top: 0; background: var(--papel); z-index: 2;
-  }
-  header .marco { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
-  .marca { font-weight: 800; font-variation-settings: "wdth" 75; font-size: 1.5rem; letter-spacing: .02em; text-decoration: none; }
-  nav a { text-decoration: none; font-weight: 600; font-size: .9375rem; margin-left: 20px; color: var(--tinta-suave); }
-  nav a:hover { color: var(--tinta); }
-
-  .portada { padding: 56px 0 40px; }
-  .portada h1 {
-    font-size: clamp(2.6rem, 6.4vw, 5.25rem);
-    font-weight: 800; font-variation-settings: "wdth" 68;
-    line-height: 1; letter-spacing: -.01em; max-width: 14ch;
-  }
-  .portada p { margin-top: 20px; max-width: 56ch; color: var(--tinta-suave); font-size: 1.125rem; }
-  .portada figure { margin-top: 36px; }
-  .portada img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--linea); background: var(--papel-hondo); aspect-ratio: 16 / 9; object-fit: cover; }
-  figcaption { font-size: .8125rem; color: var(--tinta-suave); margin-top: 8px; }
-
-  section { padding: 48px 0; border-top: 1px solid var(--linea); }
-  h2 { font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 800; font-variation-settings: "wdth" 68; line-height: 1.05; margin-bottom: 28px; }
-
-  .proyectos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-  .proyecto { background: #fff; border: 1px solid var(--linea); border-radius: 6px; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-  .tipo { font-size: .8125rem; font-weight: 700; font-variation-settings: "wdth" 85; letter-spacing: .06em; text-transform: uppercase; color: var(--tinta-suave); }
-  .proyecto h3 { font-size: 1.75rem; font-weight: 800; font-variation-settings: "wdth" 75; line-height: 1.1; }
-  .datos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; font-size: .9375rem; }
-  .datos dt { color: var(--tinta-suave); font-size: .8125rem; }
-  .datos dd { font-weight: 600; font-feature-settings: "tnum" 1; }
-  .avance { margin-top: auto; }
-  .avance .etiqueta { display: flex; justify-content: space-between; font-size: .875rem; font-weight: 600; margin-bottom: 6px; }
-  .barra { height: 8px; background: var(--papel-hondo); border-radius: 4px; overflow: hidden; }
-  .barra span { display: block; height: 100%; background: var(--acento); }
-  .estado { display: inline-block; font-size: .8125rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #dfeee5; color: var(--acento-texto); width: fit-content; }
-  .estado.preventa { background: #f4ead2; color: #7a5a08; }
-
-  .pasos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; counter-reset: paso; }
-  .pasos li { list-style: none; border-left: 3px solid var(--acento); padding: 4px 0 4px 16px; }
-  .pasos li::before { counter-increment: paso; content: "0" counter(paso); display: block; font-weight: 800; font-variation-settings: "wdth" 68; font-size: 1.75rem; color: var(--acento-texto); }
-  .pasos strong { display: block; margin-bottom: 4px; }
-  .pasos p { color: var(--tinta-suave); font-size: .9375rem; }
-
-  .contacto { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-  .contacto div { background: #fff; border: 1px solid var(--linea); border-radius: 6px; padding: 20px; }
-  .contacto h3 { font-size: 1rem; margin-bottom: 6px; }
-  .contacto p { color: var(--tinta-suave); font-size: .9375rem; }
-
-  footer { border-top: 1px solid var(--linea); padding: 28px 0 40px; font-size: .8125rem; color: var(--tinta-suave); }
-  footer .marco { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
-
-  @media (max-width: 560px) {
-    nav a:not(:last-child) { display: none; }
-    .portada { padding-top: 36px; }
-  }
-</style>
+<meta name="description" content="Terranova desarrolla dos edificios de apartamentos y un condominio de casas en la Ciudad de Guatemala. Conozca el avance de cada proyecto y agende su visita.">
+<meta name="theme-color" content="#0b2340">
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<header>
-  <div class="marco">
-    <a class="marca" href="#">TERRANOVA</a>
-    <nav>
+
+<header class="site-header" id="inicio">
+  <div class="marco header-row">
+    <a class="logo" href="#inicio">TERRA<span>NOVA</span></a>
+    <nav class="nav" aria-label="Principal">
       <a href="#proyectos">Proyectos</a>
+      <a href="#nosotros">Por qué Terranova</a>
       <a href="#como-comprar">Cómo comprar</a>
       <a href="#contacto">Contacto</a>
     </nav>
+    <div class="header-actions">
+      <a class="telefono" href="tel:+50223000000">
+        <svg viewBox="0 0 24 24" class="icono" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+        <span>+502 2300 0000</span>
+      </a>
+      <a class="boton boton-dorado" href="mailto:ventas@terranova.example?subject=Quiero%20agendar%20una%20visita">Agendar visita</a>
+    </div>
+    <button class="menu-movil" type="button" aria-expanded="false" aria-controls="nav-movil" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <nav class="nav-movil" id="nav-movil" aria-label="Principal, móvil" hidden>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#nosotros">Por qué Terranova</a>
+    <a href="#como-comprar">Cómo comprar</a>
+    <a href="#contacto">Contacto</a>
+    <a class="boton boton-dorado" href="mailto:ventas@terranova.example?subject=Quiero%20agendar%20una%20visita">Agendar visita</a>
+  </nav>
 </header>
 
 <main>
-  <div class="marco portada">
-    <h1>Tres proyectos para vivir en la ciudad</h1>
-    <p>Terranova desarrolla dos edificios de apartamentos y un condominio de casas en la Ciudad de Guatemala. Aquí puede ver cómo avanza cada obra y reservar una visita a la sala de ventas.</p>
-    <figure>
-      <img src="img/condominio.png" alt="Render del Condominio Los Robles: tres casas de techo inclinado sobre un jardín" width="1280" height="720">
-      <figcaption>Condominio Los Robles · render generado en el servidor de renderización de Terranova.</figcaption>
-    </figure>
-  </div>
+  <section class="hero" style="background-image: linear-gradient(180deg, rgba(8,26,48,.55), rgba(8,26,48,.86) 70%), url('img/hero-ciudad.jpg');">
+    <div class="marco hero-contenido">
+      <h1>Su próximo hogar, en construcción hoy en la Ciudad de Guatemala</h1>
+      <p class="hero-intro">Terranova desarrolla dos edificios de apartamentos y un condominio de casas, con el avance de obra siempre a la vista. Conozca cada proyecto y agende su visita con un asesor.</p>
+      <div class="hero-acciones">
+        <a class="boton boton-dorado boton-grande" href="mailto:ventas@terranova.example?subject=Quiero%20agendar%20una%20visita">Agendar una visita</a>
+        <a class="boton boton-fantasma boton-grande" href="#proyectos">Ver los proyectos</a>
+      </div>
+    </div>
+    <div class="hero-metricas">
+      <div class="marco metricas-fila">
+        <div class="metrica"><strong>3</strong><span>proyectos activos</span></div>
+        <div class="metrica"><strong>168</strong><span>unidades en desarrollo</span></div>
+        <div class="metrica"><strong>+15</strong><span>años de trayectoria</span></div>
+        <div class="metrica"><strong>100%</strong><span>avance verificado en sitio</span></div>
+      </div>
+    </div>
+  </section>
 
-  <section id="proyectos">
+  <section id="proyectos" class="seccion">
     <div class="marco">
-      <h2>Proyectos en desarrollo</h2>
-      <div class="proyectos">
-        <article class="proyecto">
-          <span class="tipo">Edificio de apartamentos</span>
-          <h3>Torre Aurora</h3>
-          <span class="estado">En construcción</span>
-          <dl class="datos">
-            <div><dt>Ubicación</dt><dd>Zona 15</dd></div>
-            <div><dt>Niveles</dt><dd>14</dd></div>
-            <div><dt>Apartamentos</dt><dd>84</dd></div>
-            <div><dt>Tamaños</dt><dd>68–120 m²</dd></div>
-            <div><dt>Entrega estimada</dt><dd>2028</dd></div>
-          </dl>
-          <div class="avance">
-            <div class="etiqueta"><span>Avance de obra</span><span>45 %</span></div>
-            <div class="barra"><span style="width:45%"></span></div>
+      <h2>Tres proyectos, un mismo estándar</h2>
+      <p class="seccion-intro">Cada proyecto tiene su propia ficha técnica y su avance de obra verificado. Las fotografías muestran construcciones de referencia del mismo estilo; el render final de cada proyecto se publica conforme avanza la obra.</p>
+
+      <div class="grid-proyectos">
+        <article class="tarjeta-proyecto">
+          <div class="tarjeta-foto">
+            <img src="img/torre-aurora.jpg" alt="Edificio de apartamentos de referencia, estilo similar al de Torre Aurora" loading="lazy" width="1270" height="951">
+            <span class="etiqueta etiqueta-construccion">En construcción</span>
+          </div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-tipo">Edificio de apartamentos</span>
+            <h3>Torre Aurora</h3>
+            <p class="tarjeta-ubicacion">Zona 15, Ciudad de Guatemala</p>
+            <dl class="specs">
+              <div><dt>Niveles</dt><dd>14</dd></div>
+              <div><dt>Apartamentos</dt><dd>84</dd></div>
+              <div><dt>Tamaños</dt><dd>68–120 m²</dd></div>
+              <div><dt>Entrega</dt><dd>2028</dd></div>
+            </dl>
+            <div class="avance">
+              <div class="avance-etiqueta"><span>Avance de obra</span><span>45%</span></div>
+              <div class="avance-barra" data-avance-barra><span style="--meta:45%"></span></div>
+            </div>
+            <a class="boton boton-linea" href="mailto:ventas@terranova.example?subject=Visita%20a%20Torre%20Aurora">Agendar visita a Torre Aurora</a>
           </div>
         </article>
 
-        <article class="proyecto">
-          <span class="tipo">Edificio de apartamentos</span>
-          <h3>Residencial Vista Norte</h3>
-          <span class="estado">En construcción</span>
-          <dl class="datos">
-            <div><dt>Ubicación</dt><dd>Zona 16</dd></div>
-            <div><dt>Niveles</dt><dd>10</dd></div>
-            <div><dt>Apartamentos</dt><dd>60</dd></div>
-            <div><dt>Tamaños</dt><dd>55–95 m²</dd></div>
-            <div><dt>Entrega estimada</dt><dd>2027</dd></div>
-          </dl>
-          <div class="avance">
-            <div class="etiqueta"><span>Avance de obra</span><span>70 %</span></div>
-            <div class="barra"><span style="width:70%"></span></div>
+        <article class="tarjeta-proyecto">
+          <div class="tarjeta-foto">
+            <img src="img/vista-norte.jpg" alt="Edificio de apartamentos de referencia, estilo similar al de Residencial Vista Norte" loading="lazy" width="1024" height="683">
+            <span class="etiqueta etiqueta-construccion">En construcción</span>
+          </div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-tipo">Edificio de apartamentos</span>
+            <h3>Residencial Vista Norte</h3>
+            <p class="tarjeta-ubicacion">Zona 16, Ciudad de Guatemala</p>
+            <dl class="specs">
+              <div><dt>Niveles</dt><dd>10</dd></div>
+              <div><dt>Apartamentos</dt><dd>60</dd></div>
+              <div><dt>Tamaños</dt><dd>55–95 m²</dd></div>
+              <div><dt>Entrega</dt><dd>2027</dd></div>
+            </dl>
+            <div class="avance">
+              <div class="avance-etiqueta"><span>Avance de obra</span><span>70%</span></div>
+              <div class="avance-barra" data-avance-barra><span style="--meta:70%"></span></div>
+            </div>
+            <a class="boton boton-linea" href="mailto:ventas@terranova.example?subject=Visita%20a%20Residencial%20Vista%20Norte">Agendar visita a Vista Norte</a>
           </div>
         </article>
 
-        <article class="proyecto">
-          <span class="tipo">Condominio de casas</span>
-          <h3>Condominio Los Robles</h3>
-          <span class="estado preventa">Preventa</span>
-          <dl class="datos">
-            <div><dt>Ubicación</dt><dd>Carretera a El Salvador</dd></div>
-            <div><dt>Casas</dt><dd>24</dd></div>
-            <div><dt>Terreno</dt><dd>160–220 m²</dd></div>
-            <div><dt>Habitaciones</dt><dd>3 y 4</dd></div>
-            <div><dt>Entrega estimada</dt><dd>2028</dd></div>
-          </dl>
-          <div class="avance">
-            <div class="etiqueta"><span>Avance de obra</span><span>15 %</span></div>
-            <div class="barra"><span style="width:15%"></span></div>
+        <article class="tarjeta-proyecto">
+          <div class="tarjeta-foto">
+            <img src="img/los-robles.jpg" alt="Construcción de casas en proceso, de referencia para el Condominio Los Robles" loading="lazy" width="1280" height="854">
+            <span class="etiqueta etiqueta-preventa">Preventa</span>
+          </div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-tipo">Condominio de casas</span>
+            <h3>Condominio Los Robles</h3>
+            <p class="tarjeta-ubicacion">Carretera a El Salvador</p>
+            <dl class="specs">
+              <div><dt>Casas</dt><dd>24</dd></div>
+              <div><dt>Terreno</dt><dd>160–220 m²</dd></div>
+              <div><dt>Habitaciones</dt><dd>3 y 4</dd></div>
+              <div><dt>Entrega</dt><dd>2028</dd></div>
+            </dl>
+            <div class="avance">
+              <div class="avance-etiqueta"><span>Avance de obra</span><span>15%</span></div>
+              <div class="avance-barra" data-avance-barra><span style="--meta:15%"></span></div>
+            </div>
+            <a class="boton boton-linea" href="mailto:ventas@terranova.example?subject=Visita%20a%20Condominio%20Los%20Robles">Agendar visita a Los Robles</a>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section id="como-comprar">
+  <section id="nosotros" class="seccion seccion-navy">
+    <div class="marco">
+      <h2 class="titulo-claro">Construimos con transparencia, de principio a entrega</h2>
+      <div class="grid-razones">
+        <div class="razon">
+          <svg viewBox="0 0 24 24" class="icono-razon" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.4 8.7-8 9.9C7.4 20.7 4 17 4 12V7l8-4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12.3l2 2 4-4.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Avance verificado</h3>
+          <p>Medimos y publicamos el avance de cada obra; nada de promesas sin fecha.</p>
+        </div>
+        <div class="razon">
+          <svg viewBox="0 0 24 24" class="icono-razon" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.5h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h3>Entrega puntual</h3>
+          <p>Cronograma de obra público, con fecha estimada de entrega por proyecto.</p>
+        </div>
+        <div class="razon">
+          <svg viewBox="0 0 24 24" class="icono-razon" aria-hidden="true"><path d="M12 21s-7-4.6-7-10.5C5 6.9 7.9 4 11 4c.4 0 .8.1 1 .2.2-.1.6-.2 1-.2 3.1 0 6 2.9 6 6.5C19 16.4 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <h3>Ubicaciones consolidadas</h3>
+          <p>Zonas 15 y 16 y Carretera a El Salvador: acceso, servicios y plusvalía.</p>
+        </div>
+        <div class="razon">
+          <svg viewBox="0 0 24 24" class="icono-razon" aria-hidden="true"><circle cx="12" cy="8.2" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c0-3.6 3.1-6.4 7-6.4s7 2.8 7 6.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h3>Atención personalizada</h3>
+          <p>Un mismo asesor lo acompaña desde la primera visita hasta la entrega.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-comprar" class="seccion">
     <div class="marco">
       <h2>Cómo comprar</h2>
       <ol class="pasos">
-        <li><strong>Agende una visita</strong><p>Conozca la sala de ventas o la casa modelo con un asesor.</p></li>
-        <li><strong>Elija su unidad</strong><p>Revise planos, acabados y disponibilidad del proyecto.</p></li>
-        <li><strong>Reserve</strong><p>Firme la promesa de compraventa con el enganche acordado.</p></li>
-        <li><strong>Reciba su hogar</strong><p>Le avisamos cada avance de obra hasta la entrega.</p></li>
+        <li><span class="paso-num">1</span><div><strong>Agende una visita</strong><p>Conozca la sala de ventas o la casa modelo con un asesor.</p></div></li>
+        <li><span class="paso-num">2</span><div><strong>Elija su unidad</strong><p>Revise planos, acabados y disponibilidad del proyecto.</p></div></li>
+        <li><span class="paso-num">3</span><div><strong>Reserve</strong><p>Firme la promesa de compraventa con el enganche acordado.</p></div></li>
+        <li><span class="paso-num">4</span><div><strong>Reciba su hogar</strong><p>Le avisamos cada avance de obra hasta la entrega.</p></div></li>
       </ol>
     </div>
   </section>
 
-  <section id="contacto">
-    <div class="marco">
-      <h2>Contacto</h2>
-      <div class="contacto">
-        <div><h3>Sala de ventas</h3><p>Zona 15, Ciudad de Guatemala<br>Lunes a sábado, 9:00 a 18:00</p></div>
-        <div><h3>Teléfono</h3><p>+502 2300 0000</p></div>
-        <div><h3>Correo</h3><p>ventas@terranova.example</p></div>
+  <section id="contacto" class="seccion seccion-crema">
+    <div class="marco contacto-grid">
+      <div class="contacto-info">
+        <h2>Hablemos de su próximo hogar</h2>
+        <p class="seccion-intro">Escríbanos o visítenos; el mismo asesor que lleva su proyecto le da seguimiento, no un buzón general.</p>
+        <ul class="lista-contacto">
+          <li>
+            <svg viewBox="0 0 24 24" class="icono" aria-hidden="true"><path d="M12 21s-7-4.6-7-10.5C5 6.9 7.9 4 11 4c.4 0 .8.1 1 .2.2-.1.6-.2 1-.2 3.1 0 6 2.9 6 6.5C19 16.4 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <div><strong>Sala de ventas</strong><span>Zona 15, Ciudad de Guatemala · Lunes a sábado, 9:00 a 18:00</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" class="icono" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+            <div><strong>Teléfono</strong><span><a href="tel:+50223000000">+502 2300 0000</a></span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" class="icono" aria-hidden="true"><path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4.5 6.5l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <div><strong>Correo</strong><span><a href="mailto:ventas@terranova.example">ventas@terranova.example</a></span></div>
+          </li>
+        </ul>
+        <a class="boton boton-dorado boton-grande" href="mailto:ventas@terranova.example?subject=Quiero%20agendar%20una%20visita">Escribir a ventas</a>
+      </div>
+      <div class="contacto-mapa">
+        <iframe
+          title="Ubicación de la sala de ventas de Terranova, Zona 15"
+          src="https://www.google.com/maps?q=Zona%2015,%20Ciudad%20de%20Guatemala&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
       </div>
     </div>
   </section>
 </main>
 
-<footer>
-  <div class="marco">
-    <span>© 2026 Terranova · Desarrolladora inmobiliaria</span>
-    <span>Proyecto académico · CC3067 Redes · UVG</span>
+<footer class="site-footer">
+  <div class="marco footer-grid">
+    <div>
+      <a class="logo logo-footer" href="#inicio">TERRA<span>NOVA</span></a>
+      <p>Desarrolladora inmobiliaria · Ciudad de Guatemala</p>
+    </div>
+    <nav aria-label="Pie de página">
+      <a href="#proyectos">Proyectos</a>
+      <a href="#nosotros">Por qué Terranova</a>
+      <a href="#como-comprar">Cómo comprar</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="footer-legal">
+      <p>© 2026 Terranova · Desarrolladora inmobiliaria</p>
+      <p>Proyecto académico · CC3067 Redes · UVG — proyectos y cifras ficticios para la demo.</p>
+      <p class="creditos-foto">Fotografías de referencia (Wikimedia Commons): <a href="https://commons.wikimedia.org/wiki/File:DC_modern_apartment_at_dusk.jpg">Kurt Kaiser</a> (CC0) · <a href="https://commons.wikimedia.org/wiki/File:Modern_apartment_block,_Upton_Park_-_geograph.org.uk_-_3264001.jpg">David Anstiss</a> (CC BY-SA 2.0) · <a href="https://commons.wikimedia.org/wiki/File:Modern_apartment_building_on_the_corner_of_Grosvenor_Road_-_geograph.org.uk_-_6862292.jpg">David Martin</a> (CC BY-SA 2.0) · <a href="https://commons.wikimedia.org/wiki/File:Townhouse_Construction_in_Newcastle,_Ontario,_September_12_2026_(01).jpg">Dillan Payne</a> (CC BY-SA 4.0).</p>
+    </div>
   </div>
 </footer>
+
+<script src="js/main.js"></script>
 </body>
 </html>
