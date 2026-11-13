@@ -1,0 +1,60 @@
+﻿===== página
+css/styles.css
+img/hero-ciudad.jpg
+img/los-robles.jpg
+img/torre-aurora.jpg
+img/vista-norte.jpg
+index.html
+js/main.js
+public-sans-OFL.txt
+public-sans.woff2
+source-serif-4-OFL.txt
+source-serif-4.woff2
+===== nginx con el dominio
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+<title>Terranova · Desarrolladora inmobiliaria</title>
+===== certbot
+certbot 1.21.0
+===== prueba en seco (servidor de pruebas de Let's Encrypt)
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Account registered.
+Simulating a certificate request for terranovagt.me and www.terranovagt.me
+The dry run was successful.
+===== certificado real, con redirección de HTTP a HTTPS
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+Deploying certificate
+Successfully deployed certificate for terranovagt.me to /etc/nginx/sites-enabled/terranova
+Successfully deployed certificate for www.terranovagt.me to /etc/nginx/sites-enabled/terranova
+Congratulations! You have successfully enabled HTTPS on https://terranovagt.me and https://www.terranovagt.me
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+===== resultado
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+0.0.0.0:80
+0.0.0.0:443
+  Certificate Name: terranovagt.me
+    Domains: terranovagt.me www.terranovagt.me
+    Expiry Date: 2027-02-11 13:29:45+00:00 (VALID: 89 days)
+Sat 2026-11-14 09:21:37 UTC 18h left       n/a                         n/a        certbot.timer                  certbot.service
+EXIT=0
+===== Prueba desde Internet, sin VPN - 2026-11-13T08:28:32
+VPN activa: no
+http://terranovagt.me        -> HTTP 301 (redirige a https://terranovagt.me/)
+http://www.terranovagt.me    -> HTTP 301 (redirige a https://www.terranovagt.me/)
+https://terranovagt.me       -> HTTP 200
+https://www.terranovagt.me   -> HTTP 200
+certificado: emisor [CN=YR1, O=Let's Encrypt, C=US], vence 2027-02-11, protocolo Tls13
+página: HTTP 200, 14299 bytes, Terranova · Desarrolladora inmobiliaria
+  css/styles.css           200  11331 bytes
+  js/main.js               200  1328 bytes
+  img/hero-ciudad.jpg      200  190179 bytes
+  img/torre-aurora.jpg     200  275109 bytes
+  img/vista-norte.jpg      200  188982 bytes
+  img/los-robles.jpg       200  415599 bytes
+  public-sans.woff2        200  26832 bytes
+puertos de la IP pública: 80=abre, 443=abre, 22=abre, 389=cerrado

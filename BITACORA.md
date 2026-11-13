@@ -163,6 +163,8 @@ Estado al 10 nov: la suscripción de Joel no se pudo pasar a pago desde el porta
 | `snmpget` con nombres fallaba | Ubuntu no trae los archivos MIB | OID numéricos |
 | Render de Blender negro | El paquete de Ubuntu viene sin `colormanagement` | Blender oficial por snap, más las librerías gráficas que usa y una carpeta `/home` para el usuario |
 
+**13 nov 2026 · Dominio, página y HTTPS.** El dominio `terranovagt.me` ya apuntaba a fw-vpn, pero abría con `ERR_CONNECTION_REFUSED`: el navegador entra por `https://` y srv-web solo escuchaba en el 80, porque faltaba el certificado. `infra/setup-web-https.sh` subió la página final (`fase-4/web/`), puso el dominio en nginx y sacó el certificado con Certbot (prueba en seco primero). Resultado: HTTP redirige con 301 a HTTPS, el certificado es válido hasta el 11 feb 2027 con TLS 1.3 y todos los archivos de la página cargan (`evidencia/15-https.txt`). El certificado se pidió sin correo (`--register-unsafely-without-email`).
+
 Al cierre del 10 nov las 7 VMs (las 4 nuevas y las 3 de la suscripción de Joel) quedaron apagadas y desasignadas. Los pendientes están en `fase-4/plan-fase4.md` (sección 0).
 | Familia Basv2 con cuota 0 en la suscripción nueva | Cuota por defecto de la región | Solicitud de cuota (aprobada) |
 

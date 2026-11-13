@@ -11,7 +11,7 @@ Entrega: 13 de noviembre. Enunciado: `enunciado-fase4.pdf`.
 |---|---|
 | Suscripción | `terranova-fase4` (pago por uso), presupuesto con alertas de $20/mes |
 | IP pública de fw-vpn | 52.159.123.60 (VPN UDP 1194–1197 y web pública por DNAT) |
-| Página pública | http://52.159.123.60 (HTTPS cuando haya dominio). Las VMs están apagadas: encender fw-vpn y srv-web para verla |
+| Página pública | **https://terranovagt.me** (HTTP redirige a HTTPS; certificado de Let's Encrypt con renovación automática). Para verla hay que tener encendidas fw-vpn y srv-web |
 | Pendientes | Sección 0 de `plan-fase4.md` |
 | Acceso SSH | `ssh -F fase-4/ssh-config fw` · `planos` · `render` · `web` (llave `~/.ssh/terranova`) |
 | Credenciales | `credenciales-fase4.txt` (LDAP, SNMP, Grafana) |

@@ -19,7 +19,7 @@ Este plan parte de lo que ya existe en Azure (Fase 3) y agrega lo que piden el e
 | Qué cambia | IP pública nueva (perfiles `.ovpn` nuevos), CA y certificados de VPN nuevos, llave SSH y contraseñas nuevas |
 | **Avance 10 nov** | **Pasos 0 y 1 hechos.** Suscripción `terranova-fase4` (`016952af-f2ae-4f99-9a34-17441b3f5130`), pago por uso, cuota Basv2 10 aprobada, presupuesto de $20/mes con alertas. Red y 4 VMs creadas con `01-azure.sh` (salida en `evidencia/01-azure-creacion.txt`). **IP pública de fw-vpn: 52.159.123.60**. Acceso SSH: `fase-4/ssh-config` con la llave `~/.ssh/terranova` |
 | **Avance 10 nov (noche)** | **Pasos 2 y 3 hechos, y BIND9 del paso 4.2.** Fase 3 reconstruida con contraseñas, CA y perfiles nuevos (`credenciales-fase4.txt`, `vpn-perfiles/`). Regresión completa igual a la Fase 3: ACL por grupo desde las 4 VPN (`evidencia/06`), SSH con LDAP por grupo (`evidencia/07`), nadie hacia TI (`evidencia/08`). DNS interno funcionando desde la VPN (no para Visitantes) |
-| **Avance 10 nov (noche, Fase 4)** | **Hechos los pasos 4, 5b (sin HTTPS), 7, 8 y 9.** SSH sin root en fw-vpn y srv-web. srv-web sirve la página por el DNAT: `http://52.159.123.60` abre desde Internet sin VPN; la DMZ no llega a nada interno (`evidencia/10`). SNMPv3 en las 4 VMs, v2c rechazado (`evidencia/11`). Prometheus + snmp_exporter 0.31.0 + Grafana 13.3 en srv-planos; Grafana abre desde TI y no desde Arquitectos (`evidencia/12`). Carpeta de planos con permisos por grupo y NFS (`evidencia/13`). Blender oficial (snap 5.3.0) instalado; el render de prueba quedó a medias al apagar (`evidencia/14`). **VMs apagadas (desasignadas) al cierre del 10 nov.** |
+| **Avance 10 nov (noche, Fase 4)** | **Hechos los pasos 4, 5b (sin HTTPS), 7, 8 y 9.** SSH sin root en fw-vpn y srv-web. srv-web sirve la página por el DNAT: `http://52.159.123.60` abre desde Internet sin VPN; la DMZ no llega a nada interno (`evidencia/10`). SNMPv3 en las 4 VMs, v2c rechazado (`evidencia/11`). Prometheus + snmp_exporter 0.31.0 + Grafana 13.3 en srv-planos; Grafana abre desde TI y no desde Arquitectos (`evidencia/12`). Carpeta de planos con permisos por grupo y NFS (`evidencia/13`). Blender oficial (snap 5.3.0): render de prueba del condominio hecho el 13 nov en 106 s como ana.arq y guardado en srv-planos por NFS (`evidencia/14`). **VMs apagadas (desasignadas) al cierre del 10 nov.** |
 
 ### Pendiente, dividido en 3 personas (11 nov)
 
@@ -29,12 +29,12 @@ Los roles de Azure del equipo ya están asignados. Falta lo siguiente:
 
 | Cuándo | Tarea | Detalle |
 |---|---|---|
-| Hoy | **Dominio** | Conseguirlo (Student Pack → Namecheap `.me`, o comprarlo) y crear los registros A `@` y `www` → **52.159.123.60**. Bloquea el HTTPS |
-| Hoy | **Commit y push** | `git add -A`, `git commit` y `git push` |
-| Sesión de VMs encendidas (12 nov, mañana) | **Render del condominio** | Encender srv-planos y srv-render y correr `infra/setup-render-blender.sh` (~4 min) |
-| Sesión de VMs encendidas | **Subir la página pública** | `web/index.html` ya está hecho; srv-web todavía tiene la provisional. Copiar `web/` con el render en `web/img/condominio.png`. Decidir si los datos de los proyectos (inventados) se dejan así |
-| Sesión de VMs encendidas | **HTTPS** (paso 6) | Con el dominio resolviendo: `server_name` en `config/nginx-terranova.conf` y Certbot con `--redirect` |
-| Al terminar | **Apagar todo** | Stop (desasignar) de las 4 VMs |
+| ✅ Hecho | **Dominio** | `terranovagt.me` y `www.terranovagt.me` → **52.159.123.60** |
+| Pendiente | **Commit y push** | `git add -A`, `git commit` y `git push` |
+| ✅ Hecho (13 nov) | **Render del condominio** | `/srv/planos/renders/salida/condominio_0001.png` (copia en `evidencia/14-condominio_0001.png`). La página usa fotos de referencia, no este render |
+| ✅ Hecho (13 nov) | **Subir la página pública** | `web/` completo en srv-web (`infra/setup-web-https.sh`) |
+| ✅ Hecho (13 nov) | **HTTPS** (paso 6) | Certificado de Let's Encrypt para `terranovagt.me` y `www`, con redirección de HTTP a HTTPS y renovación automática. Evidencia en `evidencia/15-https.txt` |
+| Pendiente | **Apagar todo** | Stop (desasignar) de las 4 VMs al terminar la demo |
 
 **Persona 2 · Reporte final**
 

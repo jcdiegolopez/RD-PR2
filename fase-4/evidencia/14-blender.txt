@@ -1,7 +1,20 @@
 ﻿===== NFS
 TARGET       SOURCE                                     FSTYPE OPTIONS
 /srv/renders planos.terranova.local:/srv/planos/renders nfs4   rw,relatime,vers=4.2,rsize=524288,wsize=524288,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=10.0.0.37,local_lock=none,addr=10.0.0.36
+ssh : rm: cannot remove '/srv/renders/salida/condominio_0001.png': Permission denied
+At line:7 char:1
++ ssh -F $cfg render4 "sudo rm -f /srv/renders/salida/condominio_0001.p ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (rm: cannot remo...rmission denied:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
 ===== Blender (snap oficial)
 Blender 5.3.0
 ===== Render de prueba (como ana.arq, con prioridad baja)
-(render interrumpido al apagar las VMs el 10 nov; el Blender oficial ya arranca. Primer intento con el paquete de Ubuntu: imagen negra por falta de colormanagement)
+RENDER LISTO: /srv/renders/salida/condominio_0001.png
+tiempo: 106 s
+total 900
+drwxrws--- 2 root    arquitectos   4096 Nov 11 04:13 .
+drwxrws--- 4 root    arquitectos   4096 Nov 11 04:07 ..
+-rw-rw---- 1 ana.arq arquitectos 902566 Nov 13 14:54 condominio_0001.png
+(13 nov) mismo archivo visto en srv-planos y por NFS en srv-render: 902566 bytes, ana.arq:arquitectos. Copia de la imagen: 14-condominio_0001.png
